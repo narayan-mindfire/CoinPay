@@ -5,17 +5,52 @@ import { useTheme } from "@react-navigation/native";
 const { width } = Dimensions.get("window");
 
 interface ButtonProps {
-  buttonText: String;
+  buttonText: string;
   handleButton: () => any;
+  outlined?: boolean;
+  disabled?: boolean;
+  buttonStyles?: object;
 }
-const Button = ({ buttonText, handleButton }: ButtonProps) => {
+
+const Button = ({
+  buttonText,
+  handleButton,
+  outlined,
+  disabled,
+  buttonStyles = {},
+}: ButtonProps) => {
   const { colors } = useTheme();
   return (
     <TouchableOpacity
-      style={[styles.button, { backgroundColor: colors.primary }]}
+      style={[
+        styles.button,
+        disabled
+          ? { backgroundColor: colors.border }
+          : outlined
+          ? {
+              backgroundColor: "#fff",
+              borderWidth: 2,
+              borderColor: colors.primary,
+            }
+          : { backgroundColor: colors.primary },
+        buttonStyles,
+      ]}
       onPress={handleButton}
     >
-      <Text style={[styles.buttonText]}>{buttonText}</Text>
+      <Text
+        style={[
+          styles.buttonText,
+          {
+            color: disabled
+              ? "rgba(65, 65, 65, 1))"
+              : outlined
+              ? colors.primary
+              : "#fff",
+          },
+        ]}
+      >
+        {buttonText}
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -24,8 +59,7 @@ export default Button;
 
 const styles = StyleSheet.create({
   button: {
-    position: "absolute",
-    bottom: 30,
+    margin: 10,
     width: width * 0.8,
     borderRadius: 30,
     paddingVertical: 15,
@@ -34,7 +68,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 18,
-    color: "#fff",
     fontWeight: 500,
   },
 });

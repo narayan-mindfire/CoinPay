@@ -7,9 +7,10 @@ import {
 import OnboardingScreen from "../Screens/onboarding/onBoarding";
 import Registration from "../Screens/registration/Registration";
 import { RootStackParamList } from "./NavigationTypes";
-import darkTheme from "../Themes/Dark";
-import lightTheme from "../Themes/Light";
 import { useColorScheme } from "react-native";
+
+import PhoneVerification from "../Screens/registration/PhoneVerification";
+import { DarkThemeCustom, LightThemeCustom } from "../Themes/Theme";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -19,11 +20,12 @@ const RootStack: React.FC = () => {
   const systemTheme = useColorScheme();
   return (
     <NavigationContainer
-      theme={systemTheme === "dark" ? darkTheme : lightTheme}
+      theme={systemTheme === "dark" ? DarkThemeCustom : LightThemeCustom}
     >
       <Stack.Navigator id={undefined} screenOptions={{ headerShown: false }}>
         <Stack.Screen name="OnBoarding" component={OnboardingScreen} />
         <Stack.Screen name="Registration" component={Registration} />
+        <Stack.Screen name="PhoneVerification" component={PhoneVerification} />
       </Stack.Navigator>
     </NavigationContainer>
   );
