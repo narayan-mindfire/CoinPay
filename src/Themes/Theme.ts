@@ -23,12 +23,13 @@ export interface CustomTheme extends Theme {
       backgroundWarning: string;
       backgroundError: string;
       backgroundInfo: string;
+      backgroundModal: string;
   
       textPrimary: string;
       textSecondary: string;
       textTertiary: string;
       textDisabled: string;
-      textAccent: string;
+      contentAccent: string;
       textWarning: string;
       textError: string;
       textSuccess: string;
@@ -65,7 +66,8 @@ export const LightThemeCustom : CustomTheme= {
     backgroundSuccess: "rgba(67, 160, 72, 1)",
     backgroundWarning: "rgba(251, 138, 0, 1)",
     backgroundError: "rgba(244, 67, 54, 1)",
-    backgroundInfo: "rgba(144, 202, 249, 255)",
+    backgroundInfo: "rgba(184, 184, 184, 1)",
+    backgroundModal : "rgba(255, 255, 255, 1)",
 
     // Text & Icon
     text: "rgba(0, 0, 0, 255)",
@@ -73,7 +75,7 @@ export const LightThemeCustom : CustomTheme= {
     textSecondary: "rgba(65, 65, 65, 1)",
     textTertiary: "rgba(90, 90, 90, 1)",
     textDisabled: "rgba(184, 184, 184, 1)",
-    textAccent: "rgba(30, 58, 229, 1)",
+    contentAccent: "rgba(30, 58, 229, 1)",
     textWarning: "rgba(152, 51, 1, 1)",
     textError: "rgba(183, 27, 28, 1)",
     textSuccess: "rgba(27, 94, 33, 1)",
@@ -109,15 +111,16 @@ export const DarkThemeCustom : CustomTheme = {
     backgroundSuccess: "rgba(67, 160, 72, 1)",
     backgroundWarning: "rgba(251, 138, 0, 1)",
     backgroundError: "rgba(244, 67, 54, 1)",
-    backgroundInfo: "rgba(25, 118, 210, 255)",
+    backgroundInfo: "rgba(184, 184, 184, 1)",
+    backgroundModal : "rgba(42, 42, 42, 1)",
 
     // Text & Icon
     text: "rgba(0, 0, 0, 255)",
     textPrimary: "rgba(247, 247, 247, 1)",
     textSecondary: "rgba(232, 232, 232, 1)",
-    textTertiary: "rgba(208, 208, 208, 1)",
+    textTertiary: "rgb(170, 166, 166)",
     textDisabled: "rgba(113, 113, 113, 1)",
-    textAccent: "rgba(164, 171, 255, 1)",
+    contentAccent: "rgba(164, 171, 255, 1)",
     textWarning: "rgba(255, 182, 76, 1)",
     textError: "rgba(239, 154, 154, 1)",
     textSuccess: "rgba(102, 187, 107, 1)",

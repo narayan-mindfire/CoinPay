@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,177 +6,363 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  ScrollView,
+  Keyboard,
 } from "react-native";
 import Button from "@/src/components/Button";
 import { PhoneVerificationScreenProps } from "@/src/navigation/NavigationTypes";
 import { useTheme } from "@react-navigation/native";
+import icons from "@/src/Assets/icons";
+import countryIcons from "@/src/Assets/icons/country-icons";
+import countryCodes from "@/src/utils/country-code";
+import CountryModal from "@/src/components/CountryModal";
+import PhoneVerificationModal from "@/src/components/verifyPhoneModal";
+import AnimatedProgressBar from "@/src/components/progressBar";
+
+/**
+ * Registration Screen Component
+ * Allows users to register using their phone number and password.
+ */
 
 const Registration = ({ navigation }: PhoneVerificationScreenProps) => {
   const { colors } = useTheme();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState({
+    code: "IN",
+    dialCode: "+91",
+  });
+  const [countryModalVisible, setCountryModalVisible] = useState(false);
+  const [verifyModal, setVerifyModalVisible] = useState(false);
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  /**
+   * Effect to listen for keyboard visibility changes.
+   */
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardVisible(true);
+      }
+    );
+
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardVisible(false);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
+  const styles = createStyles(colors);
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("Registration")}
-        style={styles.backButton}
-      >
-        <Image source={require("../../Assets/icons/angle-left.png")} />
-      </TouchableOpacity>
-      <View style={[styles.progressBar, { backgroundColor: colors.primary }]} />
-      <View style={{ paddingHorizontal: 14 }}>
-        <Text style={styles.title}>Create an Account</Text>
-        <Text style={styles.subtitle}>
-          Enter your mobile number to verify your account
-        </Text>
-
-        {/* Phone Input */}
-        <Text style={styles.label}>Phone</Text>
-        <View style={styles.phoneContainer}>
-          <View style={styles.countryCode}>
-            <Image
-              source={require("../../Assets/icons/Country=IN.png")}
-              style={styles.flag}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View style={styles.container}>
+            {/* Country selection modal */}
+            <CountryModal
+              visible={countryModalVisible}
+              data={countryCodes}
+              onSelect={setSelectedCountry}
+              onClose={() => setCountryModalVisible(false)}
+              countryIcons={countryIcons}
             />
-            <Text style={styles.countryText}>+91</Text>
+            <PhoneVerificationModal
+              visible={verifyModal}
+              phoneNumber={phone}
+              countryCode={selectedCountry.dialCode}
+              onConfirm={() => {
+                navigation.push("OtpVerification", {
+                  phone,
+                  countryCode: selectedCountry.dialCode,
+                });
+                setVerifyModalVisible(false);
+              }}
+              onCancel={() => setVerifyModalVisible(false)}
+            />
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={styles.backButton}
+            >
+              <Image source={icons.angleLeft} tintColor={colors.textPrimary} />
+            </TouchableOpacity>
+            <View style={styles.progressContainer}>
+              <AnimatedProgressBar progress={0.25} />
+            </View>
+            <View style={{ paddingHorizontal: 14 }}>
+              <Text style={styles.title}>Create an Account</Text>
+              <Text style={styles.subtitle}>
+                Enter your mobile number to verify your account
+              </Text>
+
+              {/* Phone Input */}
+              <Text style={styles.label}>Phone</Text>
+              <View style={styles.phoneContainer}>
+                {/* Left Box - Country Code */}
+                <View style={styles.leftBox}>
+                  <TouchableOpacity
+                    onPress={() => setCountryModalVisible(true)}
+                    style={styles.countryButton}
+                  >
+                    <Image
+                      source={countryIcons[selectedCountry.dialCode]}
+                      style={styles.flag}
+                    />
+                    <Text style={styles.countryText}>
+                      {selectedCountry.dialCode}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
+                {/* Right Box - Phone Input */}
+                <View style={styles.rightBox}>
+                  {!phone && (
+                    <Text style={styles.placeholderText}>
+                      {" "}
+                      {"      "}Mobile number
+                    </Text>
+                  )}
+                  <TextInput
+                    style={styles.phoneInput}
+                    placeholder=""
+                    keyboardType="phone-pad"
+                    value={phone}
+                    onChangeText={setPhone}
+                  />
+                </View>
+              </View>
+
+              <Text style={styles.label}>Password</Text>
+              <View style={styles.passwordContainer}>
+                <Image source={icons.lock} style={styles.lockIcon} />
+
+                <View style={styles.inputWrapper}>
+                  {!password && (
+                    <Text style={styles.placeholderText}> ◉ ◉ ◉ ◉ ◉ ◉ ◉</Text>
+                  )}
+                  <TextInput
+                    style={styles.passwordInput}
+                    placeholder=""
+                    secureTextEntry={!passwordVisible}
+                    value={password}
+                    onChangeText={setPassword}
+                  />
+                </View>
+
+                <TouchableOpacity
+                  onPress={() => setPasswordVisible(!passwordVisible)}
+                >
+                  <Image
+                    source={passwordVisible ? icons.eyeSlash : icons.eye}
+                    style={styles.eyeIcon}
+                  />
+                </TouchableOpacity>
+              </View>
+
+              {/* button set to disabled when either password or phone number not given, button height adjusted based on keyboardvisibility */}
+              <Button
+                buttonText="Sign up"
+                handleButton={() => {
+                  setVerifyModalVisible(true);
+                }}
+                outlined={false}
+                disabled={password === "" || phone === ""}
+                buttonStyles={{ marginTop: isKeyboardVisible ? 180 : 420 }}
+              />
+            </View>
           </View>
-          <TextInput
-            style={styles.phoneInput}
-            placeholder="Mobile number"
-            placeholderTextColor="#B0B0B0"
-            keyboardType="phone-pad"
-            value={phone}
-            onChangeText={setPhone}
-          />
-        </View>
-
-        <Text style={styles.label}>Password</Text>
-        <View style={styles.passwordContainer}>
-          <Image
-            source={require("../../Assets/icons/lock.png")}
-            style={styles.lockIcon}
-          />
-          <TextInput
-            style={styles.passwordInput}
-            placeholder="**********"
-            placeholderTextColor="#B0B0B0"
-            secureTextEntry={!passwordVisible}
-            value={password}
-            onChangeText={setPassword}
-          />
-          <TouchableOpacity
-            onPress={() => setPasswordVisible(!passwordVisible)}
-          >
-            <Image
-              source={require("../../Assets/icons/eye.png")}
-              style={styles.eyeIcon}
-            />
-          </TouchableOpacity>
-        </View>
-        <Button
-          buttonText="Sign up"
-          handleButton={() => {}}
-          outlined={false}
-          disabled={true}
-        />
-      </View>
-    </View>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
-export default Registration;
+// handled styles to dynamically take color values from theme to remove the need to write inline style
+const createStyles = (colors: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    backButton: {
+      position: "absolute",
+      left: 5,
+      top: 40,
+      tintColor: "yellow",
+    },
+    title: {
+      fontSize: 22,
+      fontWeight: "bold",
+      color: colors.textPrimary,
+      marginTop: 30,
+    },
+    subtitle: {
+      fontSize: 18,
+      fontWeight: 400,
+      color: colors.textTertiary,
+      marginBottom: 20,
+    },
+    label: {
+      fontSize: 14,
+      fontWeight: "bold",
+      color: colors.textPrimary,
+      marginBottom: 5,
+    },
+    phoneContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      borderColor: colors.border,
+    },
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // alignItems: "center",
-    // justifyContent: "center",
-    backgroundColor: "#FFFFFF",
-  },
-  backButton: {
-    position: "absolute",
-    left: 5,
-    top: 30,
-  },
-  progressBar: {
-    position: "absolute",
-    left: 0,
-    top: 60,
-    height: 5,
-    width: 35,
-    borderRadius: 2,
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: "bold",
-    color: "#000",
-    marginTop: 80,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: "#6B6B6B",
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: "bold",
-    color: "#000",
-    marginBottom: 5,
-  },
-  phoneContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#E0E0E0",
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 12,
-    marginBottom: 15,
-  },
-  countryCode: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingRight: 10,
-    borderRightWidth: 1,
-    borderRightColor: "#E0E0E0",
-  },
-  flag: {
-    width: 20,
-    height: 15,
-    marginRight: 5,
-  },
-  countryText: {
-    fontSize: 14,
-    color: "#000",
-  },
-  phoneInput: {
-    flex: 1,
-    fontSize: 14,
-    color: "#000",
-    paddingLeft: 10,
-  },
-  passwordContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#E0E0E0",
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 12,
-  },
-  lockIcon: {
-    width: 20,
-    height: 20,
-    marginRight: 10,
-  },
-  passwordInput: {
-    flex: 1,
-    fontSize: 14,
-    color: "#000",
-  },
-  eyeIcon: {
-    width: 20,
-    height: 20,
-  },
-});
+    leftBox: {
+      width: "25%",
+      justifyContent: "center",
+      alignItems: "center",
+      borderWidth: 2,
+      borderColor: colors.border,
+      borderRadius: 8,
+      marginBottom: 15,
+      height: 50,
+      marginRight: "2%",
+    },
+    countryButton: {
+      flexDirection: "row",
+      alignItems: "center",
+    },
+
+    rightBox: {
+      width: "73%",
+      justifyContent: "center",
+      paddingHorizontal: 10,
+      borderRadius: 8,
+      marginBottom: 15,
+      height: 50,
+      borderWidth: 2,
+      borderColor: colors.border,
+    },
+
+    countryCode: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingRight: 10,
+      borderRightWidth: 1,
+      borderRightColor: colors.border,
+    },
+    flag: {
+      width: 20,
+      height: 15,
+      marginRight: 5,
+    },
+    countryText: {
+      fontSize: 18,
+      color: colors.textPrimary,
+    },
+    phoneInput: {
+      flex: 1,
+      fontSize: 18,
+      color: colors.textTertiary,
+      paddingLeft: 10,
+    },
+    inputContainer: {
+      flex: 1,
+      position: "relative",
+    },
+    passwordContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      borderWidth: 2,
+      borderColor: colors.border,
+      borderRadius: 8,
+      paddingHorizontal: 10,
+      height: 50,
+    },
+
+    inputWrapper: {
+      flex: 1,
+      position: "relative",
+    },
+
+    placeholderText: {
+      position: "absolute",
+      left: 0,
+      top: "45%",
+      transform: [{ translateY: -9 }],
+      fontSize: 18,
+      color: colors.textDisabled,
+    },
+
+    passwordInput: {
+      fontSize: 18,
+      color: colors.textTertiary,
+      width: "100%",
+    },
+
+    lockIcon: {
+      width: 25,
+      height: 25,
+      marginRight: 10,
+      tintColor: colors.border,
+    },
+
+    eyeIcon: {
+      width: 25,
+      height: 25,
+      tintColor: colors.border,
+    },
+    modalContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
+    },
+    modalContent: {
+      width: "80%",
+      backgroundColor: colors.background,
+      borderRadius: 10,
+      borderWidth: 3,
+      borderColor: colors.border,
+      padding: 20,
+      maxHeight: 400,
+    },
+    modalItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingVertical: 10,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    modalFlag: {
+      width: 24,
+      height: 16,
+      marginRight: 10,
+    },
+    modalText: {
+      fontSize: 16,
+      color: colors.textPrimary,
+    },
+    progressContainer: {
+      width: "100%",
+      alignItems: "center",
+      top: 50,
+      marginBottom: 30,
+    },
+  });
+
+export default Registration;

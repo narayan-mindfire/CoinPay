@@ -20,29 +20,38 @@ const Button = ({
   buttonStyles = {},
 }: ButtonProps) => {
   const { colors } = useTheme();
+  const styles = createStyles(colors);
   return (
     <TouchableOpacity
+      // checks if button needs to be disabled if no then checks for button to be outlined and applies styling conditionally
       style={[
         styles.button,
         disabled
-          ? { backgroundColor: colors.border }
+          ? {
+              backgroundColor: colors.textDisabled,
+              borderColor: colors.textDisabled,
+            }
           : outlined
           ? {
-              backgroundColor: "#fff",
+              backgroundColor: "rgba(0, 0, 0, 0)",
+              borderColor: colors.borderAccent,
               borderWidth: 2,
-              borderColor: colors.primary,
             }
-          : { backgroundColor: colors.primary },
+          : {
+              backgroundColor: colors.primary,
+              borderColor: colors.primary,
+            },
         buttonStyles,
       ]}
-      onPress={handleButton}
+      onPress={disabled ? () => {} : handleButton}
     >
+      {/* conditionally  gives color to button text */}
       <Text
         style={[
           styles.buttonText,
           {
             color: disabled
-              ? "rgba(65, 65, 65, 1))"
+              ? colors.textTertiary
               : outlined
               ? colors.primary
               : "#fff",
@@ -57,17 +66,20 @@ const Button = ({
 
 export default Button;
 
-const styles = StyleSheet.create({
-  button: {
-    margin: 10,
-    width: width * 0.8,
-    borderRadius: 30,
-    paddingVertical: 15,
-    alignItems: "center",
-    alignSelf: "center",
-  },
-  buttonText: {
-    fontSize: 18,
-    fontWeight: 500,
-  },
-});
+const createStyles = (colors: any) =>
+  StyleSheet.create({
+    button: {
+      margin: 10,
+      width: width * 0.8,
+      borderWidth: 2,
+      borderColor: colors.primary,
+      borderRadius: 30,
+      paddingVertical: 15,
+      alignItems: "center",
+      alignSelf: "center",
+    },
+    buttonText: {
+      fontSize: 18,
+      fontWeight: 500,
+    },
+  });
