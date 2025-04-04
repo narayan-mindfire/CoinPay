@@ -5,36 +5,81 @@ import { useTheme } from "@react-navigation/native";
 const { width } = Dimensions.get("window");
 
 interface ButtonProps {
-  buttonText: String;
+  buttonText: string;
   handleButton: () => any;
+  outlined?: boolean;
+  disabled?: boolean;
+  buttonStyles?: object;
 }
-const Button = ({ buttonText, handleButton }: ButtonProps) => {
+
+const Button = ({
+  buttonText,
+  handleButton,
+  outlined,
+  disabled,
+  buttonStyles = {},
+}: ButtonProps) => {
   const { colors } = useTheme();
+  const styles = createStyles(colors);
   return (
     <TouchableOpacity
-      style={[styles.button, { backgroundColor: colors.primary }]}
-      onPress={handleButton}
+      // checks if button needs to be disabled if no then checks for button to be outlined and applies styling conditionally
+      style={[
+        styles.button,
+        disabled
+          ? {
+              backgroundColor: colors.textDisabled,
+              borderColor: colors.textDisabled,
+            }
+          : outlined
+          ? {
+              backgroundColor: "rgba(0, 0, 0, 0)",
+              borderColor: colors.borderAccent,
+              borderWidth: 2,
+            }
+          : {
+              backgroundColor: colors.primary,
+              borderColor: colors.primary,
+            },
+        buttonStyles,
+      ]}
+      onPress={disabled ? () => {} : handleButton}
     >
-      <Text style={[styles.buttonText]}>{buttonText}</Text>
+      {/* conditionally  gives color to button text */}
+      <Text
+        style={[
+          styles.buttonText,
+          {
+            color: disabled
+              ? colors.textTertiary
+              : outlined
+              ? colors.primary
+              : "#fff",
+          },
+        ]}
+      >
+        {buttonText}
+      </Text>
     </TouchableOpacity>
   );
 };
 
 export default Button;
 
-const styles = StyleSheet.create({
-  button: {
-    position: "absolute",
-    bottom: 30,
-    width: width * 0.8,
-    borderRadius: 30,
-    paddingVertical: 15,
-    alignItems: "center",
-    alignSelf: "center",
-  },
-  buttonText: {
-    fontSize: 18,
-    color: "#fff",
-    fontWeight: 500,
-  },
-});
+const createStyles = (colors: any) =>
+  StyleSheet.create({
+    button: {
+      margin: 10,
+      width: width * 0.8,
+      borderWidth: 2,
+      borderColor: colors.primary,
+      borderRadius: 30,
+      paddingVertical: 15,
+      alignItems: "center",
+      alignSelf: "center",
+    },
+    buttonText: {
+      fontSize: 18,
+      fontWeight: 500,
+    },
+  });
