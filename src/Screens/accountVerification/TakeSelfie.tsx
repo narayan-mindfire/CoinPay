@@ -4,11 +4,13 @@ import { TakeSelfieScreenProps } from "@/src/navigation/NavigationTypes";
 import { useTheme } from "@react-navigation/native";
 import icons from "@/src/Assets/icons";
 import images from "@/src/Assets/images";
+import { useTranslation } from "react-i18next";
 
-// Account Setup finishing page showing signup and login options
+// take selfie screen that lets the user take selfie as verification and user profile image
 const FinishSetup = ({ navigation }: TakeSelfieScreenProps) => {
   const { colors, dark } = useTheme();
   const styles = createStyles(colors);
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <Image
@@ -16,13 +18,10 @@ const FinishSetup = ({ navigation }: TakeSelfieScreenProps) => {
         style={styles.image}
       />
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>Take selfie to verify your identity</Text>
+        <Text style={styles.title}>{t("takeSelfie.title")}</Text>
       </View>
       <View style={styles.subtitleContainer}>
-        <Text style={styles.subtitle}>
-          Quick and easy identification verification using your phone's camera.
-          Confirm your identity with a self-captured photo.
-        </Text>
+        <Text style={styles.subtitle}>{t("takeSelfie.subtitle")}</Text>
       </View>
       <TouchableOpacity
         style={styles.scanButtonContainer}
@@ -31,7 +30,7 @@ const FinishSetup = ({ navigation }: TakeSelfieScreenProps) => {
         <View style={styles.scanButton}>
           <Image source={icons.camera} tintColor={"#fff"} />
         </View>
-        <Text style={styles.scanStyle}>Take Selfie</Text>
+        <Text style={styles.scanStyle}>{t("takeSelfie.button")}</Text>
       </TouchableOpacity>
     </View>
   );

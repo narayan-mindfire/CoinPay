@@ -4,18 +4,13 @@ import { FinishSetupScreenProps } from "@/src/navigation/NavigationTypes";
 import { useTheme } from "@react-navigation/native";
 import icons from "@/src/Assets/icons";
 import images from "@/src/Assets/images";
+import { useTranslation } from "react-i18next";
 
 type Step = {
   id: number;
   label: string;
   status: "done" | "in-progress";
 };
-
-const initialSteps: Step[] = [
-  { id: 1, label: "Phone verified", status: "in-progress" },
-  { id: 2, label: "Checking up document ID", status: "in-progress" },
-  { id: 3, label: "Verifying photo", status: "in-progress" },
-];
 
 const StepItem = ({
   id,
@@ -31,7 +26,7 @@ const StepItem = ({
   spinning: boolean;
 }) => {
   const spinAnim = new Animated.Value(0);
-
+  const stepStyles = createStepStyles(colors);
   useEffect(() => {
     if (spinning) {
       Animated.loop(
@@ -86,8 +81,15 @@ const FinishSetup = ({ navigation }: FinishSetupScreenProps) => {
   const { colors, dark } = useTheme();
   const styles = createStyles(colors);
 
-  const [steps, setSteps] = useState<Step[]>(initialSteps);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const { t } = useTranslation();
+
+  const initialSteps: Step[] = [
+    { id: 1, label: t("finishSetup.steps.s1"), status: "in-progress" },
+    { id: 2, label: t("finishSetup.steps.s2"), status: "in-progress" },
+    { id: 3, label: t("finishSetup.steps.s3"), status: "in-progress" },
+  ];
+  const [steps, setSteps] = useState<Step[]>(initialSteps);
 
   useEffect(() => {
     if (currentStepIndex < steps.length) {
@@ -110,12 +112,10 @@ const FinishSetup = ({ navigation }: FinishSetupScreenProps) => {
         style={styles.image}
       />
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>Setting up your account</Text>
+        <Text style={styles.title}>{t("finishSetup.title")}</Text>
       </View>
       <View style={styles.subtitleContainer}>
-        <Text style={styles.subtitle}>
-          We are analyzing your data to verify
-        </Text>
+        <Text style={styles.subtitle}>{t("scanId.subtitle")}</Text>
       </View>
 
       <View style={{ width: "90%", marginTop: 20 }}>
@@ -172,29 +172,30 @@ const createStyles = (colors: any) =>
     },
   });
 
-const stepStyles = StyleSheet.create({
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 18,
-    paddingBottom: 13,
-    borderBottomWidth: 3,
-    borderBottomColor: "black",
-  },
-  circle: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 12,
-  },
-  label: {
-    flex: 1,
-    fontSize: 15,
-  },
-  icon: {
-    width: 20,
-    height: 20,
-  },
-});
+const createStepStyles = (colors: any) =>
+  StyleSheet.create({
+    row: {
+      flexDirection: "row",
+      alignItems: "center",
+      marginBottom: 18,
+      paddingBottom: 13,
+      borderBottomWidth: 3,
+      borderBottomColor: colors.textDisabled,
+    },
+    circle: {
+      width: 24,
+      height: 24,
+      borderRadius: 12,
+      justifyContent: "center",
+      alignItems: "center",
+      marginRight: 12,
+    },
+    label: {
+      flex: 1,
+      fontSize: 15,
+    },
+    icon: {
+      width: 20,
+      height: 20,
+    },
+  });

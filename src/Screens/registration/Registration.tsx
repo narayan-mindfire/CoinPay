@@ -1,10 +1,10 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, Image, StyleSheet } from "react-native";
 import Button from "@/src/components/Button";
 import { RegistrationScreenProps } from "@/src/navigation/NavigationTypes";
 import { useTheme } from "@react-navigation/native";
 import registrationImages from "@/src/Assets/registration";
-import icons from "@/src/Assets/icons";
+import { useTranslation } from "react-i18next";
 
 // registration page showing signup and login options
 const Registration = ({ navigation }: RegistrationScreenProps) => {
@@ -12,30 +12,33 @@ const Registration = ({ navigation }: RegistrationScreenProps) => {
   const registrationDark = registrationImages.registrationDark;
   const registration = registrationImages.registration;
   const styles = createStyles(colors);
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <Image
         source={dark ? registrationDark : registration}
         style={styles.image}
       />
-      <Text style={styles.title}>Create your{"\n"}Coinpay account</Text>
-      <Text style={styles.subtitle}>
-        Coinpay is a powerful tool that allows you to easily send, receive, and
-        track all your transactions.
-      </Text>
+      <Text style={styles.title}>{t("registration.title")}</Text>
+      <Text style={styles.subtitle}>{t("registration.subtitle")}</Text>
       <Button
-        buttonText="Sign up"
+        buttonText={t("registration.signup")}
         handleButton={() => {
           navigation.push("PhoneVerification");
         }}
         outlined={false}
       />
-      <Button buttonText="Log in" handleButton={() => {}} outlined={true} />
+      <Button
+        buttonText={t("registration.login")}
+        handleButton={() => {}}
+        outlined={true}
+      />
 
       <Text style={styles.footerText}>
-        By continuing you accept our{" "}
-        <Text style={styles.linkText}>Terms of Service</Text> and{" "}
-        <Text style={styles.linkText}>Privacy Policy</Text>
+        {t("registration.termsAndPolicy")}{" "}
+        <Text style={styles.linkText}>{t("registration.terms")}</Text>{" "}
+        {t("and")}{" "}
+        <Text style={styles.linkText}>{t("registration.privacy")}</Text>
       </Text>
     </View>
   );
@@ -56,11 +59,9 @@ const createStyles = (colors: any) =>
     progressContainer: {
       width: "100%",
       alignItems: "center",
-      // marginTop: 5,
     },
     image: {
       width: "100%",
-      // height: 150,
       resizeMode: "contain",
       marginBottom: 20,
     },
@@ -86,7 +87,7 @@ const createStyles = (colors: any) =>
       paddingHorizontal: 30,
     },
     linkText: {
-      color: "rgba(48, 79, 254, 1)",
+      color: colors.borderAccent,
       textDecorationLine: "underline",
     },
   });

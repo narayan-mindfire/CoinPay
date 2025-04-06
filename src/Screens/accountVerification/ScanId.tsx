@@ -4,11 +4,13 @@ import { ScanIdScreenProps } from "@/src/navigation/NavigationTypes";
 import { useTheme } from "@react-navigation/native";
 import icons from "@/src/Assets/icons";
 import images from "@/src/Assets/images";
+import { useTranslation } from "react-i18next";
 
-// ScanId page showing signup and login options
+// ScanId page that lets you scan a document/identity proof
 const ScanId = ({ navigation }: ScanIdScreenProps) => {
   const { colors, dark } = useTheme();
   const styles = createStyles(colors);
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <Image
@@ -16,14 +18,10 @@ const ScanId = ({ navigation }: ScanIdScreenProps) => {
         style={styles.image}
       />
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>
-          Scan ID document to verify your identity
-        </Text>
+        <Text style={styles.title}>{t("scanId.title")}</Text>
       </View>
       <View style={styles.subtitleContainer}>
-        <Text style={styles.subtitle}>
-          Confirm your identity with just a few taps on your phone
-        </Text>
+        <Text style={styles.subtitle}>{t("scanId.subtitle")}</Text>
       </View>
       <TouchableOpacity
         style={styles.scanButtonContainer}
@@ -34,7 +32,7 @@ const ScanId = ({ navigation }: ScanIdScreenProps) => {
         <View style={styles.scanButton}>
           <Image source={icons.scanQr} tintColor="#fff" />
         </View>
-        <Text style={styles.scanStyle}>Scan</Text>
+        <Text style={styles.scanStyle}>{t("scanId.scanButton")}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -43,7 +41,6 @@ const ScanId = ({ navigation }: ScanIdScreenProps) => {
 export default ScanId;
 
 // handled styles to dynamically take color values from theme to remove the need to write inline style
-
 const createStyles = (colors: any) =>
   StyleSheet.create({
     container: {

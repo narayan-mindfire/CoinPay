@@ -1,4 +1,5 @@
 import React from "react";
+import "../../src/i18n/i18n";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
   NavigationContainer,

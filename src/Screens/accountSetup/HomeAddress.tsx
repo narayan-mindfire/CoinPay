@@ -1,33 +1,22 @@
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TextInput,
-  Keyboard,
-} from "react-native";
+import React, { useEffect, useState, useTransition } from "react";
+import { View, Text, StyleSheet, TextInput, Keyboard } from "react-native";
 import Button from "@/src/components/Button";
-import {
-  AddEmailProps,
-  HomeAddressScreenProps,
-} from "@/src/navigation/NavigationTypes";
+import { HomeAddressScreenProps } from "@/src/navigation/NavigationTypes";
 import { useTheme } from "@react-navigation/native";
-import icons from "@/src/Assets/icons";
+import { useTranslation } from "react-i18next";
 
 /**
  * HomeAddress Screen Component
- * Allows users to add their name to account setup
+ * Allows users to add their address to account setup
  */
 
 const HomeAddress = ({ navigation }: HomeAddressScreenProps) => {
   const { colors } = useTheme();
-  const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [postCode, setPostCode] = useState("");
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-
+  const { t } = useTranslation();
   /**
    * Effect to listen for keyboard visibility changes.
    */
@@ -56,28 +45,34 @@ const HomeAddress = ({ navigation }: HomeAddressScreenProps) => {
   return (
     <View style={styles.container}>
       <View style={{ paddingHorizontal: 14 }}>
-        <Text style={styles.title}>Home address</Text>
-        <Text style={styles.subtitle}>
-          this info needs to be accurate with your ID document
-        </Text>
+        <Text style={styles.title}>{t("homeAddress.title")}</Text>
+        <Text style={styles.subtitle}>{t("homeAddress.subtitle")}</Text>
         {/* Address Input */}
-        <Text style={styles.label}>Address Line</Text>
+        <Text style={styles.label}>{t("homeAddress.addressLabel")}</Text>
         <View style={styles.emailContainer}>
           <View style={styles.inputWrapper}>
-            {!name && <Text style={styles.placeholderText}>Mr. Jhon Doe</Text>}
+            {!address && (
+              <Text style={styles.placeholderText}>
+                {t("homeAddress.addressPlaceholder")}
+              </Text>
+            )}
             <TextInput
               style={styles.emailInput}
               placeholder=""
-              value={name}
-              onChangeText={setName}
+              value={address}
+              onChangeText={setAddress}
             />
           </View>
         </View>
         {/* city input  */}
-        <Text style={styles.label}>City</Text>
+        <Text style={styles.label}>{t("homeAddress.cityLabel")}</Text>
         <View style={styles.emailContainer}>
           <View style={styles.inputWrapper}>
-            {!city && <Text style={styles.placeholderText}>City, State</Text>}
+            {!city && (
+              <Text style={styles.placeholderText}>
+                {t("homeAddress.cityPlaceholder")}
+              </Text>
+            )}
             <TextInput
               style={styles.emailInput}
               placeholder=""
@@ -87,10 +82,14 @@ const HomeAddress = ({ navigation }: HomeAddressScreenProps) => {
           </View>
         </View>
         {/* postcode input  */}
-        <Text style={styles.label}>Postcode</Text>
+        <Text style={styles.label}>{t("homeAddress.postCodeLabel")}</Text>
         <View style={styles.emailContainer}>
           <View style={styles.inputWrapper}>
-            {!postCode && <Text style={styles.placeholderText}>Ex: 00000</Text>}
+            {!postCode && (
+              <Text style={styles.placeholderText}>
+                {t("homeAddress.postCodePlaceholder")}
+              </Text>
+            )}
             <TextInput
               style={styles.emailInput}
               placeholder=""
@@ -102,12 +101,12 @@ const HomeAddress = ({ navigation }: HomeAddressScreenProps) => {
 
         {/* button set to disabled when either password or phone number not given, button height adjusted based on keyboardvisibility */}
         <Button
-          buttonText="Continue"
+          buttonText={t("homeAddress.continue")}
           handleButton={() => {
             navigation.navigate("PersonalInfo");
           }}
           outlined={false}
-          disabled={name === "" || city === "" || postCode === ""}
+          disabled={address === "" || city === "" || postCode === ""}
           buttonStyles={{ marginTop: isKeyboardVisible ? 20 : 220 }}
         />
       </View>

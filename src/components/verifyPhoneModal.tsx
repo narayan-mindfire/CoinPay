@@ -11,6 +11,7 @@ import { useTheme } from "@react-navigation/native";
 import Button from "@/src/components/Button";
 import icons from "@/src/Assets/icons";
 import images from "../Assets/images";
+import { t } from "i18next";
 
 interface PhoneVerificationModalProps {
   visible: boolean;
@@ -18,6 +19,7 @@ interface PhoneVerificationModalProps {
   countryCode: string;
   onConfirm: () => void;
   onCancel: () => void;
+  t: object;
 }
 
 // verification modal that appears on screen to ask if the user's provided phone number is accurate and if they should move forward
@@ -43,24 +45,22 @@ const PhoneVerificationModal: React.FC<PhoneVerificationModalProps> = ({
             style={styles.image}
           />
 
-          <Text style={styles.title}>
-            Verify your phone number before we send code
-          </Text>
+          <Text style={styles.title}>{t("verifyPhoneModal.verifyTitle")}</Text>
           <Text style={styles.phoneNumber}>
-            Is this correct?{" "}
+            {t("verifyPhoneModal.isThisCorrect")}{" "}
             <Text style={styles.boldText}>
               {countryCode} {phoneNumber}
             </Text>
           </Text>
 
           <Button
-            buttonText="Yes"
+            buttonText={t("verifyPhoneModal.yes")}
             handleButton={onConfirm}
             outlined={false}
             buttonStyles={styles.button}
           />
           <Button
-            buttonText="No"
+            buttonText={t("verifyPhoneModal.no")}
             handleButton={onCancel}
             outlined={true}
             buttonStyles={styles.button}

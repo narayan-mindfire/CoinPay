@@ -10,13 +10,11 @@ import {
   Modal,
 } from "react-native";
 import Button from "@/src/components/Button";
-import {
-  AddEmailProps,
-  HomeAddressScreenProps,
-} from "@/src/navigation/NavigationTypes";
+import { HomeAddressScreenProps } from "@/src/navigation/NavigationTypes";
 import { useTheme } from "@react-navigation/native";
 import icons from "@/src/Assets/icons";
-import { Calendar, CalendarList, Agenda } from "react-native-calendars";
+import { Calendar } from "react-native-calendars";
+import { useTranslation } from "react-i18next";
 
 /**
  * PersonalInfo Screen Component
@@ -30,7 +28,7 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
   const [dob, setDob] = useState("");
   const [showCalendar, setShowCalendar] = useState(false);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-
+  const { t } = useTranslation();
   const formatDate = (dateString) => {
     const [year, month, day] = dateString.split("-");
     return `${month}-${day}-${year}`;
@@ -87,7 +85,7 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
               }}
             />
             <Button
-              buttonText="Confirm"
+              buttonText={t("personalInfo.confirm")}
               handleButton={() => setShowCalendar(false)}
               outlined={false}
               disabled={false}
@@ -96,16 +94,16 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
         </View>
       </Modal>
       <View style={{ paddingHorizontal: 14 }}>
-        <Text style={styles.title}>Add your personal info</Text>
-        <Text style={styles.subtitle}>
-          this info needs to be accurate with your ID document
-        </Text>
+        <Text style={styles.title}>{t("personalInfo.title")}</Text>
+        <Text style={styles.subtitle}>{t("personalInfo.subtitle")}</Text>
         {/* Full Name Input */}
-        <Text style={styles.label}>Full Name</Text>
+        <Text style={styles.label}>{t("personalInfo.fullName")}</Text>
         <View style={styles.emailContainer}>
           <View style={styles.inputWrapper}>
             {!fullName && (
-              <Text style={styles.placeholderText}>Mr. Jhon Doe</Text>
+              <Text style={styles.placeholderText}>
+                {t("personalInfo.namePlaceholder")}
+              </Text>
             )}
             <TextInput
               style={styles.emailInput}
@@ -116,7 +114,7 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
           </View>
         </View>
         {/* username input  */}
-        <Text style={styles.label}>username</Text>
+        <Text style={styles.label}>{t("personalInfo.username")}</Text>
         <View style={styles.emailContainer}>
           <View style={styles.inputWrapper}>
             <Text
@@ -130,7 +128,11 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
               @
             </Text>
             {!userName && (
-              <Text style={styles.placeholderText}> {"   "}username</Text>
+              <Text style={styles.placeholderText}>
+                {" "}
+                {"   "}
+                {t("personalInfo.usernamePlaceholder")}
+              </Text>
             )}
             <TextInput
               style={styles.usernameInput}
@@ -141,11 +143,15 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
           </View>
         </View>
         {/* Date of birth input  */}
-        <Text style={styles.label}>Date of Birth</Text>
+        <Text style={styles.label}>{t("personalInfo.dob")}</Text>
         <TouchableOpacity onPress={() => setShowCalendar(true)}>
           <View style={styles.emailContainer}>
             <Image source={icons.calendar} style={styles.calendarIcon} />
-            {!dob && <Text style={styles.datePlaceholderText}>MM/DD/YYYY</Text>}
+            {!dob && (
+              <Text style={styles.datePlaceholderText}>
+                {t("personalInfo.dobPlaceholder")}
+              </Text>
+            )}
             <Text style={styles.emailInput}>{dob}</Text>
           </View>
         </TouchableOpacity>
@@ -153,7 +159,7 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
 
       {/* button set to disabled when either password or phone number not given, button height adjusted based on keyboardvisibility */}
       <Button
-        buttonText="Continue"
+        buttonText={t("personalInfo.continue")}
         handleButton={() => {
           navigation.navigate("ScanId");
         }}

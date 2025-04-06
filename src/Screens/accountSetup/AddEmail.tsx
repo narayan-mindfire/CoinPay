@@ -11,7 +11,7 @@ import Button from "@/src/components/Button";
 import { AddEmailProps } from "@/src/navigation/NavigationTypes";
 import { useTheme } from "@react-navigation/native";
 import icons from "@/src/Assets/icons";
-
+import { useTranslation } from "react-i18next";
 /**
  * AddEmail Screen Component
  * Allows users to add their email to account setup
@@ -21,7 +21,7 @@ const AddEmail = ({ navigation }: AddEmailProps) => {
   const { colors } = useTheme();
   const [email, setEmail] = useState("");
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-
+  const { t } = useTranslation();
   /**
    * Effect to listen for keyboard visibility changes.
    */
@@ -50,18 +50,18 @@ const AddEmail = ({ navigation }: AddEmailProps) => {
   return (
     <View style={styles.container}>
       <View style={{ paddingHorizontal: 14 }}>
-        <Text style={styles.title}>Add your email</Text>
-        <Text style={styles.subtitle}>
-          this info needs to be accurate with your ID document
-        </Text>
+        <Text style={styles.title}>{t("addEmail.title")}</Text>
+        <Text style={styles.subtitle}>{t("addEmail.subtitle")}</Text>
         {/* Email Input */}
-        <Text style={styles.label}>Email</Text>
+        <Text style={styles.label}>{t("addEmail.label")}</Text>
         <View style={styles.emailContainer}>
           <Image source={icons.envelope} style={styles.lockIcon} />
 
           <View style={styles.inputWrapper}>
             {!email && (
-              <Text style={styles.placeholderText}>name@example.com</Text>
+              <Text style={styles.placeholderText}>
+                {t("addEmail.placeholder")}
+              </Text>
             )}
             <TextInput
               style={styles.emailInput}
@@ -74,7 +74,7 @@ const AddEmail = ({ navigation }: AddEmailProps) => {
 
         {/* button set to disabled when either password or phone number not given, button height adjusted based on keyboardvisibility */}
         <Button
-          buttonText="Continue"
+          buttonText={t("addEmail.button")}
           handleButton={() => {
             navigation.navigate("HomeAddress");
           }}

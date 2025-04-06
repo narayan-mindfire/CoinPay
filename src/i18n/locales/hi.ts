@@ -1,0 +1,111 @@
+const hi = {
+  common: {
+    appName: 'QuickLaunchReactNativeKit',
+    success: 'Success',
+    error: 'Error',
+    info: 'Information',
+    warning: 'Warning',
+  },
+  onboarding: {
+    slide1: "करोड़ों लोगों द्वारा भरोसेमंद, एक हिस्से का हिस्सा",
+    slide2: "विदेश में पैसे खर्च करें, और अपने खर्च को ट्रैक करें",
+    slide3: "दुनिया के किसी भी कोने से पैसे प्राप्त करें",
+    next: "आगे"
+  },
+  otpVerification: {
+    title: "अपने फ़ोन की पुष्टि करें",
+    subtitle: "हमने एक 6-अंकों का कोड भेजा है",
+    resend: "कोड नहीं मिला?",
+    resendLink: "फिर से भेजें",
+    verifyButton: "अपना नंबर सत्यापित करें"
+  },
+  registration: {
+    title: "अपना\nCoinpay खाता बनाएं",
+    subtitle:
+      "Coinpay एक शक्तिशाली उपकरण है जो आपको आसानी से पैसे भेजने, प्राप्त करने और अपने लेन-देन को ट्रैक करने की सुविधा देता है।",
+    signup: "साइन अप करें",
+    login: "लॉग इन करें",
+    termsAndPolicy:
+      "जारी रखने पर आप हमारी सेवा की शर्तों और गोपनीयता नीति को स्वीकार करते हैं",
+    terms: "सेवा की शर्तें",
+    and: "और",
+    privacy: "गोपनीयता नीति",
+  },
+  phoneVerification: {
+    title: "खाता बनाएँ",
+    subtitle: "अपने खाते को सत्यापित करने के लिए मोबाइल नंबर दर्ज करें",
+    phoneLabel: "फ़ोन",
+    passwordLabel: "पासवर्ड",
+    mobilePlaceholder: "मोबाइल नंबर",
+    passwordPlaceholder: "● ● ● ● ● ● ●",
+    signUpButton: "साइन अप करें",
+    modal: {
+      confirm: "पुष्टि करें",
+      cancel: "रद्द करें",
+    },
+  },
+  verifyPhoneModal: {
+    verifyTitle: "कोड भेजने से पहले अपना फ़ोन नंबर सत्यापित करें",
+isThisCorrect: "क्या यह सही है?",
+yes: "हाँ",
+no: "नहीं",
+  },
+  addCountry: {
+    countryOfResidence: "निवास देश",
+  countrySubtitle: "यह जानकारी आपके पहचान दस्तावेज़ से मेल खानी चाहिए।",
+  countryLabel: "देश",
+  continue: "आगे बढ़ें",
+  },
+  addEmail: {
+    title: "अपना ईमेल जोड़ें",
+    subtitle: "यह जानकारी आपके पहचान पत्र से मेल खानी चाहिए",
+    label: "ईमेल",
+    placeholder: "name@example.com",
+    button: "आगे बढ़ें",
+  },
+  homeAddress:{
+    title: "घर का पता",
+  subtitle: "यह जानकारी आपके पहचान पत्र से मेल खानी चाहिए",
+  addressLabel: "पता लाइन",
+  addressPlaceholder: "श्री जॉन डो",
+  cityLabel: "शहर",
+  cityPlaceholder: "शहर, राज्य",
+  postCodeLabel: "पिनकोड",
+  postCodePlaceholder: "उदाहरण: 00000",
+  continue: "आगे बढ़ें",
+  },
+  personalInfo: {
+    title: "अपनी व्यक्तिगत जानकारी जोड़ें",
+    subtitle: "यह जानकारी आपके पहचान पत्र से मेल खाना चाहिए",
+    fullName: "पूरा नाम",
+    username: "उपयोगकर्ता नाम",
+    usernamePlaceholder: "उपयोगकर्ता नाम",
+    namePlaceholder: "श्री जॉन डो",
+    dob: "जन्म तिथि",
+    dobPlaceholder: "माह/दिन/वर्ष",
+    confirm: "पुष्टि करें",
+    continue: "आगे बढ़ें",
+  },
+  scanId: {
+    title: "अपनी पहचान सत्यापित करने के लिए आईडी स्कैन करें",
+    subtitle: "अपने फ़ोन से कुछ टैप में अपनी पहचान की पुष्टि करें",
+    scanButton: "स्कैन करें",
+  },
+  takeSelfie: {
+    title: "अपनी पहचान सत्यापित करने के लिए सेल्फ़ी लें",
+    subtitle:
+      "अपने फ़ोन के कैमरे से त्वरित और आसान पहचान सत्यापन। अपनी पहचान की पुष्टि के लिए एक सेल्फ़ी लें।",
+    button: "सेल्फ़ी लें",
+  },
+  finishSetup: {
+    title: "आपका खाता सेट किया जा रहा है",
+    subtitle: "हम आपके डेटा का विश्लेषण कर रहे हैं सत्यापन के लिए",
+    steps: {
+      s1: "फ़ोन सत्यापित किया गया",
+      s2: "दस्तावेज़ की जाँच की जा रही है",
+      s3: "फ़ोटो सत्यापित की जा रही है",
+    },
+  },
+};
+
+export default hi;

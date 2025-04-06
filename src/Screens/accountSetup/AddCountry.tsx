@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   FlatList,
   Pressable,
-  Modal,
   Image,
 } from "react-native";
 import Button from "@/src/components/Button";
@@ -16,6 +15,7 @@ import { useTheme } from "@react-navigation/native";
 import countryNames from "@/src/utils/country-name";
 import countryIcons from "@/src/Assets/icons/country-icons";
 import icons from "@/src/Assets/icons";
+import { useTranslation } from "react-i18next";
 
 /**
  * AddCountry Screen Component
@@ -56,16 +56,16 @@ const AddCountry = ({ navigation }: AddEmailProps) => {
     };
   }, []);
 
+  const { t } = useTranslation();
+
   const styles = createStyles(colors);
   return (
     <View style={styles.container}>
       <View style={{ paddingHorizontal: 14 }}>
-        <Text style={styles.title}>Country of residence</Text>
-        <Text style={styles.subtitle}>
-          this info needs to be accurate with your ID document.
-        </Text>
+        <Text style={styles.title}>{t("addCountry.countryOfResidence")}</Text>
+        <Text style={styles.subtitle}>{t("addCountry.countrySubtitle")}</Text>
         {/* country Input */}
-        <Text style={styles.label}>Country</Text>
+        <Text style={styles.label}>{t("addCountry.countryLabel")}</Text>
         {/* Country Selection */}
         {/* Custom Dropdown */}
         <View style={{ position: "relative" }}>
@@ -135,7 +135,7 @@ const AddCountry = ({ navigation }: AddEmailProps) => {
 
         {/* button set to disabled when either password or phone number not given, button height adjusted based on keyboardvisibility */}
         <Button
-          buttonText="Continue"
+          buttonText={t("addCountry.continue")}
           handleButton={() => {
             navigation.push("AddEmail");
           }}
