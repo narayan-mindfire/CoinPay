@@ -7,7 +7,13 @@ const icons = {
     close: require("./close.png"),
     envelope: require("./envelope.png"),
     calendar: require("./calendar-empty.png"),
-    angleDown: require("./angle-down.png")
+    angleDown: require("./angleDown.png"),
+    angleUp: require("./angleUp.png"),
+    camera: require("./camera.png"),
+    loading: require("./loading.png"),
+    scanQr: require("./scanQr.png"),
+    check: require("./check.png"),
+
   };
   
   export default icons;

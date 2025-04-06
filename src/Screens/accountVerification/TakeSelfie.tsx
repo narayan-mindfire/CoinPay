@@ -1,46 +1,43 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { ScanIdScreenProps } from "@/src/navigation/NavigationTypes";
+import { TakeSelfieScreenProps } from "@/src/navigation/NavigationTypes";
 import { useTheme } from "@react-navigation/native";
 import icons from "@/src/Assets/icons";
 import images from "@/src/Assets/images";
 
-// ScanId page showing signup and login options
-const ScanId = ({ navigation }: ScanIdScreenProps) => {
+// Account Setup finishing page showing signup and login options
+const FinishSetup = ({ navigation }: TakeSelfieScreenProps) => {
   const { colors, dark } = useTheme();
   const styles = createStyles(colors);
   return (
     <View style={styles.container}>
       <Image
-        source={dark ? images.scanIdDark : images.scanId}
+        source={dark ? images.selfieImageDark : images.selfieImage}
         style={styles.image}
       />
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>
-          Scan ID document to verify your identity
-        </Text>
+        <Text style={styles.title}>Take selfie to verify your identity</Text>
       </View>
       <View style={styles.subtitleContainer}>
         <Text style={styles.subtitle}>
-          Confirm your identity with just a few taps on your phone
+          Quick and easy identification verification using your phone's camera.
+          Confirm your identity with a self-captured photo.
         </Text>
       </View>
       <TouchableOpacity
         style={styles.scanButtonContainer}
-        onPress={() => {
-          navigation.navigate("TakeSelfie");
-        }}
+        onPress={() => navigation.push("FinishSetup")}
       >
         <View style={styles.scanButton}>
-          <Image source={icons.scanQr} tintColor="#fff" />
+          <Image source={icons.camera} tintColor={"#fff"} />
         </View>
-        <Text style={styles.scanStyle}>Scan</Text>
+        <Text style={styles.scanStyle}>Take Selfie</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default ScanId;
+export default FinishSetup;
 
 // handled styles to dynamically take color values from theme to remove the need to write inline style
 
@@ -57,7 +54,7 @@ const createStyles = (colors: any) =>
       // height: 150,
       resizeMode: "contain",
       marginBottom: 20,
-      marginTop: -70,
+      marginTop: -50,
     },
     titleContainer: {
       width: "80%",
@@ -76,7 +73,7 @@ const createStyles = (colors: any) =>
       fontSize: 18,
       color: colors.textTertiary,
       textAlign: "center",
-      marginBottom: 30,
+      marginBottom: 20,
       paddingHorizontal: 10,
     },
     scanButtonContainer: {
@@ -93,7 +90,7 @@ const createStyles = (colors: any) =>
       width: 50,
     },
     scanStyle: {
-      marginTop: 10,
+      marginTop: 5,
       color: colors.textPrimary,
       fontSize: 18,
       textAlign: "center",

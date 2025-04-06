@@ -14,7 +14,6 @@ import Button from "@/src/components/Button";
 import { AddEmailProps } from "@/src/navigation/NavigationTypes";
 import { useTheme } from "@react-navigation/native";
 import countryNames from "@/src/utils/country-name";
-import { Picker } from "@react-native-picker/picker";
 import countryIcons from "@/src/Assets/icons/country-icons";
 import icons from "@/src/Assets/icons";
 
@@ -84,7 +83,10 @@ const AddCountry = ({ navigation }: AddEmailProps) => {
               </Text>
             </View>
             <View>
-              <Image source={icons.angleDown} style={styles.iconStyle} />
+              <Image
+                source={showDropdown ? icons.angleUp : icons.angleDown}
+                style={styles.iconStyle}
+              />
             </View>
           </TouchableOpacity>
 

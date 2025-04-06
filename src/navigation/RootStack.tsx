@@ -8,6 +8,7 @@ import {
 } from "@react-navigation/native";
 import {
   useColorScheme,
+  StatusBar,
   View,
   Text,
   StyleSheet,
@@ -27,7 +28,7 @@ import icons from "../Assets/icons";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const numberOfSteps = 9;
+const numberOfSteps = 10;
 
 function useInStepScreen() {
   return useNavigationState((state) => {
@@ -57,6 +58,10 @@ function useInStepScreen() {
         return 7;
       case "ScanId":
         return 8;
+      case "TakeSelfie":
+        return 9;
+      case "FinishSetup":
+        return 10;
       default:
         return 0;
     }
@@ -98,7 +103,29 @@ const Progress = () => {
   return null;
 };
 
-const styles = StyleSheet.create({});
+const RootStack: React.FC = () => {
+  const systemTheme = useColorScheme();
+
+  return (
+    <SafeAreaProvider>
+      <StatusBar
+        barStyle={systemTheme === "dark" ? "light-content" : "dark-content"}
+        backgroundColor="transparent"
+        translucent
+      />
+      <NavigationContainer
+        theme={systemTheme === "dark" ? DarkThemeCustom : LightThemeCustom}
+      >
+        <Progress />
+        <Stack.Navigator id={undefined} screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="AuthStack" component={AuthStack} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
+  );
+};
+
+export default RootStack;
 
 const createStyles = (colors: any) =>
   StyleSheet.create({
@@ -122,22 +149,3 @@ const createStyles = (colors: any) =>
       backgroundColor: colors.primary,
     },
   });
-
-const RootStack: React.FC = () => {
-  const systemTheme = useColorScheme();
-
-  return (
-    <SafeAreaProvider>
-      <NavigationContainer
-        theme={systemTheme === "dark" ? DarkThemeCustom : LightThemeCustom}
-      >
-        <Progress />
-        <Stack.Navigator id={undefined} screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="AuthStack" component={AuthStack} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </SafeAreaProvider>
-  );
-};
-
-export default RootStack;

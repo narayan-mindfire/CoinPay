@@ -9,6 +9,8 @@ import AddCountry from "../Screens/accountSetup/AddCountry";
 import HomeAddress from "../Screens/accountSetup/HomeAddress";
 import PersonalInfo from "../Screens/accountSetup/PersonalInfo";
 import ScanId from "../Screens/accountVerification/ScanId";
+import TakeSelfie from "../Screens/accountVerification/TakeSelfie";
+import FinishSetup from "../Screens/accountVerification/FinishSetup";
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
 
@@ -24,6 +26,8 @@ const AuthStack: React.FC = () => {
       <Stack.Screen name="HomeAddress" component={HomeAddress} />
       <Stack.Screen name="PersonalInfo" component={PersonalInfo} />
       <Stack.Screen name="ScanId" component={ScanId} />
+      <Stack.Screen name="TakeSelfie" component={TakeSelfie} />
+      <Stack.Screen name="FinishSetup" component={FinishSetup} />
     </Stack.Navigator>
   );
 };

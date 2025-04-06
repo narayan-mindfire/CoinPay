@@ -15,6 +15,8 @@ export type AuthStackParamList = {
   HomeAddress: undefined;
   PersonalInfo: undefined;
   ScanId: undefined;
+  TakeSelfie: undefined;
+  FinishSetup: undefined;
 }
 
 export type OnBoardingScreenProps = NativeStackScreenProps<AuthStackParamList, "OnBoarding">;
@@ -26,3 +28,5 @@ export type AddCountryScreenProps = NativeStackScreenProps<AuthStackParamList, "
 export type HomeAddressScreenProps = NativeStackScreenProps<AuthStackParamList, "HomeAddress">;
 export type PersonalInfoScreenProps = NativeStackScreenProps<AuthStackParamList, "PersonalInfo">;
 export type ScanIdScreenProps = NativeStackScreenProps<AuthStackParamList, "ScanId">;
+export type TakeSelfieScreenProps = NativeStackScreenProps<AuthStackParamList, "TakeSelfie">;
+export type FinishSetupScreenProps = NativeStackScreenProps<AuthStackParamList, "FinishSetup">;
