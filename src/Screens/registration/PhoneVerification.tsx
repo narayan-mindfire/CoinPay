@@ -20,7 +20,6 @@ import countryIcons from "@/src/Assets/icons/country-icons";
 import countryCodes from "@/src/utils/country-code";
 import CountryModal from "@/src/components/CountryModal";
 import PhoneVerificationModal from "@/src/components/verifyPhoneModal";
-import AnimatedProgressBar from "@/src/components/progressBar";
 
 /**
  * Registration Screen Component
@@ -97,15 +96,6 @@ const Registration = ({ navigation }: PhoneVerificationScreenProps) => {
               }}
               onCancel={() => setVerifyModalVisible(false)}
             />
-            <TouchableOpacity
-              onPress={() => navigation.goBack()}
-              style={styles.backButton}
-            >
-              <Image source={icons.angleLeft} tintColor={colors.textPrimary} />
-            </TouchableOpacity>
-            <View style={styles.progressContainer}>
-              <AnimatedProgressBar progress={0.25} />
-            </View>
             <View style={{ paddingHorizontal: 14 }}>
               <Text style={styles.title}>Create an Account</Text>
               <Text style={styles.subtitle}>
@@ -122,7 +112,7 @@ const Registration = ({ navigation }: PhoneVerificationScreenProps) => {
                     style={styles.countryButton}
                   >
                     <Image
-                      source={countryIcons[selectedCountry.dialCode]}
+                      source={countryIcons[selectedCountry.code]}
                       style={styles.flag}
                     />
                     <Text style={styles.countryText}>
@@ -201,12 +191,7 @@ const createStyles = (colors: any) =>
       flex: 1,
       backgroundColor: colors.background,
     },
-    backButton: {
-      position: "absolute",
-      left: 5,
-      top: 40,
-      tintColor: "yellow",
-    },
+
     title: {
       fontSize: 22,
       fontWeight: "bold",
@@ -279,6 +264,7 @@ const createStyles = (colors: any) =>
       fontSize: 18,
       color: colors.textTertiary,
       paddingLeft: 10,
+      letterSpacing: 2,
     },
     inputContainer: {
       flex: 1,
@@ -312,6 +298,7 @@ const createStyles = (colors: any) =>
       fontSize: 18,
       color: colors.textTertiary,
       width: "100%",
+      letterSpacing: 5,
     },
 
     lockIcon: {

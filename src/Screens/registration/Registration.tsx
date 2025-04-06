@@ -4,7 +4,6 @@ import Button from "@/src/components/Button";
 import { RegistrationScreenProps } from "@/src/navigation/NavigationTypes";
 import { useTheme } from "@react-navigation/native";
 import registrationImages from "@/src/Assets/registration";
-import AnimatedProgressBar from "@/src/components/progressBar";
 import icons from "@/src/Assets/icons";
 
 // registration page showing signup and login options
@@ -15,15 +14,6 @@ const Registration = ({ navigation }: RegistrationScreenProps) => {
   const styles = createStyles(colors);
   return (
     <View style={styles.container}>
-      <View style={styles.progressContainer}>
-        <AnimatedProgressBar progress={0.15} />
-      </View>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("OnBoarding")}
-        style={[styles.backButton]}
-      >
-        <Image source={icons.angleLeft} tintColor={colors.textPrimary} />
-      </TouchableOpacity>
       <Image
         source={dark ? registrationDark : registration}
         style={styles.image}
@@ -67,11 +57,6 @@ const createStyles = (colors: any) =>
       width: "100%",
       alignItems: "center",
       // marginTop: 5,
-    },
-    backButton: {
-      position: "absolute",
-      left: 5,
-      top: 40,
     },
     image: {
       width: "100%",
