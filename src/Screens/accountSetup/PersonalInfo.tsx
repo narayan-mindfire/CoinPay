@@ -178,7 +178,6 @@ const createStyles = (colors: any) =>
       flex: 1,
       backgroundColor: colors.background,
     },
-
     title: {
       fontSize: 22,
       fontWeight: "bold",
@@ -228,7 +227,6 @@ const createStyles = (colors: any) =>
       fontSize: 18,
       color: colors.textDisabled,
     },
-
     emailInput: {
       fontSize: 18,
       color: colors.textTertiary,
@@ -240,7 +238,6 @@ const createStyles = (colors: any) =>
       width: "100%",
       paddingLeft: 15,
     },
-
     modalContainer: {
       flex: 1,
       justifyContent: "center",
