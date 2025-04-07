@@ -55,7 +55,7 @@ const AddEmail = ({ navigation }: AddEmailProps) => {
         {/* Email Input */}
         <Text style={styles.label}>{t("addEmail.label")}</Text>
         <View style={styles.emailContainer}>
-          <Image source={icons.envelope} style={styles.lockIcon} />
+          <Image source={icons.envelope} style={styles.envelopeIcon} />
 
           <View style={styles.inputWrapper}>
             {!email && (
@@ -134,7 +134,6 @@ const createStyles = (colors: any) =>
       flexDirection: "row",
       alignItems: "center",
     },
-
     rightBox: {
       width: "73%",
       justifyContent: "center",
@@ -181,16 +180,13 @@ const createStyles = (colors: any) =>
       paddingHorizontal: 10,
       height: 50,
     },
-
     inputWrapper: {
       flex: 1,
       position: "relative",
     },
-
     placeholderText: {
       position: "absolute",
-      left: 5,
-      top: "40%",
+      top: "17%",
       transform: [{ translateY: -8 }],
       fontSize: 18,
       color: colors.textDisabled,
@@ -202,13 +198,12 @@ const createStyles = (colors: any) =>
       width: "100%",
     },
 
-    lockIcon: {
+    envelopeIcon: {
       width: 25,
       height: 25,
       marginRight: 10,
       tintColor: colors.border,
     },
-
     eyeIcon: {
       width: 25,
       height: 25,

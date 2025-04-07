@@ -107,7 +107,7 @@ const HomeAddress = ({ navigation }: HomeAddressScreenProps) => {
           }}
           outlined={false}
           disabled={address === "" || city === "" || postCode === ""}
-          buttonStyles={{ marginTop: isKeyboardVisible ? 20 : 220 }}
+          buttonStyles={{ marginTop: isKeyboardVisible ? 20 : 300 }}
         />
       </View>
     </View>
@@ -121,7 +121,6 @@ const createStyles = (colors: any) =>
       flex: 1,
       backgroundColor: colors.background,
     },
-
     title: {
       fontSize: 22,
       fontWeight: "bold",
@@ -149,63 +148,21 @@ const createStyles = (colors: any) =>
       paddingHorizontal: 10,
       height: 50,
     },
-
     inputWrapper: {
       flex: 1,
       position: "relative",
     },
-
     placeholderText: {
       position: "absolute",
-      left: 5,
-      top: "40%",
+      top: "20%",
       transform: [{ translateY: -8 }],
       fontSize: 18,
       color: colors.textDisabled,
     },
-
     emailInput: {
       fontSize: 18,
       color: colors.textTertiary,
       width: "100%",
-    },
-
-    modalContainer: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: "rgba(0, 0, 0, 0.5)",
-    },
-    modalContent: {
-      width: "80%",
-      backgroundColor: colors.background,
-      borderRadius: 10,
-      borderWidth: 3,
-      borderColor: colors.border,
-      padding: 20,
-      maxHeight: 400,
-    },
-    modalItem: {
-      flexDirection: "row",
-      alignItems: "center",
-      paddingVertical: 10,
-      borderBottomWidth: 1,
-      borderBottomColor: colors.border,
-    },
-    modalFlag: {
-      width: 24,
-      height: 16,
-      marginRight: 10,
-    },
-    modalText: {
-      fontSize: 16,
-      color: colors.textPrimary,
-    },
-    progressContainer: {
-      width: "100%",
-      alignItems: "center",
-      top: 50,
-      marginBottom: 30,
     },
   });
 

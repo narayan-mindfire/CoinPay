@@ -214,8 +214,7 @@ const createStyles = (colors: any) =>
 
     placeholderText: {
       position: "absolute",
-      left: 5,
-      top: "40%",
+      top: "20%",
       transform: [{ translateY: -8 }],
       fontSize: 18,
       color: colors.textDisabled,
@@ -239,7 +238,7 @@ const createStyles = (colors: any) =>
       fontSize: 18,
       color: colors.textTertiary,
       width: "100%",
-      paddingLeft: 20,
+      paddingLeft: 15,
     },
 
     modalContainer: {

@@ -294,7 +294,7 @@ const createStyles = (colors: any) =>
     placeholderText: {
       position: "absolute",
       left: 0,
-      top: "45%",
+      top: "20%",
       transform: [{ translateY: -9 }],
       fontSize: 18,
       color: colors.textDisabled,
