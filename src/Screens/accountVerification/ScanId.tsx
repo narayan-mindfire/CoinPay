@@ -26,7 +26,7 @@ const ScanId = ({ navigation }: ScanIdScreenProps) => {
       <TouchableOpacity
         style={styles.scanButtonContainer}
         onPress={() => {
-          navigation.navigate("TakeSelfie");
+          navigation.navigate("ScanDoc");
         }}
       >
         <View style={styles.scanButton}>

@@ -1,25 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import {
   View,
   Text,
-  Image,
   StyleSheet,
   TextInput,
   Keyboard,
+  Image,
 } from "react-native";
 import Button from "@/src/components/Button";
-import { AddEmailProps } from "@/src/navigation/NavigationTypes";
+import { CardFormScreenProps } from "@/src/navigation/NavigationTypes";
 import { useTheme } from "@react-navigation/native";
-import icons from "@/src/Assets/icons";
 import { useTranslation } from "react-i18next";
+import icons from "@/src/Assets/icons";
+
 /**
- * AddEmail Screen Component
- * Allows users to add their email to account setup
+ * CardForm Screen Component
+ * Allows users to add their card details to the platform
  */
 
-const AddEmail = ({ navigation }: AddEmailProps) => {
+const CardForm = ({ navigation }: CardFormScreenProps) => {
   const { colors } = useTheme();
+  const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
+  const [card, setCard] = useState("");
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const { t } = useTranslation();
   /**
@@ -50,17 +53,35 @@ const AddEmail = ({ navigation }: AddEmailProps) => {
   return (
     <View style={styles.container}>
       <View style={{ paddingHorizontal: 14 }}>
-        <Text style={styles.title}>{t("addEmail.title")}</Text>
-        <Text style={styles.subtitle}>{t("addEmail.subtitle")}</Text>
-        {/* Email Input */}
-        <Text style={styles.label}>{t("addEmail.label")}</Text>
+        <Text style={styles.title}>{t("cardForm.title")}</Text>
+        <Text style={styles.subtitle}>{t("cardForm.subtitle")}</Text>
+        {/* Address Input */}
+        <Text style={styles.label}>{t("cardForm.nameLabel")}</Text>
         <View style={styles.emailContainer}>
-          <Image source={icons.envelope} style={styles.envelopeIcon} />
+          <View style={styles.inputWrapper}>
+            {!address && (
+              <Text style={styles.placeholderText}>
+                {t("cardForm.namePlaceholder")}
+              </Text>
+            )}
+            <TextInput
+              style={styles.emailInput}
+              placeholder=""
+              value={address}
+              onChangeText={setAddress}
+            />
+          </View>
+        </View>
+        {/* email input  */}
+        <Text style={styles.label}>{t("cardForm.emailLabel")}</Text>
+        <View style={styles.emailContainer}>
+          <Image source={icons.envelope} tintColor={colors.border} />
 
           <View style={styles.inputWrapper}>
             {!email && (
               <Text style={styles.placeholderText}>
-                {t("addEmail.placeholder")}
+                {" "}
+                {t("cardForm.emailPlaceholder")}
               </Text>
             )}
             <TextInput
@@ -71,16 +92,33 @@ const AddEmail = ({ navigation }: AddEmailProps) => {
             />
           </View>
         </View>
+        {/* postcode input  */}
+        <Text style={styles.label}>{t("cardForm.cardLabel")}</Text>
+        <View style={styles.emailContainer}>
+          <Image source={icons.mastercard} />
+
+          <View style={styles.inputWrapper}>
+            {!card && (
+              <Text style={styles.placeholderText}>
+                {t("cardForm.cardPlaceholder")}
+              </Text>
+            )}
+            <TextInput
+              style={styles.emailInput}
+              placeholder=""
+              value={card}
+              onChangeText={setCard}
+            />
+          </View>
+        </View>
 
         {/* button set to disabled when either password or phone number not given, button height adjusted based on keyboardvisibility */}
         <Button
-          buttonText={t("addEmail.button")}
-          handleButton={() => {
-            navigation.navigate("HomeAddress");
-          }}
+          buttonText={t("cardForm.button")}
+          handleButton={() => navigation.navigate("VerifyCard")}
           outlined={false}
-          disabled={email === ""}
-          buttonStyles={{ marginTop: isKeyboardVisible ? 180 : 420 }}
+          disabled={address === "" || email === "" || card === ""}
+          buttonStyles={{ marginTop: isKeyboardVisible ? 20 : 300 }}
         />
       </View>
     </View>
@@ -94,7 +132,6 @@ const createStyles = (colors: any) =>
       flex: 1,
       backgroundColor: colors.background,
     },
-
     title: {
       fontSize: 22,
       fontWeight: "bold",
@@ -111,65 +148,7 @@ const createStyles = (colors: any) =>
       fontSize: 16,
       fontWeight: "bold",
       color: colors.textPrimary,
-      marginBottom: 10,
-    },
-    phoneContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      borderColor: colors.border,
-    },
-
-    leftBox: {
-      width: "25%",
-      justifyContent: "center",
-      alignItems: "center",
-      borderWidth: 2,
-      borderColor: colors.border,
-      borderRadius: 8,
-      marginBottom: 15,
-      height: 50,
-      marginRight: "2%",
-    },
-    countryButton: {
-      flexDirection: "row",
-      alignItems: "center",
-    },
-    rightBox: {
-      width: "73%",
-      justifyContent: "center",
-      paddingHorizontal: 10,
-      borderRadius: 8,
-      marginBottom: 15,
-      height: 50,
-      borderWidth: 2,
-      borderColor: colors.border,
-    },
-
-    countryCode: {
-      flexDirection: "row",
-      alignItems: "center",
-      paddingRight: 10,
-      borderRightWidth: 1,
-      borderRightColor: colors.border,
-    },
-    flag: {
-      width: 20,
-      height: 15,
-      marginRight: 5,
-    },
-    countryText: {
-      fontSize: 18,
-      color: colors.textPrimary,
-    },
-    phoneInput: {
-      flex: 1,
-      fontSize: 18,
-      color: colors.textTertiary,
-      paddingLeft: 10,
-    },
-    inputContainer: {
-      flex: 1,
-      position: "relative",
+      marginVertical: 7,
     },
     emailContainer: {
       flexDirection: "row",
@@ -186,24 +165,16 @@ const createStyles = (colors: any) =>
     },
     placeholderText: {
       position: "absolute",
-      top: "17%",
+      top: "20%",
       transform: [{ translateY: -8 }],
       fontSize: 18,
       color: colors.textDisabled,
     },
-
     emailInput: {
       fontSize: 18,
       color: colors.textTertiary,
       width: "100%",
     },
-
-    envelopeIcon: {
-      width: 25,
-      height: 25,
-      marginRight: 10,
-      tintColor: colors.border,
-    },
   });
 
-export default AddEmail;
+export default CardForm;

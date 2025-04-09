@@ -13,7 +13,10 @@ const icons = {
     loading: require("./loading.png"),
     scanQr: require("./scanQr.png"),
     check: require("./check.png"),
-
+    retry: require("./retry.png"),
+    flash: require("./flash.png"),
+    mastercard: require("./mastercard.png"),
+    trash : require("./trash.png"),
   };
   
   export default icons;

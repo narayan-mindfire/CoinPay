@@ -11,7 +11,11 @@ import PersonalInfo from "../Screens/accountSetup/PersonalInfo";
 import ScanId from "../Screens/accountVerification/ScanId";
 import TakeSelfie from "../Screens/accountVerification/TakeSelfie";
 import FinishSetup from "../Screens/accountVerification/FinishSetup";
-
+import ScanDoc from "../Screens/accountVerification/ScanDoc";
+import SelfieCam from "../Screens/accountVerification/SelfieCam";
+import SetupPin from "../Screens/pinSetup/SetupPin";
+import Welcome from "../Screens/welcome/Welcome";
+import Login from "../Screens/login/Login";
 const Stack = createNativeStackNavigator<AuthStackParamList>();
 
 const AuthStack: React.FC = () => {
@@ -28,6 +32,11 @@ const AuthStack: React.FC = () => {
       <Stack.Screen name="ScanId" component={ScanId} />
       <Stack.Screen name="TakeSelfie" component={TakeSelfie} />
       <Stack.Screen name="FinishSetup" component={FinishSetup} />
+      <Stack.Screen name="ScanDoc" component={ScanDoc} />
+      <Stack.Screen name="SelfieCam" component={SelfieCam} />
+      <Stack.Screen name="SetupPin" component={SetupPin} />
+      <Stack.Screen name="Welcome" component={Welcome} />
+      <Stack.Screen name="Login" component={Login} />
     </Stack.Navigator>
   );
 };

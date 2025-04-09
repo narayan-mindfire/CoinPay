@@ -13,7 +13,10 @@ import {
   Keyboard,
 } from "react-native";
 import Button from "@/src/components/Button";
-import { PhoneVerificationScreenProps } from "@/src/navigation/NavigationTypes";
+import {
+  LoginScreenProps,
+  PhoneVerificationScreenProps,
+} from "@/src/navigation/NavigationTypes";
 import { useTheme } from "@react-navigation/native";
 import icons from "@/src/Assets/icons";
 import countryIcons from "@/src/Assets/icons/country-icons";
@@ -22,11 +25,11 @@ import CountryModal from "@/src/components/CountryModal";
 import PhoneVerificationModal from "@/src/components/verifyPhoneModal";
 import { useTranslation } from "react-i18next";
 /**
- * PhoneVerification Screen Component
+ * Login Screen Component
  * Allows users to register using their phone number and password.
  */
 
-const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
+const Login = ({ navigation }: LoginScreenProps) => {
   const { colors } = useTheme();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [phone, setPhone] = useState("");
@@ -36,7 +39,6 @@ const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
     dialCode: "+91",
   });
   const [countryModalVisible, setCountryModalVisible] = useState(false);
-  const [verifyModal, setVerifyModalVisible] = useState(false);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const { t } = useTranslation();
   /**
@@ -83,31 +85,12 @@ const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
               onClose={() => setCountryModalVisible(false)}
               countryIcons={countryIcons}
             />
-            <PhoneVerificationModal
-              visible={verifyModal}
-              phoneNumber={phone}
-              countryCode={selectedCountry.dialCode}
-              onConfirm={() => {
-                navigation.push("OtpVerification", {
-                  phone,
-                  countryCode: selectedCountry.dialCode,
-                });
-                setVerifyModalVisible(false);
-                t: t;
-              }}
-              onCancel={() => setVerifyModalVisible(false)}
-              t={undefined}
-            />
             <View style={{ paddingHorizontal: 14 }}>
-              <Text style={styles.title}>{t("phoneVerification.title")}</Text>
-              <Text style={styles.subtitle}>
-                {t("phoneVerification.subtitle")}
-              </Text>
+              <Text style={styles.title}>{t("login.title")}</Text>
+              <Text style={styles.subtitle}>{t("login.subtitle")}</Text>
 
               {/* Phone Input */}
-              <Text style={styles.label}>
-                {t("phoneVerification.phoneLabel")}
-              </Text>
+              <Text style={styles.label}>{t("login.phoneLabel")}</Text>
               <View style={styles.phoneContainer}>
                 {/* Left Box - Country Code */}
                 <View style={styles.leftBox}>
@@ -129,8 +112,8 @@ const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
                 <View style={styles.rightBox}>
                   {!phone && (
                     <Text style={styles.placeholderTextMobile}>
-                      {" "}
-                      {"      "} {t("phoneVerification.mobilePlaceholder")}
+                      {"   "}
+                      {t("login.placeholderPhone")}
                     </Text>
                   )}
                   <TextInput
@@ -143,9 +126,7 @@ const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
                 </View>
               </View>
 
-              <Text style={styles.label}>
-                {t("phoneVerification.passwordLabel")}
-              </Text>
+              <Text style={styles.label}>{t("login.passwordLabel")}</Text>
               <View style={styles.passwordContainer}>
                 <Image source={icons.lock} style={styles.lockIcon} />
 
@@ -171,16 +152,19 @@ const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
                   />
                 </TouchableOpacity>
               </View>
+              <TouchableOpacity>
+                <Text style={styles.forgotLink}>
+                  {t("login.forgotPassword")}
+                </Text>
+              </TouchableOpacity>
 
               {/* button set to disabled when either password or phone number not given, button height adjusted based on keyboardvisibility */}
               <Button
-                buttonText={t("phoneVerification.signUpButton")}
-                handleButton={() => {
-                  setVerifyModalVisible(true);
-                }}
+                buttonText={t("login.loginButton")}
+                handleButton={() => {}}
                 outlined={false}
                 disabled={password === "" || phone === ""}
-                buttonStyles={{ marginTop: isKeyboardVisible ? 180 : 420 }}
+                buttonStyles={{ marginTop: isKeyboardVisible ? 110 : 390 }}
               />
             </View>
           </View>
@@ -199,7 +183,7 @@ const createStyles = (colors: any) =>
     },
 
     title: {
-      fontSize: 22,
+      fontSize: 32,
       fontWeight: "bold",
       color: colors.textPrimary,
       marginTop: 30,
@@ -241,7 +225,7 @@ const createStyles = (colors: any) =>
     rightBox: {
       width: "73%",
       justifyContent: "center",
-      paddingHorizontal: 10,
+      //   paddingHorizontal: 2,
       borderRadius: 8,
       marginBottom: 15,
       height: 50,
@@ -356,6 +340,11 @@ const createStyles = (colors: any) =>
       fontSize: 16,
       color: colors.textPrimary,
     },
+    forgotLink: {
+      marginTop: 10,
+      fontSize: 16,
+      color: colors.primary,
+    },
   });
 
-export default PhoneVerification;
+export default Login;

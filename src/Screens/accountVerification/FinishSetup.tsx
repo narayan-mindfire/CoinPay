@@ -100,10 +100,17 @@ const FinishSetup = ({ navigation }: FinishSetupScreenProps) => {
           )
         );
         setCurrentStepIndex((prev) => prev + 1);
-      }, 3000);
+      }, 2000);
       return () => clearTimeout(timer);
     }
   }, [currentStepIndex, steps]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigation.push("SetupPin");
+    }, 7000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <View style={styles.container}>

@@ -17,6 +17,10 @@ const images = {
     selfieImage: require("./selfieImage.png"),
     finishSetupDark: require("./finishSetupDark.png"),
     finishSetup: require("./finishSetup.png"),
+    welcomeDark: require("./welcomeDark.png"),
+    welcome: require("./welcome.png"),
+    addCardDark: require("./addCardDark.png"),
+    addCard: require("./addCard.png"),
   };
   
   export default images;

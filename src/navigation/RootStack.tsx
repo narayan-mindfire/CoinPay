@@ -11,7 +11,6 @@ import {
   useColorScheme,
   StatusBar,
   View,
-  Text,
   StyleSheet,
   Image,
   useWindowDimensions,
@@ -26,10 +25,11 @@ import AuthStack from "./AuthStack";
 import { RootStackParamList } from "./NavigationTypes";
 import { DarkThemeCustom, LightThemeCustom } from "../Themes/Theme";
 import icons from "../Assets/icons";
+import PrimaryStack from "./PrimaryStack";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const numberOfSteps = 10;
+const numberOfSteps = 12;
 
 function useInStepScreen() {
   return useNavigationState((state) => {
@@ -63,6 +63,10 @@ function useInStepScreen() {
         return 9;
       case "FinishSetup":
         return 10;
+      case "SetupPin":
+        return 11;
+      case "Welcome":
+        return 12;
       default:
         return 0;
     }
@@ -81,27 +85,25 @@ const Progress = () => {
       width: withTiming((step * width) / numberOfSteps, { duration: 500 }),
     };
   }, [step, width]);
-
-  if (step > 0) {
-    return (
-      <View style={styles.wrapper}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.backButton}
-        >
-          <Image
-            source={icons.angleLeft}
-            style={{ tintColor: colors.textPrimary }}
-          />
-        </TouchableOpacity>
+  console.log(step);
+  return (
+    <View style={styles.wrapper}>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={styles.backButton}
+      >
+        <Image
+          source={icons.angleLeft}
+          style={{ tintColor: colors.textPrimary }}
+        />
+      </TouchableOpacity>
+      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].includes(step) && (
         <View style={styles.progressContainer}>
           <Animated.View style={[styles.progress, style]} />
         </View>
-      </View>
-    );
-  }
-
-  return null;
+      )}
+    </View>
+  );
 };
 
 const RootStack: React.FC = () => {
@@ -119,7 +121,8 @@ const RootStack: React.FC = () => {
       >
         <Progress />
         <Stack.Navigator id={undefined} screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="AuthStack" component={AuthStack} />
+          {/* <Stack.Screen name="AuthStack" component={AuthStack} /> */}
+          <Stack.Screen name="PrimaryStack" component={PrimaryStack} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
@@ -131,7 +134,7 @@ export default RootStack;
 const createStyles = (colors: any) =>
   StyleSheet.create({
     wrapper: {
-      paddingTop: 40,
+      paddingTop: 20,
       backgroundColor: colors.background,
     },
     backButton: {

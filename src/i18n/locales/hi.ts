@@ -106,6 +106,62 @@ no: "नहीं",
       s3: "फ़ोटो सत्यापित की जा रही है",
     },
   },
+  scanDoc: {
+    message: "कैमरा दिखाने के लिए हमें आपकी अनुमति चाहिए",
+    scantext: "कृपया अपने ID कार्ड का \n सामने वाला हिस्सा स्कैन करें",
+    verificationText: "ID सत्यापन \n प्रगति में है",
+    subtext: "थोड़ा इंतजार करें, यह ज़्यादा समय नहीं लेगा",
+    next: "आगे",
+    requestpermission: "अनुमति दें",
+  },
+  
+  selfieCam: {
+    subtext: "अपना फोटो हाथ की लंबाई से लें। सुनिश्चित करें कि\nआपका पूरा चेहरा दिखाई दे।"
+  },
+  welcome: {
+    title: "बधाई हो! CoinPay में आपका स्वागत है",
+    subtitle:
+      "हमें खुशी है कि आप हमारे साथ हैं। अब समय है पैसे भेजने, प्राप्त करने और अपने खर्च को ट्रैक करने का।",
+    continue: "जारी रखें",
+  },
+  login: {
+    title: "कॉइनपे में लॉग इन करें",
+    subtitle: "लॉग इन करने के लिए अपना रजिस्टर्ड फोन नंबर दर्ज करें।",
+    phoneLabel: "फ़ोन",
+    passwordLabel: "पासवर्ड",
+    placeholderPhone: "मोबाइल नंबर",
+    placeholderPassword: "◉ ◉ ◉ ◉ ◉ ◉ ◉",
+    forgotPassword: "पासवर्ड भूल गए?",
+    loginButton: "लॉग इन करें",
+  },
+  setupPin: {
+    title: "पासकोड बनाएं",
+    subtitle: "यह जानकारी आपके पहचान पत्र से मेल खानी चाहिए",
+    continue: "जारी रखें",
+  },
+  addCard: {
+    title: "अपना कार्ड जोड़ें",
+    subtitle: "हमारे प्लेटफॉर्म के साथ वित्तीय संगठन की शक्ति का अनुभव करें",
+    button: "+  अपना कार्ड जोड़ें",
+  },
+  cardForm: {
+    title: "कार्ड जोड़ें",
+    subtitle: "नीचे दिए गए बॉक्स में अपना क्रेडिट कार्ड दर्ज करें।",
+    nameLabel: "खाता धारक का नाम",
+    namePlaceholder: "पूरा नाम",
+    emailLabel: "ईमेल",
+    emailPlaceholder: "name@example.com",
+    cardLabel: "कार्ड नंबर",
+    cardPlaceholder: "1234 5678 9101 2345    एमएम/वायवाय       सीवीवी",
+    button: "सत्यापित करें",
+  },
+  verifyCard: {
+    title: "अपने कार्ड को सत्यापित करें",
+    subtitle: "हमने 6 अंकों का कोड भेजा है ",
+    resendText: "कोड नहीं मिला?",
+    resendLink: " पुनः भेजें",
+    verifyButton: "सत्यापित करें",
+  },
 };
 
 export default hi;
