@@ -32,7 +32,8 @@ const icons = {
   user: require("./user.png"),
   bank: require("./bank.png"),
   bell: require("./bell.png"),
-  wallet: require("./wallet.png")
+  wallet: require("./wallet.png"),
+  chart: require("./chart.png"),
 };
 
 export default icons;
