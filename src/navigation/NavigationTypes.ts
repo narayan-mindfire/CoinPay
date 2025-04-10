@@ -1,4 +1,5 @@
 
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 
 export type RootStackParamList = {
@@ -47,8 +48,25 @@ export type PrimaryStackParamList = {
   AddCard: undefined;
   CardForm: undefined;
   VerifyCard: undefined;
+  CardList: undefined;
+  BottomTab: any;
 }
 
 export type AddCardScreenProps = NativeStackScreenProps<PrimaryStackParamList, "AddCard">;
 export type CardFormScreenProps = NativeStackScreenProps<PrimaryStackParamList, "CardForm">;
 export type VerifyCardProps = NativeStackScreenProps<PrimaryStackParamList, "VerifyCard">;
+export type CardListProps = NativeStackScreenProps<PrimaryStackParamList, "CardList">;
+
+export type BottomTabParamList = {
+  Home: undefined;
+  Spending: undefined;
+  Scan: undefined;
+  Support: undefined;
+  Profile: undefined;
+};
+
+export type HomeTabScreenProps = BottomTabScreenProps<BottomTabParamList, "Home">;
+export type SpendingTabScreenProps = BottomTabScreenProps<BottomTabParamList, "Spending">;
+export type ScanTabScreenProps = BottomTabScreenProps<BottomTabParamList, "Scan">;
+export type SupportTabScreenProps = BottomTabScreenProps<BottomTabParamList, "Support">;
+export type ProfileTabScreenProps = BottomTabScreenProps<BottomTabParamList, "Profile">;

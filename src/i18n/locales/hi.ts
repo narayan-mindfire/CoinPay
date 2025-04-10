@@ -162,6 +162,12 @@ no: "नहीं",
     resendLink: " पुनः भेजें",
     verifyButton: "सत्यापित करें",
   },
+  cardList: {
+    title: "कार्ड सूची",
+    subtitle: "आपके खाते में सभी कार्ड",
+    successMessage: "आपका कार्ड सफलतापूर्वक जोड़ा गया",
+    button: "जारी रखें",
+  },
 };
 
 export default hi;

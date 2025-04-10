@@ -160,6 +160,12 @@ const en = {
     resendLink: " Resend",
     verifyButton: "Verify",
   },
+  cardList: {
+    title: "Card list",
+    subtitle: "All the cards you have in the account",
+    successMessage: "Your card was successfully added",
+    button: "Continue",
+  },
 };
 
 export default en;

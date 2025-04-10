@@ -107,7 +107,9 @@ const VerifyCard = ({ navigation, route }: VerifyProps) => {
 
       <Button
         buttonText={t("verifyCard.verifyButton")}
-        handleButton={() => {}}
+        handleButton={() => {
+          navigation.push("CardList");
+        }}
         outlined={false}
         disabled={!filled}
         buttonStyles={{ marginTop: isKeyboardVisible ? 200 : 400 }}

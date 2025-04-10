@@ -134,7 +134,7 @@ export default RootStack;
 const createStyles = (colors: any) =>
   StyleSheet.create({
     wrapper: {
-      paddingTop: 20,
+      paddingTop: 40,
       backgroundColor: colors.background,
     },
     backButton: {

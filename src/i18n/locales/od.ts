@@ -161,6 +161,12 @@ const od = {
       resendLink: " ପୁନଃ ପଠାନ୍ତୁ",
       verifyButton: "ଯାଞ୍ଚ କରନ୍ତୁ",
     },
+    cardList: {
+      title: "କାର୍ଡ ତାଲିକା",
+      subtitle: "ଆପଣଙ୍କ ଖାତାରେ ଥିବା ସମସ୍ତ କାର୍ଡଗୁଡ଼ିକ",
+      successMessage: "ଆପଣଙ୍କ କାର୍ଡ ସଫଳତାର ସହିତ ଯୋଡ଼ାଗଲା",
+      button: "ଚାଲୁ ରଖନ୍ତୁ",
+    },
   };
   
   export default od;
