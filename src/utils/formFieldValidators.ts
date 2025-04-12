@@ -33,3 +33,21 @@
         return ("");
       }
     };
+
+
+     export const validatePassword = (val: string) => {
+        if (val.length < 6) {
+          return ("Password must be at least 6 characters");
+        } else {
+          return ("");
+        }
+      };
+    
+     export const validatePhone = (val: string) => {
+        const phoneRegex = /^[0-9]{10}$/;
+        if (!phoneRegex.test(val)) {
+          return ("Invalid phone number");
+        } else {
+          return ("");
+        }
+      };

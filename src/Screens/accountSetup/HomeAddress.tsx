@@ -8,6 +8,8 @@ import {
   validateCity,
   validatePostCode,
 } from "@/src/utils/formFieldValidators";
+import { RootState, useAppDispatch, useAppSelector } from "@/src/redux/store";
+import { updateUserForm } from "@/src/redux/slices/userFormSlice";
 
 /**
  * HomeAddress Screen Component
@@ -57,6 +59,18 @@ const HomeAddress = ({ navigation }: HomeAddressScreenProps) => {
       keyboardDidHideListener.remove();
     };
   }, []);
+
+  const dispatch = useAppDispatch();
+
+  const addData = () => {
+    dispatch(
+      updateUserForm({
+        addressLine: address,
+        city,
+        postCode,
+      })
+    );
+  };
 
   const styles = createStyles(colors);
   return (
@@ -164,6 +178,7 @@ const HomeAddress = ({ navigation }: HomeAddressScreenProps) => {
           buttonText={t("homeAddress.continue")}
           handleButton={() => {
             navigation.navigate("PersonalInfo");
+            addData();
           }}
           outlined={false}
           disabled={

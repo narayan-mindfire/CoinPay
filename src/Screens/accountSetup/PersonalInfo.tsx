@@ -16,10 +16,11 @@ import icons from "@/src/Assets/icons";
 import { Calendar } from "react-native-calendars";
 import { useTranslation } from "react-i18next";
 import {
-  validateEmail,
   validateFullName,
   validateUserName,
 } from "@/src/utils/formFieldValidators";
+import { RootState, useAppDispatch, useAppSelector } from "@/src/redux/store";
+import { updateUserForm } from "@/src/redux/slices/userFormSlice";
 
 /**
  * PersonalInfo Screen Component
@@ -69,6 +70,19 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
       keyboardDidHideListener.remove();
     };
   }, []);
+
+  const dispatch = useAppDispatch();
+  const userForm = useAppSelector((state: RootState) => state.userForm);
+
+  const addData = () => {
+    dispatch(
+      updateUserForm({
+        name: fullName,
+        username: userName,
+        DOB: dob,
+      })
+    );
+  };
 
   const styles = createStyles(colors);
   return (
@@ -196,6 +210,7 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
         buttonText={t("personalInfo.continue")}
         handleButton={() => {
           navigation.navigate("ScanId");
+          addData();
         }}
         outlined={false}
         disabled={fullNameError !== "" || userNameError !== "" || dob === ""}

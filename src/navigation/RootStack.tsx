@@ -29,7 +29,7 @@ import PrimaryStack from "./PrimaryStack";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const numberOfSteps = 13;
+const numberOfSteps = 12;
 
 function useInStepScreen() {
   return useNavigationState((state) => {

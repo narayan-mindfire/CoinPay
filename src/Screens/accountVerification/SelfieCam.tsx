@@ -50,7 +50,7 @@ export default function ScanDoc({ navigation }) {
             <TouchableOpacity>
               <Image source={icons.flash} tintColor={"white"} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.push("FinishSetup")}>
+            <TouchableOpacity onPress={() => navigation.push("SetupPin")}>
               <View style={styles.clickOuter}>
                 <View style={styles.clickInner}></View>
               </View>

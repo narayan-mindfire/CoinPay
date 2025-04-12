@@ -21,6 +21,14 @@ import countryCodes from "@/src/utils/country-code";
 import CountryModal from "@/src/components/CountryModal";
 import PhoneVerificationModal from "@/src/components/verifyPhoneModal";
 import { useTranslation } from "react-i18next";
+import {
+  validateEmail,
+  validatePassword,
+  validatePhone,
+} from "@/src/utils/formFieldValidators";
+import { useDispatch } from "react-redux";
+import { RootState, useAppSelector } from "@/src/redux/store";
+import { updateUserForm } from "@/src/redux/slices/userFormSlice";
 /**
  * PhoneVerification Screen Component
  * Allows users to register using their phone number and password.
@@ -40,35 +48,10 @@ const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [email, setEmail] = useState("");
   const { t } = useTranslation();
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [phoneError, setPhoneError] = useState("");
 
-  const validateEmail = (val: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(val)) {
-      setEmailError("Invalid email format");
-    } else {
-      setEmailError("");
-    }
-  };
-
-  const validatePassword = (val: string) => {
-    if (val.length < 6) {
-      setPasswordError("Password must be at least 6 characters");
-    } else {
-      setPasswordError("");
-    }
-  };
-
-  const validatePhone = (val: string) => {
-    const phoneRegex = /^[0-9]{10}$/;
-    if (!phoneRegex.test(val)) {
-      setPhoneError("Invalid phone number");
-    } else {
-      setPhoneError("");
-    }
-  };
+  const emailError = validateEmail(email);
+  const passwordError = validatePassword(password);
+  const phoneError = validatePhone(phone);
   /**
    * Effect to listen for keyboard visibility changes.
    */
@@ -92,6 +75,21 @@ const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
       keyboardDidHideListener.remove();
     };
   }, []);
+
+  const dispatch = useDispatch();
+  const userForm = useAppSelector((state: RootState) => state.userForm);
+
+  // Updating user data with email password and phone number
+
+  const addData = () => {
+    dispatch(
+      updateUserForm({
+        email,
+        password,
+        phone: selectedCountry.dialCode + phone,
+      })
+    );
+  };
 
   const styles = createStyles(colors);
   return (
@@ -268,10 +266,16 @@ const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
                 buttonText={t("phoneVerification.signUpButton")}
                 handleButton={() => {
                   setVerifyModalVisible(true);
+                  addData();
                 }}
                 outlined={false}
                 disabled={
-                  emailError !== "" || passwordError !== "" || phoneError !== ""
+                  email === "" ||
+                  password === "" ||
+                  phone === "" ||
+                  emailError !== "" ||
+                  passwordError !== "" ||
+                  phoneError !== ""
                 }
                 buttonStyles={{ marginTop: isKeyboardVisible ? 40 : 320 }}
               />

@@ -41,10 +41,13 @@ const createStyles = (colors: any) =>
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: colors.background,
+      paddingHorizontal: 5,
     },
     image: {
       width: "100%",
       resizeMode: "contain",
+      marginTop: -100,
+      marginBottom: 100,
     },
     title: {
       fontSize: 36,

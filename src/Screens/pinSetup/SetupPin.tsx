@@ -4,6 +4,8 @@ import { SetupPinScreenProps } from "@/src/navigation/NavigationTypes";
 import { useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import Button from "@/src/components/Button";
+import { RootState, useAppDispatch, useAppSelector } from "@/src/redux/store";
+import { updateUserForm } from "@/src/redux/slices/userFormSlice";
 /**
  * SetupPin Screen Component
  * Allows users to add their email to account setup
@@ -14,6 +16,15 @@ const SetupPin = ({ navigation }: SetupPinScreenProps) => {
   const { t } = useTranslation();
   const [pin, setPin] = useState("");
   const styles = createStyles(colors);
+  const dispatch = useAppDispatch();
+
+  const addData = () => {
+    dispatch(
+      updateUserForm({
+        passcode: pin,
+      })
+    );
+  };
   return (
     <View style={styles.container}>
       <View style={{ paddingHorizontal: 14 }}>
@@ -81,7 +92,10 @@ const SetupPin = ({ navigation }: SetupPinScreenProps) => {
       </View>
       <Button
         buttonText={t("setupPin.continue")}
-        handleButton={() => navigation.push("Welcome")}
+        handleButton={() => {
+          navigation.push("FinishSetup");
+          addData();
+        }}
         outlined={false}
         disabled={pin.length === 4 ? false : true}
       />

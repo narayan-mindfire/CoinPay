@@ -16,7 +16,8 @@ import countryNames from "@/src/utils/country-name";
 import countryIcons from "@/src/Assets/icons/country-icons";
 import icons from "@/src/Assets/icons";
 import { useTranslation } from "react-i18next";
-
+import { RootState, useAppDispatch, useAppSelector } from "@/src/redux/store";
+import { updateUserForm } from "@/src/redux/slices/userFormSlice";
 /**
  * AddCountry Screen Component
  * Allows users to add their email to account setup
@@ -32,30 +33,14 @@ const AddCountry = ({ navigation }: AddEmailProps) => {
     setShowDropdown(false);
   };
 
-  /**
-   * Effect to listen for keyboard visibility changes.
-   */
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      "keyboardDidShow",
-      () => {
-        setKeyboardVisible(true);
-      }
+  const dispatch = useAppDispatch();
+  const addData = () => {
+    dispatch(
+      updateUserForm({
+        country,
+      })
     );
-
-    const keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
-      () => {
-        setKeyboardVisible(false);
-      }
-    );
-
-    return () => {
-      keyboardDidShowListener.remove();
-      keyboardDidHideListener.remove();
-    };
-  }, []);
-
+  };
   const { t } = useTranslation();
 
   const styles = createStyles(colors);
@@ -138,6 +123,7 @@ const AddCountry = ({ navigation }: AddEmailProps) => {
           buttonText={t("addCountry.continue")}
           handleButton={() => {
             navigation.push("AddEmail");
+            addData();
           }}
           outlined={false}
           disabled={false}
