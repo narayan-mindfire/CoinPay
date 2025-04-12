@@ -21,6 +21,7 @@ const images = {
     welcome: require("./welcome.png"),
     addCardDark: require("./addCardDark.png"),
     addCard: require("./addCard.png"),
+    bg: require("./bg.png"),
   };
   
   export default images;

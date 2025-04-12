@@ -23,6 +23,8 @@ const CardForm = ({ navigation }: CardFormScreenProps) => {
   const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
   const [card, setCard] = useState("");
+  const [expiry, setExpiry] = useState("");
+  const [cvv, setCvv] = useState("");
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const { t } = useTranslation();
   /**
@@ -97,17 +99,31 @@ const CardForm = ({ navigation }: CardFormScreenProps) => {
         <View style={styles.emailContainer}>
           <Image source={icons.mastercard} />
 
-          <View style={styles.inputWrapper}>
-            {!card && (
-              <Text style={styles.placeholderText}>
-                {t("cardForm.cardPlaceholder")}
-              </Text>
-            )}
+          <View style={styles.inputRow}>
             <TextInput
-              style={styles.emailInput}
-              placeholder=""
+              style={[styles.inputField, styles.cardNumber]}
+              placeholder="Card Number"
               value={card}
               onChangeText={setCard}
+              keyboardType="number-pad"
+              maxLength={16}
+            />
+            <TextInput
+              style={[styles.inputField, styles.expiry]}
+              placeholder="MM/YY"
+              value={expiry}
+              onChangeText={setExpiry}
+              keyboardType="number-pad"
+              maxLength={5}
+            />
+            <TextInput
+              style={[styles.inputField, styles.cvv]}
+              placeholder="CVV"
+              value={cvv}
+              onChangeText={setCvv}
+              keyboardType="number-pad"
+              maxLength={4}
+              secureTextEntry
             />
           </View>
         </View>
@@ -174,6 +190,28 @@ const createStyles = (colors: any) =>
       fontSize: 18,
       color: colors.textTertiary,
       width: "100%",
+    },
+    inputRow: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginVertical: 10,
+      gap: 10,
+    },
+    inputField: {
+      backgroundColor: "transparent",
+      paddingHorizontal: 10,
+      borderWidth: 0,
+      borderRadius: 6,
+      fontSize: 16,
+    },
+    cardNumber: {
+      flex: 2.5,
+    },
+    expiry: {
+      flex: 1,
+    },
+    cvv: {
+      flex: 0.8,
     },
   });
 

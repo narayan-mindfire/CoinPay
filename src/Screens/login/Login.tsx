@@ -24,6 +24,7 @@ import countryCodes from "@/src/utils/country-code";
 import CountryModal from "@/src/components/CountryModal";
 import PhoneVerificationModal from "@/src/components/verifyPhoneModal";
 import { useTranslation } from "react-i18next";
+import { validateEmail } from "@/src/utils/formFieldValidators";
 /**
  * Login Screen Component
  * Allows users to register using their phone number and password.
@@ -32,7 +33,7 @@ import { useTranslation } from "react-i18next";
 const Login = ({ navigation }: LoginScreenProps) => {
   const { colors } = useTheme();
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [selectedCountry, setSelectedCountry] = useState({
     code: "IN",
@@ -41,6 +42,8 @@ const Login = ({ navigation }: LoginScreenProps) => {
   const [countryModalVisible, setCountryModalVisible] = useState(false);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const { t } = useTranslation();
+  const emailError = validateEmail(email);
+
   /**
    * Effect to listen for keyboard visibility changes.
    */
@@ -90,42 +93,39 @@ const Login = ({ navigation }: LoginScreenProps) => {
               <Text style={styles.subtitle}>{t("login.subtitle")}</Text>
 
               {/* Phone Input */}
-              <Text style={styles.label}>{t("login.phoneLabel")}</Text>
-              <View style={styles.phoneContainer}>
-                {/* Left Box - Country Code */}
-                <View style={styles.leftBox}>
-                  <TouchableOpacity
-                    onPress={() => setCountryModalVisible(true)}
-                    style={styles.countryButton}
-                  >
-                    <Image
-                      source={countryIcons[selectedCountry.code]}
-                      style={styles.flag}
-                    />
-                    <Text style={styles.countryText}>
-                      {selectedCountry.dialCode}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
+              <Text style={styles.label}>{t("addEmail.label")}</Text>
+              <View
+                style={[
+                  styles.emailContainer,
+                  {
+                    borderColor: emailError ? colors.error : colors.primary,
+                  },
+                ]}
+              >
+                <Image source={icons.envelope} style={styles.envelopeIcon} />
 
-                {/* Right Box - Phone Input */}
-                <View style={styles.rightBox}>
-                  {!phone && (
-                    <Text style={styles.placeholderTextMobile}>
-                      {"   "}
-                      {t("login.placeholderPhone")}
+                <View style={styles.inputWrapper}>
+                  {!email && (
+                    <Text style={styles.placeholderText}>
+                      {t("addEmail.placeholder")}
                     </Text>
                   )}
                   <TextInput
-                    style={styles.phoneInput}
+                    style={styles.emailInput}
                     placeholder=""
-                    keyboardType="phone-pad"
-                    value={phone}
-                    onChangeText={setPhone}
+                    value={email}
+                    onChangeText={(text) => {
+                      setEmail(text);
+                      validateEmail(text);
+                    }}
                   />
                 </View>
               </View>
-
+              {emailError ? (
+                <Text style={{ color: colors.error, fontSize: 12 }}>
+                  {emailError}
+                </Text>
+              ) : null}
               <Text style={styles.label}>{t("login.passwordLabel")}</Text>
               <View style={styles.passwordContainer}>
                 <Image source={icons.lock} style={styles.lockIcon} />
@@ -163,8 +163,8 @@ const Login = ({ navigation }: LoginScreenProps) => {
                 buttonText={t("login.loginButton")}
                 handleButton={() => {}}
                 outlined={false}
-                disabled={password === "" || phone === ""}
-                buttonStyles={{ marginTop: isKeyboardVisible ? 110 : 390 }}
+                disabled={password === "" || emailError !== ""}
+                buttonStyles={{ marginTop: isKeyboardVisible ? 60 : 320 }}
               />
             </View>
           </View>
@@ -199,63 +199,33 @@ const createStyles = (colors: any) =>
       fontWeight: "bold",
       color: colors.textPrimary,
       marginBottom: 5,
+      marginTop: 7,
     },
     phoneContainer: {
       flexDirection: "row",
       alignItems: "center",
       borderColor: colors.border,
     },
-
-    leftBox: {
-      width: "25%",
-      justifyContent: "center",
-      alignItems: "center",
-      borderWidth: 2,
-      borderColor: colors.border,
-      borderRadius: 8,
-      marginBottom: 15,
-      height: 50,
-      marginRight: "2%",
+    envelopeIcon: {
+      width: 25,
+      height: 25,
+      marginRight: 10,
+      tintColor: colors.border,
     },
     countryButton: {
       flexDirection: "row",
       alignItems: "center",
     },
-
-    rightBox: {
-      width: "73%",
-      justifyContent: "center",
-      //   paddingHorizontal: 2,
-      borderRadius: 8,
-      marginBottom: 15,
-      height: 50,
-      borderWidth: 2,
-      borderColor: colors.border,
-    },
-
-    countryCode: {
+    emailContainer: {
       flexDirection: "row",
       alignItems: "center",
-      paddingRight: 10,
-      borderRightWidth: 1,
-      borderRightColor: colors.border,
+      borderWidth: 2,
+      borderColor: colors.border,
+      borderRadius: 8,
+      paddingHorizontal: 10,
+      height: 50,
     },
-    flag: {
-      width: 20,
-      height: 15,
-      marginRight: 5,
-    },
-    countryText: {
-      fontSize: 18,
-      color: colors.textPrimary,
-    },
-    phoneInput: {
-      flex: 1,
-      fontSize: 18,
-      color: colors.textTertiary,
-      paddingLeft: 10,
-      letterSpacing: 2,
-    },
+
     inputContainer: {
       flex: 1,
       position: "relative",
@@ -269,7 +239,11 @@ const createStyles = (colors: any) =>
       paddingHorizontal: 10,
       height: 50,
     },
-
+    emailInput: {
+      fontSize: 18,
+      color: colors.textTertiary,
+      width: "100%",
+    },
     inputWrapper: {
       flex: 1,
       position: "relative",

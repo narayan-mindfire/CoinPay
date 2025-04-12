@@ -29,17 +29,15 @@ import PrimaryStack from "./PrimaryStack";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const numberOfSteps = 12;
+const numberOfSteps = 13;
 
 function useInStepScreen() {
   return useNavigationState((state) => {
     const current = state?.routes[state.index];
     if (current?.name !== "AuthStack") return 0;
-
     const nestedState = current?.state;
     const nestedRoute = nestedState?.routes[nestedState.index];
     const name = nestedRoute?.name;
-
     switch (name) {
       case "OnBoarding":
         return 0;
@@ -121,8 +119,8 @@ const RootStack: React.FC = () => {
       >
         <Progress />
         <Stack.Navigator id={undefined} screenOptions={{ headerShown: false }}>
-          {/* <Stack.Screen name="AuthStack" component={AuthStack} /> */}
-          <Stack.Screen name="PrimaryStack" component={PrimaryStack} />
+          <Stack.Screen name="AuthStack" component={AuthStack} />
+          {/* <Stack.Screen name="PrimaryStack" component={PrimaryStack} /> */}
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

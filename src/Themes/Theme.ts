@@ -65,9 +65,9 @@ export const LightThemeCustom : CustomTheme= {
 
     // Background
     background: "rgba(255, 255, 255, 1)",
-    backgroundAccent: "rgba(48, 79, 254, 1)",
+    backgroundAccent: "rgba(48, 79, 254, 0.12)",
     backgroundSuccess: "rgba(184, 218, 186, 0.06)",
-    backgroundWarning: "rgba(251, 138, 0, 1)",
+    backgroundWarning: "rgba(251, 138, 0, 0.16)",
     backgroundError: "rgba(244, 67, 54, 0.15)",
     backgroundInfo: "rgba(184, 184, 184, 1)",
     backgroundModal : "rgba(255, 255, 255, 1)",
@@ -112,9 +112,9 @@ export const DarkThemeCustom : CustomTheme = {
 
     // Background
     background: "rgba(18, 18, 18, 1)",
-    backgroundAccent: "rgba(48, 79, 254, 1)",
+    backgroundAccent: "rgba(48, 79, 254, 0.12)",
     backgroundSuccess: "rgba(184, 218, 186, 0.42)",
-    backgroundWarning: "rgba(251, 138, 0, 1)",
+    backgroundWarning: "rgba(251, 138, 0, 0.16)",
     backgroundError: "rgba(244, 67, 54, 0.15)",
     backgroundInfo: "rgba(184, 184, 184, 1)",
     backgroundModal : "rgba(42, 42, 42, 1)",

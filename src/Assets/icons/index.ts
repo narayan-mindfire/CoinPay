@@ -34,6 +34,10 @@ const icons = {
   bell: require("./bell.png"),
   wallet: require("./wallet.png"),
   chart: require("./chart.png"),
+  arrowRight: require("./arrowRight.png"),
+  angleRight: require("./angleRight.png"),
+  netflix: require("./netflix.png"),
+  google: require("./google.png"),
 };
 
 export default icons;

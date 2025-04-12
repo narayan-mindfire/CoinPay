@@ -1,7 +1,13 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useTheme } from "@react-navigation/native";
-import { Image, ImageSourcePropType, View, Text } from "react-native";
+import {
+  Image,
+  ImageSourcePropType,
+  View,
+  Text,
+  Pressable,
+} from "react-native";
 import HomeScreen from "../Screens/BottomTab/HomeScreen";
 import SpendingScreen from "../Screens/BottomTab/SpendingScreen";
 import ScanScreen from "../Screens/BottomTab/ScanScreen";
@@ -18,14 +24,24 @@ export default function BottomTab() {
       id={undefined}
       initialRouteName="Home"
       screenOptions={({ route }) => ({
+        tabBarButton: (props) => (
+          <Pressable {...props} android_ripple={{ color: "transparent" }} />
+        ),
         headerShown: false,
         tabBarShowLabel: false,
         animation: "shift",
         headerpressopacity: "0",
         tabBarStyle: {
-          backgroundColor: colors.background,
+          backgroundColor: colors.backgroundModal,
           height: 70,
+          width: "90%",
+          marginBottom: 20,
           borderTopWidth: 0,
+          position: "absolute",
+          borderRadius: 10,
+          marginLeft: "5%",
+          marginRight: "5%",
+          paddingTop: 16,
         },
         tabBarIcon: ({ focused }) => {
           let iconSource: ImageSourcePropType;
@@ -37,7 +53,7 @@ export default function BottomTab() {
               iconSource = icons.chart;
               break;
             case "Scan":
-              iconSource = icons.scanQr;
+              iconSource = icons.scanner;
               break;
             case "Support":
               iconSource = icons.chat;
@@ -56,7 +72,7 @@ export default function BottomTab() {
                 width: 50,
                 backgroundColor:
                   route.name === "Scan" ? colors.primary : "transparent",
-                padding: route.name === "Scan" ? 30 : 0,
+                padding: route.name === "Scan" ? 30 : 15,
                 paddingTop: route.name === "Scan" ? 40 : 20,
                 paddingHorizontal: route.name === "Scan" ? 40 : 30,
                 borderRadius: 15,

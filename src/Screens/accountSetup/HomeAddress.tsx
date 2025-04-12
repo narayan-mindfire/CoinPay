@@ -4,6 +4,10 @@ import Button from "@/src/components/Button";
 import { HomeAddressScreenProps } from "@/src/navigation/NavigationTypes";
 import { useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
+import {
+  validateCity,
+  validatePostCode,
+} from "@/src/utils/formFieldValidators";
 
 /**
  * HomeAddress Screen Component
@@ -17,6 +21,19 @@ const HomeAddress = ({ navigation }: HomeAddressScreenProps) => {
   const [postCode, setPostCode] = useState("");
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const { t } = useTranslation();
+  const [addressError, setAddressError] = useState("");
+
+  // validation functions
+  const validateAddress = (address: string) => {
+    if (address.length < 5) {
+      setAddressError("Enter valid address");
+    } else {
+      setAddressError("");
+    }
+  };
+
+  const cityError = validateCity(city);
+  const postCodeError = validatePostCode(postCode);
   /**
    * Effect to listen for keyboard visibility changes.
    */
@@ -49,7 +66,14 @@ const HomeAddress = ({ navigation }: HomeAddressScreenProps) => {
         <Text style={styles.subtitle}>{t("homeAddress.subtitle")}</Text>
         {/* Address Input */}
         <Text style={styles.label}>{t("homeAddress.addressLabel")}</Text>
-        <View style={styles.emailContainer}>
+        <View
+          style={[
+            styles.emailContainer,
+            {
+              borderColor: addressError ? colors.error : colors.primary,
+            },
+          ]}
+        >
           <View style={styles.inputWrapper}>
             {!address && (
               <Text style={styles.placeholderText}>
@@ -57,16 +81,31 @@ const HomeAddress = ({ navigation }: HomeAddressScreenProps) => {
               </Text>
             )}
             <TextInput
-              style={styles.emailInput}
+              style={styles.addressInput}
               placeholder=""
               value={address}
-              onChangeText={setAddress}
+              onChangeText={(text) => {
+                setAddress(text);
+                validateAddress(text);
+              }}
             />
           </View>
         </View>
+        {addressError ? (
+          <Text style={{ color: colors.error, fontSize: 12 }}>
+            {addressError}
+          </Text>
+        ) : null}
         {/* city input  */}
         <Text style={styles.label}>{t("homeAddress.cityLabel")}</Text>
-        <View style={styles.emailContainer}>
+        <View
+          style={[
+            styles.emailContainer,
+            {
+              borderColor: cityError ? colors.error : colors.primary,
+            },
+          ]}
+        >
           <View style={styles.inputWrapper}>
             {!city && (
               <Text style={styles.placeholderText}>
@@ -74,16 +113,29 @@ const HomeAddress = ({ navigation }: HomeAddressScreenProps) => {
               </Text>
             )}
             <TextInput
-              style={styles.emailInput}
+              style={styles.addressInput}
               placeholder=""
               value={city}
-              onChangeText={setCity}
+              onChangeText={(text) => {
+                setCity(text);
+                validateCity(text);
+              }}
             />
           </View>
         </View>
+        {cityError ? (
+          <Text style={{ color: colors.error, fontSize: 12 }}>{cityError}</Text>
+        ) : null}
         {/* postcode input  */}
         <Text style={styles.label}>{t("homeAddress.postCodeLabel")}</Text>
-        <View style={styles.emailContainer}>
+        <View
+          style={[
+            styles.emailContainer,
+            {
+              borderColor: postCodeError ? colors.error : colors.primary,
+            },
+          ]}
+        >
           <View style={styles.inputWrapper}>
             {!postCode && (
               <Text style={styles.placeholderText}>
@@ -91,13 +143,21 @@ const HomeAddress = ({ navigation }: HomeAddressScreenProps) => {
               </Text>
             )}
             <TextInput
-              style={styles.emailInput}
+              style={styles.addressInput}
               placeholder=""
               value={postCode}
-              onChangeText={setPostCode}
+              onChangeText={(text) => {
+                validatePostCode(text);
+                setPostCode(text);
+              }}
             />
           </View>
         </View>
+        {postCodeError ? (
+          <Text style={{ color: colors.error, fontSize: 12 }}>
+            {postCodeError}
+          </Text>
+        ) : null}
 
         {/* button set to disabled when either password or phone number not given, button height adjusted based on keyboardvisibility */}
         <Button
@@ -106,7 +166,9 @@ const HomeAddress = ({ navigation }: HomeAddressScreenProps) => {
             navigation.navigate("PersonalInfo");
           }}
           outlined={false}
-          disabled={address === "" || city === "" || postCode === ""}
+          disabled={
+            addressError !== "" || cityError !== "" || postCodeError !== ""
+          }
           buttonStyles={{ marginTop: isKeyboardVisible ? 20 : 300 }}
         />
       </View>
@@ -159,7 +221,7 @@ const createStyles = (colors: any) =>
       fontSize: 18,
       color: colors.textDisabled,
     },
-    emailInput: {
+    addressInput: {
       fontSize: 18,
       color: colors.textTertiary,
       width: "100%",
