@@ -30,7 +30,9 @@ const Registration = ({ navigation }: RegistrationScreenProps) => {
       />
       <Button
         buttonText={t("registration.login")}
-        handleButton={() => {}}
+        handleButton={() => {
+          navigation.push("Login");
+        }}
         outlined={true}
       />
 

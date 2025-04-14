@@ -13,36 +13,35 @@ import {
   Keyboard,
 } from "react-native";
 import Button from "@/src/components/Button";
-import {
-  LoginScreenProps,
-  PhoneVerificationScreenProps,
-} from "@/src/navigation/NavigationTypes";
+import { LoginScreenProps } from "@/src/navigation/NavigationTypes";
 import { useTheme } from "@react-navigation/native";
 import icons from "@/src/Assets/icons";
-import countryIcons from "@/src/Assets/icons/country-icons";
-import countryCodes from "@/src/utils/country-code";
-import CountryModal from "@/src/components/CountryModal";
-import PhoneVerificationModal from "@/src/components/verifyPhoneModal";
 import { useTranslation } from "react-i18next";
 import { validateEmail } from "@/src/utils/formFieldValidators";
+import { loginUser } from "@/src/redux/slices/authSlice";
+import { useAppDispatch } from "@/src/redux/store";
 /**
  * Login Screen Component
  * Allows users to register using their phone number and password.
  */
 
-const Login = ({ navigation }: LoginScreenProps) => {
+const Login = () => {
   const { colors } = useTheme();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [selectedCountry, setSelectedCountry] = useState({
-    code: "IN",
-    dialCode: "+91",
-  });
-  const [countryModalVisible, setCountryModalVisible] = useState(false);
+
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const { t } = useTranslation();
   const emailError = validateEmail(email);
+
+  const dispatch = useAppDispatch();
+  const handleLogin = () => {
+    console.log("logging in user");
+    setTimeout(() => {
+      dispatch(loginUser({ email, password }));
+    }, 100);
+  };
 
   /**
    * Effect to listen for keyboard visibility changes.
@@ -80,18 +79,9 @@ const Login = ({ navigation }: LoginScreenProps) => {
           keyboardShouldPersistTaps="handled"
         >
           <View style={styles.container}>
-            {/* Country selection modal */}
-            <CountryModal
-              visible={countryModalVisible}
-              data={countryCodes}
-              onSelect={setSelectedCountry}
-              onClose={() => setCountryModalVisible(false)}
-              countryIcons={countryIcons}
-            />
             <View style={{ paddingHorizontal: 14 }}>
               <Text style={styles.title}>{t("login.title")}</Text>
               <Text style={styles.subtitle}>{t("login.subtitle")}</Text>
-
               {/* Phone Input */}
               <Text style={styles.label}>{t("addEmail.label")}</Text>
               <View
@@ -161,7 +151,7 @@ const Login = ({ navigation }: LoginScreenProps) => {
               {/* button set to disabled when either password or phone number not given, button height adjusted based on keyboardvisibility */}
               <Button
                 buttonText={t("login.loginButton")}
-                handleButton={() => {}}
+                handleButton={handleLogin}
                 outlined={false}
                 disabled={password === "" || emailError !== ""}
                 buttonStyles={{ marginTop: isKeyboardVisible ? 60 : 320 }}
@@ -181,7 +171,6 @@ const createStyles = (colors: any) =>
       flex: 1,
       backgroundColor: colors.background,
     },
-
     title: {
       fontSize: 32,
       fontWeight: "bold",
@@ -320,5 +309,4 @@ const createStyles = (colors: any) =>
       color: colors.primary,
     },
   });
-
 export default Login;

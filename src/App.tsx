@@ -1,9 +1,7 @@
-import React from "react";
-import { View, Text } from "react-native";
-import OnboardingScreen from "./Screens/onboarding/onBoarding";
+import React, { useEffect } from "react";
 import RootStack from "./navigation/RootStack";
 import { Provider } from "react-redux";
-import { store } from "./redux/store";
+import { store, useAppDispatch } from "./redux/store";
 
 export const App = () => {
   return (

@@ -1,12 +1,4 @@
-import {
-  Dimensions,
-  Image,
-  StyleSheet,
-  Text,
-  Touchable,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
 import { useTheme } from "@react-navigation/native";
 import icons from "@/src/Assets/icons";
@@ -16,7 +8,6 @@ const BalanceBox = ({
   text,
   amount,
   theme,
-  bg,
   colors,
 }: {
   icon: string;

@@ -1,7 +1,10 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, TextInput, Button, View } from "react-native";
+import { StyleSheet, Text, TextInput, View } from "react-native";
 import { useEffect, useState } from "react";
 import * as MailComposer from "expo-mail-composer";
+import Button from "@/src/components/Button";
+import { useAppDispatch } from "@/src/redux/store";
+import { logoutUser } from "@/src/redux/slices/authSlice";
 // import * as Print from 'expo-print';
 
 // expo add expo-print expo-mail-composer
@@ -53,23 +56,20 @@ export default function App() {
     });
   };
 
+  const dispatch = useAppDispatch();
+
+  function handleLogout() {
+    try {
+      console.log("logging out user");
+      dispatch(logoutUser());
+    } catch (error) {
+      console.log("error logging out: ", error);
+    }
+  }
+
   return (
     <View style={styles.container}>
-      <TextInput
-        value={subject}
-        onChangeText={setSubject}
-        placeholder="Subject"
-      />
-      <TextInput value={body} onChangeText={setBody} placeholder="Body" />
-      <TextInput value={email} onChangeText={setEmail} placeholder="Email" />
-      <Button title="Add Recipient" onPress={addRecipient} />
-      {showRecipients()}
-      {isAvailable ? (
-        <Button title="Send Mail" onPress={sendMail} />
-      ) : (
-        <Text>Email not available</Text>
-      )}
-      <StatusBar style="auto" />
+      <Button handleButton={handleLogout} buttonText="log out" />
     </View>
   );
 }

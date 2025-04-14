@@ -10,6 +10,8 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
+import { Dimensions } from "react-native";
+
 import images from "@/src/Assets/images";
 const HomeScreen = () => {
   const { colors } = useTheme();
@@ -84,22 +86,6 @@ const HomeScreen = () => {
               color="error"
               colors={colors}
               backgroundColor="backgroundError"
-            />
-            <TransactionItem
-              icon="sack"
-              label="Savings"
-              amount="1000"
-              color="warning"
-              colors={colors}
-              backgroundColor="backgroundWarning"
-            />
-            <TransactionItem
-              icon="sack"
-              label="Savings"
-              amount="1000"
-              color="warning"
-              colors={colors}
-              backgroundColor="backgroundWarning"
             />
             <TransactionItem
               icon="sack"
@@ -237,11 +223,12 @@ const createTransactionStyles = (colors: any) =>
     },
   });
 
+const { height: screenHeight } = Dimensions.get("window");
+
 const createStyles = (colors: any) =>
   StyleSheet.create({
     image: {
-      flex: 1,
-      justifyContent: "center",
+      height: screenHeight * 0.3,
     },
     container: {
       backgroundColor: colors.background,

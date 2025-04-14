@@ -5,9 +5,10 @@ import { useTheme } from "@react-navigation/native";
 import icons from "@/src/Assets/icons";
 import images from "@/src/Assets/images";
 import { useTranslation } from "react-i18next";
-import { RootState, useAppSelector } from "@/src/redux/store";
+import { RootState, useAppDispatch, useAppSelector } from "@/src/redux/store";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
+import { loginUser, registerUser } from "@/src/redux/slices/authSlice";
 
 type Step = {
   id: number;
@@ -109,11 +110,14 @@ const FinishSetup = ({ navigation }: FinishSetupScreenProps) => {
   }, [currentStepIndex, steps]);
 
   const userForm = useAppSelector((state: RootState) => state.userForm);
-  console.log(userForm);
+  // console.log(userForm);
 
+  const dispatch = useAppDispatch();
+
+  //saving user data to firestore and creating user with email password authentication of firebase
   useEffect(() => {
     const timer = setTimeout(async () => {
-      // Build the object with required fields
+      //user object  that will be pushed into firestore
       const userData = {
         DOB: userForm.DOB,
         addressLine: userForm.addressLine,
@@ -130,13 +134,15 @@ const FinishSetup = ({ navigation }: FinishSetupScreenProps) => {
       };
 
       try {
-        // Save user data in Firestore (under collection "users" with username as ID)
         await setDoc(doc(db, "users", userForm.username), userData);
         console.log("User data saved successfully");
+        dispatch(
+          registerUser({ email: userForm.email, password: userForm.password })
+        );
+        console.log("user created");
       } catch (error) {
-        console.error("Error saving user data:", error);
+        console.error("Error creating user / saving user data:", error);
       }
-
       navigation.push("Welcome");
     }, 7000);
 
