@@ -11,6 +11,7 @@ import { useFocusEffect, useTheme } from "@react-navigation/native";
 import Button from "@/src/components/Button";
 import { OnBoardingScreenProps } from "@/src/navigation/NavigationTypes";
 import images from "@/src/Assets/images";
+import { useTranslation } from "react-i18next";
 
 const { width } = Dimensions.get("window");
 
@@ -20,45 +21,46 @@ interface Slide {
   image: any;
 }
 
-const slidesLight: Slide[] = [
-  {
-    key: "1",
-    title: "Trusted by millions of people, part of one part",
-    image: images.slide3,
-  },
-  {
-    key: "2",
-    title: "Spend money abroad, and track your expense",
-    image: images.slide2,
-  },
-  {
-    key: "3",
-    title: "Receive Money From Anywhere In The World",
-    image: images.slide1,
-  },
-];
-
-const slidesDark: Slide[] = [
-  {
-    key: "1",
-    title: "Trusted by millions of people, part of one part",
-    image: images.slide1Dark,
-  },
-  {
-    key: "2",
-    title: "Spend money abroad, and track your expense",
-    image: images.slide2Dark,
-  },
-  {
-    key: "3",
-    title: "Receive Money From Anywhere In The World",
-    image: images.slide3Dark,
-  },
-];
 // main screen
 const OnboardingScreen: React.FC = ({ navigation }: OnBoardingScreenProps) => {
   const flatListRef = useRef<FlatList>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const { t } = useTranslation();
+  const slidesDark: Slide[] = [
+    {
+      key: "1",
+      title: t("onboarding.slide1"),
+      image: images.slide1Dark,
+    },
+    {
+      key: "2",
+      title: t("onboarding.slide2"),
+      image: images.slide2Dark,
+    },
+    {
+      key: "3",
+      title: t("onboarding.slide3"),
+      image: images.slide3Dark,
+    },
+  ];
+
+  const slidesLight: Slide[] = [
+    {
+      key: "1",
+      title: t("onboarding.slide1"),
+      image: images.slide3,
+    },
+    {
+      key: "2",
+      title: t("onboarding.slide2"),
+      image: images.slide2,
+    },
+    {
+      key: "3",
+      title: t("onboarding.slide3"),
+      image: images.slide1,
+    },
+  ];
   const { colors, dark } = useTheme();
 
   const slides = dark ? slidesDark : slidesLight;
@@ -137,7 +139,7 @@ const OnboardingScreen: React.FC = ({ navigation }: OnBoardingScreenProps) => {
         ))}
       </View>
       <Button
-        buttonText="Next"
+        buttonText={t("onboarding.next")}
         handleButton={handleNext}
         buttonStyles={{ marginBottom: 30 }}
       />
@@ -192,7 +194,7 @@ const createStyles = (colors: any) =>
     },
     inactiveDot: {
       width: 37,
-      backgroundColor: "rgba(208, 208, 208, 1)",
+      backgroundColor: colors.backgroundInfo,
     },
   });
 

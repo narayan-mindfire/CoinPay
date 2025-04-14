@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "301717891183",
+    "project_id": "coinpay-e92e9",
+    "storage_bucket": "coinpay-e92e9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:301717891183:android:d6973e8f7c5db3882c859a",
+        "android_client_info": {
+          "package_name": "com.mindfire.CoinPay"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUpJ-OO2fmRp3X0L_KR0Bk0dx9nKuJpog"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

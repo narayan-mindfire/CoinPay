@@ -1,36 +1,152 @@
-import React, { useRef } from "react";
+import React from "react";
+import "../../src/i18n/i18n";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
   NavigationContainer,
-  NavigationContainerRef,
+  useNavigation,
+  useNavigationState,
+  useTheme,
 } from "@react-navigation/native";
-import OnboardingScreen from "../Screens/onboarding/onBoarding";
-import Registration from "../Screens/registration/Registration";
+import {
+  useColorScheme,
+  StatusBar,
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  useWindowDimensions,
+  TouchableOpacity,
+} from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import Animated, {
+  useAnimatedStyle,
+  withTiming,
+} from "react-native-reanimated";
+import AuthStack from "./AuthStack";
 import { RootStackParamList } from "./NavigationTypes";
-import { useColorScheme } from "react-native";
-
-import PhoneVerification from "../Screens/registration/PhoneVerification";
 import { DarkThemeCustom, LightThemeCustom } from "../Themes/Theme";
-import OtpVerification from "../Screens/registration/OtpVerification";
+import icons from "../Assets/icons";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+const numberOfSteps = 10;
+
+function useInStepScreen() {
+  return useNavigationState((state) => {
+    const current = state?.routes[state.index];
+    if (current?.name !== "AuthStack") return 0;
+
+    const nestedState = current?.state;
+    const nestedRoute = nestedState?.routes[nestedState.index];
+    const name = nestedRoute?.name;
+
+    switch (name) {
+      case "OnBoarding":
+        return 0;
+      case "Registration":
+        return 1;
+      case "PhoneVerification":
+        return 2;
+      case "OtpVerification":
+        return 3;
+      case "AddCountry":
+        return 4;
+      case "AddEmail":
+        return 5;
+      case "HomeAddress":
+        return 6;
+      case "PersonalInfo":
+        return 7;
+      case "ScanId":
+        return 8;
+      case "TakeSelfie":
+        return 9;
+      case "FinishSetup":
+        return 10;
+      default:
+        return 0;
+    }
+  });
+}
+
+const Progress = () => {
+  const { colors } = useTheme();
+  const styles = createStyles(colors);
+  const navigation = useNavigation();
+  const { width } = useWindowDimensions();
+  const step = useInStepScreen();
+
+  const style = useAnimatedStyle(() => {
+    return {
+      width: withTiming((step * width) / numberOfSteps, { duration: 500 }),
+    };
+  }, [step, width]);
+
+  if (step > 0) {
+    return (
+      <View style={styles.wrapper}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
+        >
+          <Image
+            source={icons.angleLeft}
+            style={{ tintColor: colors.textPrimary }}
+          />
+        </TouchableOpacity>
+        <View style={styles.progressContainer}>
+          <Animated.View style={[styles.progress, style]} />
+        </View>
+      </View>
+    );
+  }
+
+  return null;
+};
+
 const RootStack: React.FC = () => {
-  const navigationRef =
-    useRef<NavigationContainerRef<RootStackParamList>>(null);
   const systemTheme = useColorScheme();
+
   return (
-    <NavigationContainer
-      theme={systemTheme === "dark" ? DarkThemeCustom : LightThemeCustom}
-    >
-      <Stack.Navigator id={undefined} screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="OnBoarding" component={OnboardingScreen} />
-        <Stack.Screen name="Registration" component={Registration} />
-        <Stack.Screen name="PhoneVerification" component={PhoneVerification} />
-        <Stack.Screen name="OtpVerification" component={OtpVerification} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <StatusBar
+        barStyle={systemTheme === "dark" ? "light-content" : "dark-content"}
+        backgroundColor="transparent"
+        translucent
+      />
+      <NavigationContainer
+        theme={systemTheme === "dark" ? DarkThemeCustom : LightThemeCustom}
+      >
+        <Progress />
+        <Stack.Navigator id={undefined} screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="AuthStack" component={AuthStack} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 };
 
 export default RootStack;
+
+const createStyles = (colors: any) =>
+  StyleSheet.create({
+    wrapper: {
+      paddingTop: 40,
+      backgroundColor: colors.background,
+    },
+    backButton: {
+      marginLeft: 16,
+      marginBottom: 10,
+    },
+    progressContainer: {
+      height: 6,
+      width: "100%",
+      backgroundColor: colors.backgroundModal,
+    },
+    progress: {
+      height: 12,
+      borderTopRightRadius: 3,
+      borderBottomRightRadius: 3,
+      backgroundColor: colors.primary,
+    },
+  });

@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
-  Image,
   StyleSheet,
   TextInput,
   TouchableOpacity,
@@ -11,9 +10,7 @@ import {
 import { useTheme } from "@react-navigation/native";
 import { RegistrationScreenProps } from "@/src/navigation/NavigationTypes";
 import Button from "@/src/components/Button";
-import icons from "@/src/Assets/icons";
-import AnimatedProgressBar from "@/src/components/progressBar";
-
+import { useTranslation } from "react-i18next";
 interface PhoneVerificationProps extends RegistrationScreenProps {
   phone?: string;
   countryCode?: string;
@@ -28,6 +25,7 @@ const PhoneVerification = ({ navigation, route }: PhoneVerificationProps) => {
   const [filled, setFilled] = useState(false);
   const inputRefs = useRef<Array<TextInput | null>>([]);
   const styles = createStyles(colors, isOriginalState);
+  const { t } = useTranslation();
 
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
@@ -87,19 +85,10 @@ const PhoneVerification = ({ navigation, route }: PhoneVerificationProps) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        style={styles.backButton}
-      >
-        <Image source={icons.angleLeft} style={{ tintColor: colors.text }} />
-      </TouchableOpacity>
-      <View style={styles.progressContainer}>
-        <AnimatedProgressBar progress={0.3} />
-      </View>
-
-      <Text style={styles.title}>Confirm your phone</Text>
+      <Text style={styles.title}>{t("otpVerification.title")}</Text>
       <Text style={styles.subtitle}>
-        We sent a 6-digit code to {countryCode} {phone}
+        {t("otpVerification.subtitle")}
+        {countryCode} {phone}
       </Text>
 
       <View style={styles.inputContainer}>
@@ -115,17 +104,20 @@ const PhoneVerification = ({ navigation, route }: PhoneVerificationProps) => {
           />
         ))}
       </View>
-
       <Text style={styles.resendText}>
-        Didn’t get a code?{" "}
+        {t("otpVerification.resend")}{" "}
         <TouchableOpacity>
-          <Text style={styles.resendLink}>Resend</Text>
+          <Text style={styles.resendLink}>
+            {t("otpVerification.resendLink")}
+          </Text>
         </TouchableOpacity>
       </Text>
 
       <Button
-        buttonText="Verify Your Number"
-        handleButton={() => {}}
+        buttonText={t("otpVerification.verifyButton")}
+        handleButton={() => {
+          navigation.push("AddCountry");
+        }}
         outlined={false}
         disabled={!filled}
         buttonStyles={{ marginTop: isKeyboardVisible ? 150 : 380 }}
@@ -150,11 +142,6 @@ const createStyles = (colors: any, isOriginalState: boolean) =>
       alignItems: "center",
       top: 20,
       marginBottom: 30,
-    },
-    backButton: {
-      position: "absolute",
-      left: 10,
-      top: 10,
     },
     title: {
       fontSize: 24,

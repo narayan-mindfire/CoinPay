@@ -1,0 +1,111 @@
+const od = {
+    common: {
+      appName: 'QuickLaunchReactNativeKit',
+      success: 'ସଫଳତା',
+      error: 'ତ୍ରୁଟି',
+      info: 'ସୂଚନା',
+      warning: 'ଚେତାବନୀ',
+    },
+    onboarding: {
+      slide1: "ଲକ୍ଷ୍ୟ ଲୋକଙ୍କର ବିଶ୍ୱାସ, ଏହାର ଏକ ଅଂଶ",
+      slide2: "ବିଦେଶରେ ଟଙ୍କା ଖର୍ଚ୍ଚ କରନ୍ତୁ ଏବଂ ଖର୍ଚ୍ଚ ଅନୁସରଣ କରନ୍ତୁ",
+      slide3: "ଜଗତର ଯେକୌଣସି ସ୍ଥାନରୁ ଟଙ୍କା ଗ୍ରହଣ କରନ୍ତୁ",
+      next: "ଆଗକୁ",
+    },
+    otpVerification: {
+      title: "ଆପଣଙ୍କର ଫୋନ୍ ନମ୍ବର ନିଶ୍ଚିତ କରନ୍ତୁ",
+      subtitle: "ଆମେ 6-ଅଙ୍କର କୋଡ୍ ପଠାଇଛୁ",
+      resend: "କୋଡ୍ ମିଳିଲା ନାହିଁ?",
+      resendLink: "ପୁନଃପଠାନ୍ତୁ",
+      verifyButton: "ଆପଣଙ୍କ ନମ୍ବର ଯାଞ୍ଚ କରନ୍ତୁ",
+    },
+    registration: {
+      title: "ଆପଣଙ୍କର\nCoinpay ଖାତା ସୃଷ୍ଟି କରନ୍ତୁ",
+      subtitle:
+        "Coinpay ହେଉଛି ଏକ ଶକ୍ତିଶାଳୀ ସାଧନ ଯାହା ଆପଣଙ୍କୁ ସହଜରେ ପଠାଇବା, ପ୍ରାପ୍ତ କରିବା ଏବଂ ଟ୍ରାନ୍ଜାକ୍ସନ ଅନୁସରଣ କରିବାକୁ ସହାୟତା କରେ।",
+      signup: "ସାଇନ୍ ଅପ୍",
+      login: "ଲଗିନ୍",
+      termsAndPolicy:
+        "ଆଗକୁ ବଢିବା ପାଇଁ ଆପଣ ଆମ Terms of Service ଏବଂ Privacy Policy ଅନୁମୋଦନ କରୁଛନ୍ତି",
+      terms: "Terms of Service",
+      and: "ଏବଂ",
+      privacy: "Privacy Policy",
+    },
+    phoneVerification: {
+      title: "ଏକ ଖାତା ସୃଷ୍ଟି କରନ୍ତୁ",
+      subtitle: "ଆପଣଙ୍କର ଖାତା ଯାଞ୍ଚ ପାଇଁ ଫୋନ୍ ନମ୍ବର ଦିଅନ୍ତୁ",
+      phoneLabel: "ଫୋନ୍",
+      passwordLabel: "ପାସୱାର୍ଡ",
+      mobilePlaceholder: "ମୋବାଇଲ୍ ନମ୍ବର",
+      signUpButton: "ସାଇନ୍ ଅପ୍",
+      modal: {
+        confirm: "ନିଶ୍ଚିତ କରନ୍ତୁ",
+        cancel: "ବାତିଲ୍ କରନ୍ତୁ",
+      },
+    },
+    verifyPhoneModal: {
+      verifyTitle: "କୋଡ୍ ପଠାଯିବା ପୂର୍ବରୁ ଫୋନ୍ ଯାଞ୍ଚ କରନ୍ତୁ",
+      isThisCorrect: "ଏହା ସଠିକ୍ କି?",
+      yes: "ହଁ",
+      no: "ନା",
+    },
+    addCountry: {
+      countryOfResidence: "ବସବାସ କରୁଥିବା ଦେଶ",
+      countrySubtitle: "ଏହି ସୂଚନା ଆପଣଙ୍କର ID ସହ ମେଳ ଖାଇବା ଦରକାର।",
+      countryLabel: "ଦେଶ",
+      continue: "ଆଗକୁ ବଢନ୍ତୁ",
+    },
+    addEmail: {
+      title: "ଆପଣଙ୍କର ଇମେଲ୍ ଯୋଡନ୍ତୁ",
+      subtitle: "ଏହି ସୂଚନା ID ସହ ସଠିକ୍ ହେଉଛି କି ଦେଖନ୍ତୁ",
+      label: "ଇମେଲ୍",
+      placeholder: "name@example.com",
+      button: "ଆଗକୁ ବଢନ୍ତୁ",
+    },
+    homeAddress: {
+      title: "ଘର ଠିକଣା",
+      subtitle: "ଏହି ସୂଚନା ଆପଣଙ୍କର ID ସହ ମେଳ ଖାଇବା ଦରକାର",
+      addressLabel: "ଠିକଣା ରେଖା",
+      addressPlaceholder: "ମି. ଜନ୍ ଡୋ",
+      cityLabel: "ସହର",
+      cityPlaceholder: "ସହର, ରାଜ୍ୟ",
+      postCodeLabel: "ପୋଷ୍ଟକୋଡ୍",
+      postCodePlaceholder: "ଉଦାହରଣ: 00000",
+      continue: "ଆଗକୁ ବଢନ୍ତୁ",
+    },
+    personalInfo: {
+      title: "ବ୍ୟକ୍ତିଗତ ସୂଚନା ଯୋଡନ୍ତୁ",
+      subtitle: "ଏହି ସୂଚନା ଆପଣଙ୍କର ID ସହ ମେଳ ଖାଇବା ଦରକାର",
+      fullName: "ପୁରା ନାମ",
+      username: "ଉପନାମ",
+      usernamePlaceholder: "ଉପନାମ",
+      namePlaceholder: "ମି. ଜନ୍ ଡୋ",
+      dob: "ଜନ୍ମ ତାରିଖ",
+      dobPlaceholder: "MM/DD/YYYY",
+      confirm: "ନିଶ୍ଚିତ କରନ୍ତୁ",
+      continue: "ଆଗକୁ ବଢନ୍ତୁ",
+    },
+    scanId: {
+      title: "ID ଡକ୍ୟୁମେଣ୍ଟ ସ୍କାନ୍ କରନ୍ତୁ",
+      subtitle: "ମାତ୍ର କିଛି ଟ୍ୟାପରେ ଆପଣଙ୍କ ଚିହ୍ନ ପ୍ରମାଣିତ କରନ୍ତୁ",
+      scanButton: "ସ୍କାନ୍ କରନ୍ତୁ",
+    },
+    takeSelfie: {
+      title: "ସ୍ୱୟଂ ଛବି ନିଅନ୍ତୁ",
+      subtitle:
+        "ଆପଣଙ୍କ ଚିହ୍ନ ପ୍ରମାଣିକତା ପାଇଁ ସହଜ ଓ ଶୀଘ୍ର ପ୍ରକ୍ରିୟା। କ୍ୟାମେରା ବ୍ୟବହାର କରି ନିଜେ ଛବି ନିଅନ୍ତୁ।",
+      button: "ସ୍ୱୟଂ ଛବି ନିଅନ୍ତୁ",
+    },
+    finishSetup: {
+      title: "ଆପଣଙ୍କ ଖାତା ସେଟଅପ୍ କରାଯାଉଛି",
+      subtitle: "ଆମେ ଆପଣଙ୍କର ତଥ୍ୟ ବିଶ୍ଲେଷଣ କରୁଛୁ",
+      steps: {
+        s1: "ଫୋନ୍ ଯାଞ୍ଚ ହୋଇଛି",
+        s2: "ID ଡକ୍ୟୁମେଣ୍ଟ ଯାଞ୍ଚ ହେଉଛି",
+        s3: "ଛବି ଯାଞ୍ଚ କରାଯାଉଛି",
+      },
+    },
+  };
+  
+  export default od;
+  

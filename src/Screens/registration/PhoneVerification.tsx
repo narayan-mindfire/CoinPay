@@ -20,14 +20,13 @@ import countryIcons from "@/src/Assets/icons/country-icons";
 import countryCodes from "@/src/utils/country-code";
 import CountryModal from "@/src/components/CountryModal";
 import PhoneVerificationModal from "@/src/components/verifyPhoneModal";
-import AnimatedProgressBar from "@/src/components/progressBar";
-
+import { useTranslation } from "react-i18next";
 /**
- * Registration Screen Component
+ * PhoneVerification Screen Component
  * Allows users to register using their phone number and password.
  */
 
-const Registration = ({ navigation }: PhoneVerificationScreenProps) => {
+const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
   const { colors } = useTheme();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [phone, setPhone] = useState("");
@@ -39,7 +38,7 @@ const Registration = ({ navigation }: PhoneVerificationScreenProps) => {
   const [countryModalVisible, setCountryModalVisible] = useState(false);
   const [verifyModal, setVerifyModalVisible] = useState(false);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-
+  const { t } = useTranslation();
   /**
    * Effect to listen for keyboard visibility changes.
    */
@@ -94,26 +93,21 @@ const Registration = ({ navigation }: PhoneVerificationScreenProps) => {
                   countryCode: selectedCountry.dialCode,
                 });
                 setVerifyModalVisible(false);
+                t: t;
               }}
               onCancel={() => setVerifyModalVisible(false)}
+              t={undefined}
             />
-            <TouchableOpacity
-              onPress={() => navigation.goBack()}
-              style={styles.backButton}
-            >
-              <Image source={icons.angleLeft} tintColor={colors.textPrimary} />
-            </TouchableOpacity>
-            <View style={styles.progressContainer}>
-              <AnimatedProgressBar progress={0.25} />
-            </View>
             <View style={{ paddingHorizontal: 14 }}>
-              <Text style={styles.title}>Create an Account</Text>
+              <Text style={styles.title}>{t("phoneVerification.title")}</Text>
               <Text style={styles.subtitle}>
-                Enter your mobile number to verify your account
+                {t("phoneVerification.subtitle")}
               </Text>
 
               {/* Phone Input */}
-              <Text style={styles.label}>Phone</Text>
+              <Text style={styles.label}>
+                {t("phoneVerification.phoneLabel")}
+              </Text>
               <View style={styles.phoneContainer}>
                 {/* Left Box - Country Code */}
                 <View style={styles.leftBox}>
@@ -122,7 +116,7 @@ const Registration = ({ navigation }: PhoneVerificationScreenProps) => {
                     style={styles.countryButton}
                   >
                     <Image
-                      source={countryIcons[selectedCountry.dialCode]}
+                      source={countryIcons[selectedCountry.code]}
                       style={styles.flag}
                     />
                     <Text style={styles.countryText}>
@@ -149,7 +143,9 @@ const Registration = ({ navigation }: PhoneVerificationScreenProps) => {
                 </View>
               </View>
 
-              <Text style={styles.label}>Password</Text>
+              <Text style={styles.label}>
+                {t("phoneVerification.passwordLabel")}
+              </Text>
               <View style={styles.passwordContainer}>
                 <Image source={icons.lock} style={styles.lockIcon} />
 
@@ -178,7 +174,7 @@ const Registration = ({ navigation }: PhoneVerificationScreenProps) => {
 
               {/* button set to disabled when either password or phone number not given, button height adjusted based on keyboardvisibility */}
               <Button
-                buttonText="Sign up"
+                buttonText={t("phoneVerification.signUpButton")}
                 handleButton={() => {
                   setVerifyModalVisible(true);
                 }}
@@ -201,12 +197,7 @@ const createStyles = (colors: any) =>
       flex: 1,
       backgroundColor: colors.background,
     },
-    backButton: {
-      position: "absolute",
-      left: 5,
-      top: 40,
-      tintColor: "yellow",
-    },
+
     title: {
       fontSize: 22,
       fontWeight: "bold",
@@ -279,6 +270,7 @@ const createStyles = (colors: any) =>
       fontSize: 18,
       color: colors.textTertiary,
       paddingLeft: 10,
+      letterSpacing: 2,
     },
     inputContainer: {
       flex: 1,
@@ -302,7 +294,7 @@ const createStyles = (colors: any) =>
     placeholderText: {
       position: "absolute",
       left: 0,
-      top: "45%",
+      top: "20%",
       transform: [{ translateY: -9 }],
       fontSize: 18,
       color: colors.textDisabled,
@@ -312,6 +304,7 @@ const createStyles = (colors: any) =>
       fontSize: 18,
       color: colors.textTertiary,
       width: "100%",
+      letterSpacing: 5,
     },
 
     lockIcon: {
@@ -357,12 +350,6 @@ const createStyles = (colors: any) =>
       fontSize: 16,
       color: colors.textPrimary,
     },
-    progressContainer: {
-      width: "100%",
-      alignItems: "center",
-      top: 50,
-      marginBottom: 30,
-    },
   });
 
-export default Registration;
+export default PhoneVerification;
