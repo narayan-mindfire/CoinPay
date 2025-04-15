@@ -9,6 +9,7 @@ import {
   Image,
   TouchableOpacity,
   ImageBackground,
+  SafeAreaView,
 } from "react-native";
 import { Dimensions } from "react-native";
 
@@ -17,88 +18,90 @@ const HomeScreen = () => {
   const { colors } = useTheme();
   const styles = createStyles(colors);
   return (
-    <ScrollView style={styles.container}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
       <ImageBackground
         source={images.bg}
         resizeMode="cover"
-        style={styles.image}
+        style={styles.imageBackground}
       >
-        <View style={styles.contentContainer}>
-          <View style={styles.balanceSection}>
-            <Text style={styles.currency}>US Dollar</Text>
-            <Text style={styles.amount}>$20,000</Text>
-            <TouchableOpacity style={styles.addButton}>
-              <Text style={styles.addText}>Add Money</Text>
-            </TouchableOpacity>
-          </View>
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          <View style={styles.contentContainer}>
+            <View style={styles.balanceSection}>
+              <Text style={styles.currency}>US Dollar</Text>
+              <Text style={styles.amount}>$20,000</Text>
+              <TouchableOpacity style={styles.addButton}>
+                <Text style={styles.addText}>Add Money</Text>
+              </TouchableOpacity>
+            </View>
 
-          <View style={styles.actions}>
-            <ActionButton
-              label="Send"
-              icon="sendMoney"
-              colors={colors}
-              tintColor="primary"
-            />
-            <ActionButton
-              label="Request"
-              icon="getMoney"
-              colors={colors}
-              tintColor="warning"
-            />
-            <ActionButton
-              label="Bank"
-              icon="bank"
-              colors={colors}
-              tintColor="warning"
-            />
-          </View>
-          <View style={styles.transactionHeading}>
-            <Text style={styles.transactionTitle}>Transaction</Text>
-            <TouchableOpacity>
-              <Image
-                source={icons.arrowRight}
-                style={styles.arrowStyles}
-                tintColor={colors.textSecondary}
+            <View style={styles.actions}>
+              <ActionButton
+                label="Send"
+                icon="sendMoney"
+                colors={colors}
+                tintColor="primary"
               />
-            </TouchableOpacity>
+              <ActionButton
+                label="Request"
+                icon="getMoney"
+                colors={colors}
+                tintColor="warning"
+              />
+              <ActionButton
+                label="Bank"
+                icon="bank"
+                colors={colors}
+                tintColor="warning"
+              />
+            </View>
+            <View style={styles.transactionHeading}>
+              <Text style={styles.transactionTitle}>Transaction</Text>
+              <TouchableOpacity>
+                <Image
+                  source={icons.arrowRight}
+                  style={styles.arrowStyles}
+                  tintColor={colors.textSecondary}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.transactionCard}>
+              <TransactionItem
+                icon="creditCardMinus"
+                label="Spending"
+                amount="-500"
+                color="primary"
+                backgroundColor="backgroundAccent"
+                colors={colors}
+              />
+              <TransactionItem
+                icon="coins"
+                label="Income"
+                amount="3000"
+                color="success"
+                colors={colors}
+                backgroundColor="backgroundSuccess"
+              />
+              <TransactionItem
+                icon="invoice"
+                label="Bills"
+                amount="-800"
+                color="error"
+                colors={colors}
+                backgroundColor="backgroundError"
+              />
+              <TransactionItem
+                icon="sack"
+                label="Savings"
+                amount="1000"
+                color="warning"
+                colors={colors}
+                backgroundColor="backgroundWarning"
+              />
+            </View>
           </View>
-          <View style={styles.transactionCard}>
-            <TransactionItem
-              icon="creditCardMinus"
-              label="Spending"
-              amount="-500"
-              color="primary"
-              backgroundColor="backgroundAccent"
-              colors={colors}
-            />
-            <TransactionItem
-              icon="coins"
-              label="Income"
-              amount="3000"
-              color="success"
-              colors={colors}
-              backgroundColor="backgroundSuccess"
-            />
-            <TransactionItem
-              icon="invoice"
-              label="Bills"
-              amount="-800"
-              color="error"
-              colors={colors}
-              backgroundColor="backgroundError"
-            />
-            <TransactionItem
-              icon="sack"
-              label="Savings"
-              amount="1000"
-              color="warning"
-              colors={colors}
-              backgroundColor="backgroundWarning"
-            />
-          </View>
-        </View>
+        </ScrollView>
       </ImageBackground>
-    </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -227,8 +230,17 @@ const { height: screenHeight } = Dimensions.get("window");
 
 const createStyles = (colors: any) =>
   StyleSheet.create({
-    image: {
+    imageBackground: {
+      flex: 1,
       height: screenHeight * 0.3,
+      marginTop: 35,
+    },
+
+    scrollContent: {
+      flexGrow: 1,
+    },
+    image: {
+      tintColor: "rgba(0, 0, 0, .5)",
     },
     container: {
       backgroundColor: colors.background,
@@ -247,7 +259,7 @@ const createStyles = (colors: any) =>
     },
     amount: {
       fontSize: 36,
-      color: "white",
+      color: colors.textPrimary,
       fontWeight: "bold",
       marginVertical: 10,
     },
@@ -257,7 +269,7 @@ const createStyles = (colors: any) =>
       paddingHorizontal: 24,
       borderRadius: 24,
       borderWidth: 2,
-      borderColor: "#fff",
+      borderColor: colors.textPrimary,
     },
     addText: {
       color: "white",

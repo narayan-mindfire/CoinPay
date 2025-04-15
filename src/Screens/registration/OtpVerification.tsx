@@ -116,7 +116,7 @@ const PhoneVerification = ({ navigation, route }: PhoneVerificationProps) => {
       <Button
         buttonText={t("otpVerification.verifyButton")}
         handleButton={() => {
-          navigation.push("AddCountry");
+          navigation.navigate("HomeAddress");
         }}
         outlined={false}
         disabled={!filled}

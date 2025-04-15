@@ -48,7 +48,7 @@ const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [email, setEmail] = useState("");
   const { t } = useTranslation();
-
+  console.log(verifyModal);
   const emailError = validateEmail(email);
   const passwordError = validatePassword(password);
   const phoneError = validatePhone(phone);
@@ -265,6 +265,7 @@ const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
               <Button
                 buttonText={t("phoneVerification.signUpButton")}
                 handleButton={() => {
+                  console.log("sign up button clicked");
                   setVerifyModalVisible(true);
                   addData();
                 }}

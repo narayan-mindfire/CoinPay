@@ -59,14 +59,26 @@ export type CardListProps = NativeStackScreenProps<PrimaryStackParamList, "CardL
 
 export type BottomTabParamList = {
   Home: undefined;
-  Spending: undefined;
+  Statistics: undefined;
   Scan: undefined;
   Support: undefined;
   Profile: undefined;
 };
 
 export type HomeTabScreenProps = BottomTabScreenProps<BottomTabParamList, "Home">;
-export type SpendingTabScreenProps = BottomTabScreenProps<BottomTabParamList, "Spending">;
+export type StaticticsTabScreenProps = BottomTabScreenProps<BottomTabParamList, "Statistics">;
 export type ScanTabScreenProps = BottomTabScreenProps<BottomTabParamList, "Scan">;
 export type SupportTabScreenProps = BottomTabScreenProps<BottomTabParamList, "Support">;
 export type ProfileTabScreenProps = BottomTabScreenProps<BottomTabParamList, "Profile">;
+
+export type StaticsTabParamList = {
+  Spending: undefined;
+  Income: undefined;
+  Bills: undefined;   
+  Savings: undefined;
+};
+
+export type SpendingTabScreenProps = BottomTabScreenProps<StaticsTabParamList, "Spending">;
+export type IncomeTabScreenProps = BottomTabScreenProps<StaticsTabParamList, "Income">;
+export type BillsTabScreenProps = BottomTabScreenProps<StaticsTabParamList, "Bills">;
+export type SavingsTabScreenProps = BottomTabScreenProps<StaticsTabParamList, "Savings">;
