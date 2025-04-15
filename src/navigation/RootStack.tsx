@@ -34,7 +34,7 @@ const RootStack: React.FC = () => {
         theme={systemTheme === "dark" ? DarkThemeCustom : LightThemeCustom}
       >
         <Stack.Navigator id={undefined} screenOptions={{ headerShown: false }}>
-          {!token ? (
+          {token ? (
             <Stack.Screen name="PrimaryStack" component={PrimaryStack} />
           ) : (
             <Stack.Screen name="AuthStack" component={AuthStack} />
