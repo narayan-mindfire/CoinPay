@@ -12,6 +12,7 @@ import { AddEmailProps } from "@/src/navigation/NavigationTypes";
 import { useTheme } from "@react-navigation/native";
 import icons from "@/src/Assets/icons";
 import { useTranslation } from "react-i18next";
+import { validateEmail } from "@/src/utils/formFieldValidators";
 /**
  * AddEmail Screen Component
  * Allows users to add their email to account setup
@@ -22,6 +23,7 @@ const AddEmail = ({ navigation }: AddEmailProps) => {
   const [email, setEmail] = useState("");
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const { t } = useTranslation();
+  const emailError = validateEmail(email);
   /**
    * Effect to listen for keyboard visibility changes.
    */
@@ -54,7 +56,14 @@ const AddEmail = ({ navigation }: AddEmailProps) => {
         <Text style={styles.subtitle}>{t("addEmail.subtitle")}</Text>
         {/* Email Input */}
         <Text style={styles.label}>{t("addEmail.label")}</Text>
-        <View style={styles.emailContainer}>
+        <View
+          style={[
+            styles.emailContainer,
+            {
+              borderColor: emailError ? colors.error : colors.primary,
+            },
+          ]}
+        >
           <Image source={icons.envelope} style={styles.envelopeIcon} />
 
           <View style={styles.inputWrapper}>
@@ -67,10 +76,18 @@ const AddEmail = ({ navigation }: AddEmailProps) => {
               style={styles.emailInput}
               placeholder=""
               value={email}
-              onChangeText={setEmail}
+              onChangeText={(text) => {
+                setEmail(text);
+                validateEmail(text);
+              }}
             />
           </View>
         </View>
+        {emailError ? (
+          <Text style={{ color: colors.error, fontSize: 12 }}>
+            {emailError}
+          </Text>
+        ) : null}
 
         {/* button set to disabled when either password or phone number not given, button height adjusted based on keyboardvisibility */}
         <Button
@@ -79,7 +96,7 @@ const AddEmail = ({ navigation }: AddEmailProps) => {
             navigation.navigate("HomeAddress");
           }}
           outlined={false}
-          disabled={email === ""}
+          disabled={emailError !== ""}
           buttonStyles={{ marginTop: isKeyboardVisible ? 180 : 420 }}
         />
       </View>
@@ -203,48 +220,6 @@ const createStyles = (colors: any) =>
       height: 25,
       marginRight: 10,
       tintColor: colors.border,
-    },
-    eyeIcon: {
-      width: 25,
-      height: 25,
-      tintColor: colors.border,
-    },
-    modalContainer: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: "rgba(0, 0, 0, 0.5)",
-    },
-    modalContent: {
-      width: "80%",
-      backgroundColor: colors.background,
-      borderRadius: 10,
-      borderWidth: 3,
-      borderColor: colors.border,
-      padding: 20,
-      maxHeight: 400,
-    },
-    modalItem: {
-      flexDirection: "row",
-      alignItems: "center",
-      paddingVertical: 10,
-      borderBottomWidth: 1,
-      borderBottomColor: colors.border,
-    },
-    modalFlag: {
-      width: 24,
-      height: 16,
-      marginRight: 10,
-    },
-    modalText: {
-      fontSize: 16,
-      color: colors.textPrimary,
-    },
-    progressContainer: {
-      width: "100%",
-      alignItems: "center",
-      top: 50,
-      marginBottom: 30,
     },
   });
 

@@ -15,6 +15,12 @@ import { useTheme } from "@react-navigation/native";
 import icons from "@/src/Assets/icons";
 import { Calendar } from "react-native-calendars";
 import { useTranslation } from "react-i18next";
+import {
+  validateFullName,
+  validateUserName,
+} from "@/src/utils/formFieldValidators";
+import { RootState, useAppDispatch, useAppSelector } from "@/src/redux/store";
+import { updateUserForm } from "@/src/redux/slices/userFormSlice";
 
 /**
  * PersonalInfo Screen Component
@@ -28,16 +34,19 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
   const [dob, setDob] = useState("");
   const [showCalendar, setShowCalendar] = useState(false);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
   const { t } = useTranslation();
   const formatDate = (dateString) => {
     const [year, month, day] = dateString.split("-");
-    return `${month}-${day}-${year}`;
+    return `${month}/${day}/${year}`;
   };
   const handleDateSelect = (day) => {
     setDob(formatDate(day.dateString));
     setShowCalendar(false);
   };
 
+  const fullNameError = validateFullName(fullName);
+  const userNameError = validateUserName(userName);
   /**
    * Effect to listen for keyboard visibility changes.
    */
@@ -61,6 +70,19 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
       keyboardDidHideListener.remove();
     };
   }, []);
+
+  const dispatch = useAppDispatch();
+  const userForm = useAppSelector((state: RootState) => state.userForm);
+
+  const addData = () => {
+    dispatch(
+      updateUserForm({
+        name: fullName,
+        username: userName,
+        DOB: dob,
+      })
+    );
+  };
 
   const styles = createStyles(colors);
   return (
@@ -98,7 +120,12 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
         <Text style={styles.subtitle}>{t("personalInfo.subtitle")}</Text>
         {/* Full Name Input */}
         <Text style={styles.label}>{t("personalInfo.fullName")}</Text>
-        <View style={styles.emailContainer}>
+        <View
+          style={[
+            styles.emailContainer,
+            { borderColor: fullNameError ? colors.error : colors.primary },
+          ]}
+        >
           <View style={styles.inputWrapper}>
             {!fullName && (
               <Text style={styles.placeholderText}>
@@ -109,13 +136,26 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
               style={styles.emailInput}
               placeholder=""
               value={fullName}
-              onChangeText={setFullName}
+              onChangeText={(text) => {
+                setFullName(text);
+                validateFullName(text);
+              }}
             />
           </View>
         </View>
+        {fullNameError ? (
+          <Text style={{ color: colors.error, fontSize: 12 }}>
+            {fullNameError}
+          </Text>
+        ) : null}
         {/* username input  */}
         <Text style={styles.label}>{t("personalInfo.username")}</Text>
-        <View style={styles.emailContainer}>
+        <View
+          style={[
+            styles.emailContainer,
+            { borderColor: userNameError ? colors.error : colors.primary },
+          ]}
+        >
           <View style={styles.inputWrapper}>
             <Text
               style={[
@@ -138,10 +178,18 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
               style={styles.usernameInput}
               placeholder=""
               value={userName}
-              onChangeText={setUserName}
+              onChangeText={(text) => {
+                setUserName(text);
+                validateUserName(text);
+              }}
             />
           </View>
         </View>
+        {userNameError ? (
+          <Text style={{ color: colors.error, fontSize: 12 }}>
+            {userNameError}
+          </Text>
+        ) : null}
         {/* Date of birth input  */}
         <Text style={styles.label}>{t("personalInfo.dob")}</Text>
         <TouchableOpacity onPress={() => setShowCalendar(true)}>
@@ -162,9 +210,10 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
         buttonText={t("personalInfo.continue")}
         handleButton={() => {
           navigation.navigate("ScanId");
+          addData();
         }}
         outlined={false}
-        disabled={fullName === "" || userName === ""}
+        disabled={fullNameError !== "" || userNameError !== "" || dob === ""}
         buttonStyles={{ marginTop: isKeyboardVisible ? 20 : 280 }}
       />
     </View>

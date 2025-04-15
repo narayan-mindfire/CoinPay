@@ -7,7 +7,7 @@ import images from "@/src/Assets/images";
 import { useTranslation } from "react-i18next";
 
 // take selfie screen that lets the user take selfie as verification and user profile image
-const FinishSetup = ({ navigation }: TakeSelfieScreenProps) => {
+const TakeSelfie = ({ navigation }: TakeSelfieScreenProps) => {
   const { colors, dark } = useTheme();
   const styles = createStyles(colors);
   const { t } = useTranslation();
@@ -25,7 +25,7 @@ const FinishSetup = ({ navigation }: TakeSelfieScreenProps) => {
       </View>
       <TouchableOpacity
         style={styles.scanButtonContainer}
-        onPress={() => navigation.push("FinishSetup")}
+        onPress={() => navigation.push("SelfieCam")}
       >
         <View style={styles.scanButton}>
           <Image source={icons.camera} tintColor={"#fff"} />
@@ -36,7 +36,7 @@ const FinishSetup = ({ navigation }: TakeSelfieScreenProps) => {
   );
 };
 
-export default FinishSetup;
+export default TakeSelfie;
 
 // handled styles to dynamically take color values from theme to remove the need to write inline style
 

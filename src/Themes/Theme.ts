@@ -53,6 +53,9 @@ export const LightThemeCustom : CustomTheme= {
   dark: false,
   colors: {
     ...DefaultTheme.colors,
+
+    card: "rgb(245, 245, 245)",
+
     primary: "rgba(48, 79, 254, 1)",
     secondary: "rgba(253, 216, 53, 1)",
     success: "rgba(67, 160, 72, 1)",
@@ -62,10 +65,10 @@ export const LightThemeCustom : CustomTheme= {
 
     // Background
     background: "rgba(255, 255, 255, 1)",
-    backgroundAccent: "rgba(48, 79, 254, 1)",
-    backgroundSuccess: "rgba(67, 160, 72, 1)",
-    backgroundWarning: "rgba(251, 138, 0, 1)",
-    backgroundError: "rgba(244, 67, 54, 1)",
+    backgroundAccent: "rgba(48, 79, 254, 0.12)",
+    backgroundSuccess: "rgba(184, 218, 186, 0.06)",
+    backgroundWarning: "rgba(251, 138, 0, 0.16)",
+    backgroundError: "rgba(244, 67, 54, 0.15)",
     backgroundInfo: "rgba(184, 184, 184, 1)",
     backgroundModal : "rgba(255, 255, 255, 1)",
 
@@ -98,6 +101,8 @@ export const DarkThemeCustom : CustomTheme = {
   dark: true,
   colors: {
     ...DarkTheme.colors,
+    card: "rgb(78, 77, 77)",
+
     primary: "rgba(48, 79, 254, 1)",
     secondary: "rgba(255, 193, 7, 255)",
     success: "rgba(76, 175, 80, 255)",
@@ -107,10 +112,10 @@ export const DarkThemeCustom : CustomTheme = {
 
     // Background
     background: "rgba(18, 18, 18, 1)",
-    backgroundAccent: "rgba(48, 79, 254, 1)",
-    backgroundSuccess: "rgba(67, 160, 72, 1)",
-    backgroundWarning: "rgba(251, 138, 0, 1)",
-    backgroundError: "rgba(244, 67, 54, 1)",
+    backgroundAccent: "rgba(48, 79, 254, 0.12)",
+    backgroundSuccess: "rgba(184, 218, 186, 0.42)",
+    backgroundWarning: "rgba(251, 138, 0, 0.16)",
+    backgroundError: "rgba(244, 67, 54, 0.15)",
     backgroundInfo: "rgba(184, 184, 184, 1)",
     backgroundModal : "rgba(42, 42, 42, 1)",
 

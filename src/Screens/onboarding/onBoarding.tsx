@@ -125,6 +125,7 @@ const OnboardingScreen: React.FC = ({ navigation }: OnBoardingScreenProps) => {
         keyExtractor={(item) => item.key}
         onViewableItemsChanged={onViewableItemsChanged}
         renderItem={renderItem}
+        removeClippedSubviews={false}
       />
       {/* for changing pagination dots style */}
       <View style={styles.paginationContainer}>
@@ -199,3 +200,18 @@ const createStyles = (colors: any) =>
   });
 
 export default OnboardingScreen;
+
+// import { StyleSheet, Text, View } from "react-native";
+// import React from "react";
+
+// const OnboardingScreen = () => {
+//   return (
+//     <View>
+//       <Text>OnboardingScreen</Text>
+//     </View>
+//   );
+// };
+
+// export default OnboardingScreen;
+
+// const styles = StyleSheet.create({});

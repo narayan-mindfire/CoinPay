@@ -21,6 +21,14 @@ import countryCodes from "@/src/utils/country-code";
 import CountryModal from "@/src/components/CountryModal";
 import PhoneVerificationModal from "@/src/components/verifyPhoneModal";
 import { useTranslation } from "react-i18next";
+import {
+  validateEmail,
+  validatePassword,
+  validatePhone,
+} from "@/src/utils/formFieldValidators";
+import { useDispatch } from "react-redux";
+import { RootState, useAppSelector } from "@/src/redux/store";
+import { updateUserForm } from "@/src/redux/slices/userFormSlice";
 /**
  * PhoneVerification Screen Component
  * Allows users to register using their phone number and password.
@@ -38,7 +46,12 @@ const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
   const [countryModalVisible, setCountryModalVisible] = useState(false);
   const [verifyModal, setVerifyModalVisible] = useState(false);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const [email, setEmail] = useState("");
   const { t } = useTranslation();
+
+  const emailError = validateEmail(email);
+  const passwordError = validatePassword(password);
+  const phoneError = validatePhone(phone);
   /**
    * Effect to listen for keyboard visibility changes.
    */
@@ -62,6 +75,21 @@ const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
       keyboardDidHideListener.remove();
     };
   }, []);
+
+  const dispatch = useDispatch();
+  const userForm = useAppSelector((state: RootState) => state.userForm);
+
+  // Updating user data with email password and phone number
+
+  const addData = () => {
+    dispatch(
+      updateUserForm({
+        email,
+        password,
+        phone: selectedCountry.dialCode + phone,
+      })
+    );
+  };
 
   const styles = createStyles(colors);
   return (
@@ -126,27 +154,81 @@ const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
                 </View>
 
                 {/* Right Box - Phone Input */}
-                <View style={styles.rightBox}>
+                <View
+                  style={[
+                    styles.rightBox,
+                    { borderColor: phoneError ? colors.error : colors.primary },
+                  ]}
+                >
                   {!phone && (
-                    <Text style={styles.placeholderText}>
+                    <Text style={styles.placeholderTextMobile}>
                       {" "}
-                      {"      "}Mobile number
+                      {"      "} {t("phoneVerification.mobilePlaceholder")}
                     </Text>
                   )}
                   <TextInput
-                    style={styles.phoneInput}
+                    style={[styles.phoneInput]}
                     placeholder=""
                     keyboardType="phone-pad"
                     value={phone}
-                    onChangeText={setPhone}
+                    onChangeText={(text) => {
+                      setPhone(text);
+                      validatePhone(text);
+                    }}
                   />
                 </View>
               </View>
+              {phoneError ? (
+                <Text style={{ color: colors.error, fontSize: 12 }}>
+                  {phoneError}
+                </Text>
+              ) : null}
+
+              <Text style={styles.label}>{t("addEmail.label")}</Text>
+              <View
+                style={[
+                  styles.emailContainer,
+                  {
+                    borderColor: emailError ? colors.error : colors.primary,
+                  },
+                ]}
+              >
+                <Image source={icons.envelope} style={styles.envelopeIcon} />
+
+                <View style={styles.inputWrapper}>
+                  {!email && (
+                    <Text style={styles.placeholderText}>
+                      {t("addEmail.placeholder")}
+                    </Text>
+                  )}
+                  <TextInput
+                    style={styles.emailInput}
+                    placeholder=""
+                    value={email}
+                    onChangeText={(text) => {
+                      setEmail(text);
+                      validateEmail(text);
+                    }}
+                  />
+                </View>
+              </View>
+              {emailError ? (
+                <Text style={{ color: colors.error, fontSize: 12 }}>
+                  {emailError}
+                </Text>
+              ) : null}
 
               <Text style={styles.label}>
                 {t("phoneVerification.passwordLabel")}
               </Text>
-              <View style={styles.passwordContainer}>
+              <View
+                style={[
+                  styles.passwordContainer,
+                  {
+                    borderColor: passwordError ? colors.error : colors.primary,
+                  },
+                ]}
+              >
                 <Image source={icons.lock} style={styles.lockIcon} />
 
                 <View style={styles.inputWrapper}>
@@ -154,11 +236,14 @@ const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
                     <Text style={styles.placeholderText}> ◉ ◉ ◉ ◉ ◉ ◉ ◉</Text>
                   )}
                   <TextInput
-                    style={styles.passwordInput}
+                    style={[styles.passwordInput]}
                     placeholder=""
                     secureTextEntry={!passwordVisible}
                     value={password}
-                    onChangeText={setPassword}
+                    onChangeText={(text) => {
+                      setPassword(text);
+                      validatePassword(text);
+                    }}
                   />
                 </View>
 
@@ -171,16 +256,28 @@ const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
                   />
                 </TouchableOpacity>
               </View>
-
+              {passwordError ? (
+                <Text style={{ color: colors.error, fontSize: 12 }}>
+                  {passwordError}
+                </Text>
+              ) : null}
               {/* button set to disabled when either password or phone number not given, button height adjusted based on keyboardvisibility */}
               <Button
                 buttonText={t("phoneVerification.signUpButton")}
                 handleButton={() => {
                   setVerifyModalVisible(true);
+                  addData();
                 }}
                 outlined={false}
-                disabled={password === "" || phone === ""}
-                buttonStyles={{ marginTop: isKeyboardVisible ? 180 : 420 }}
+                disabled={
+                  email === "" ||
+                  password === "" ||
+                  phone === "" ||
+                  emailError !== "" ||
+                  passwordError !== "" ||
+                  phoneError !== ""
+                }
+                buttonStyles={{ marginTop: isKeyboardVisible ? 40 : 320 }}
               />
             </View>
           </View>
@@ -211,6 +308,7 @@ const createStyles = (colors: any) =>
       marginBottom: 20,
     },
     label: {
+      marginTop: 5,
       fontSize: 14,
       fontWeight: "bold",
       color: colors.textPrimary,
@@ -229,7 +327,6 @@ const createStyles = (colors: any) =>
       borderWidth: 2,
       borderColor: colors.border,
       borderRadius: 8,
-      marginBottom: 15,
       height: 50,
       marginRight: "2%",
     },
@@ -243,7 +340,6 @@ const createStyles = (colors: any) =>
       justifyContent: "center",
       paddingHorizontal: 10,
       borderRadius: 8,
-      marginBottom: 15,
       height: 50,
       borderWidth: 2,
       borderColor: colors.border,
@@ -276,6 +372,42 @@ const createStyles = (colors: any) =>
       flex: 1,
       position: "relative",
     },
+    emailContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      borderWidth: 2,
+      borderColor: colors.border,
+      borderRadius: 8,
+      paddingHorizontal: 10,
+      height: 50,
+    },
+    envelopeIcon: {
+      width: 25,
+      height: 25,
+      marginRight: 10,
+      tintColor: colors.border,
+    },
+    emailInput: {
+      fontSize: 18,
+      color: colors.textTertiary,
+      width: "100%",
+    },
+    // phoneInput: {
+    //   flex: 1,
+    //   fontSize: 18,
+    //   color: colors.textTertiary,
+    //   borderWidth: 2,
+    //   borderRadius: 8,
+    //   paddingLeft: 10,
+    //   letterSpacing: 2,
+    // },
+    // passwordInput: {
+    //   fontSize: 18,
+    //   color: colors.textTertiary,
+    //   borderWidth: 2,
+    //   borderRadius: 8,
+    //   padding: 10,
+    // },
     passwordContainer: {
       flexDirection: "row",
       alignItems: "center",
@@ -299,7 +431,13 @@ const createStyles = (colors: any) =>
       fontSize: 18,
       color: colors.textDisabled,
     },
-
+    placeholderTextMobile: {
+      position: "absolute",
+      top: "45%",
+      transform: [{ translateY: -9 }],
+      fontSize: 18,
+      color: colors.textDisabled,
+    },
     passwordInput: {
       fontSize: 18,
       color: colors.textTertiary,
