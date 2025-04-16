@@ -84,7 +84,7 @@ export const LightThemeCustom : CustomTheme= {
     textSuccess: "rgba(27, 94, 33, 1)",
 
     // Border & Divider
-    border: "rgba(208, 208, 208, 1)",
+    border: "rgb(187, 186, 186)",
     borderAccent: "rgba(87, 108, 255, 1)",
     borderSuccess: "rgba(102, 187, 107, 1)",
     borderWarning: "rgba(255, 165, 37, 1)",
@@ -113,7 +113,7 @@ export const DarkThemeCustom : CustomTheme = {
     // Background
     background: "rgba(18, 18, 18, 1)",
     backgroundAccent: "rgba(48, 79, 254, 0.12)",
-    backgroundSuccess: "rgba(184, 218, 186, 0.42)",
+    backgroundSuccess: "rgba(184, 218, 186, 0.10)",
     backgroundWarning: "rgba(251, 138, 0, 0.16)",
     backgroundError: "rgba(244, 67, 54, 0.15)",
     backgroundInfo: "rgba(184, 184, 184, 1)",

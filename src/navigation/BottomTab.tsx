@@ -1,19 +1,13 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useTheme } from "@react-navigation/native";
-import {
-  Image,
-  ImageSourcePropType,
-  View,
-  Text,
-  Pressable,
-} from "react-native";
+import { Image, ImageSourcePropType, View, Pressable } from "react-native";
 import HomeScreen from "../Screens/BottomTab/HomeScreen";
-import SpendingScreen from "../Screens/BottomTab/SpendingScreen";
 import ScanScreen from "../Screens/BottomTab/ScanScreen";
 import ProfileScreen from "../Screens/BottomTab/ProfileScreen";
 import SupportScreen from "../Screens/BottomTab/SupportScreen";
 import icons from "../Assets/icons";
+import StatisticsTab from "./StatisticsTab";
 
 const Tab = createBottomTabNavigator();
 
@@ -49,7 +43,7 @@ export default function BottomTab() {
             case "Home":
               iconSource = icons.home;
               break;
-            case "Spending":
+            case "StatisticsTab":
               iconSource = icons.chart;
               break;
             case "Scan":
@@ -107,7 +101,7 @@ export default function BottomTab() {
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Spending" component={SpendingScreen} />
+      <Tab.Screen name="StatisticsTab" component={StatisticsTab} />
       <Tab.Screen name="Scan" component={ScanScreen} />
       <Tab.Screen name="Support" component={SupportScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
