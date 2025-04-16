@@ -43,6 +43,11 @@ const icons = {
   twitch: require("./twitch.png"),
   spotify: require("./spotify.png"),
   chrome: require("./chrome.png"),
+  phone: require("./phone.png"),
+  electricity: require("./electricity.png"),
+  tuition: require("./tuition.png"),
+  creditCardPlus: require("./creditCardPlus.png"),
+  
 };
 
 export default icons;

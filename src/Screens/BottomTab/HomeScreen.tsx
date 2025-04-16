@@ -233,6 +233,7 @@ const createStyles = (colors: any) =>
     container: {
       backgroundColor: colors.background,
       flex: 1,
+      marginTop: 40,
     },
     contentContainer: {
       padding: 16,

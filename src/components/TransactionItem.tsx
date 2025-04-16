@@ -2,17 +2,27 @@ import { View, Text, Image, StyleSheet } from "react-native";
 import React from "react";
 import icons from "../Assets/icons";
 import { useTheme } from "@react-navigation/native";
+import { getViewProp } from "react-native-reanimated";
 
 type SpendingItemProps = {
   logo: string;
   name: string;
   time: string;
   amount: string;
+  direction: boolean;
+  giveTint: boolean;
 };
 
-const TransactionItem = ({ logo, name, time, amount }: SpendingItemProps) => {
-  const { colors } = useTheme();
-  const styles = createStyles(colors);
+const TransactionItem = ({
+  logo,
+  name,
+  time,
+  amount,
+  direction,
+  giveTint,
+}: SpendingItemProps) => {
+  const { colors, dark } = useTheme();
+  const styles = createStyles(colors, direction, giveTint);
   return (
     <View style={styles.itemContainer}>
       <View style={styles.leftSection}>
@@ -22,20 +32,22 @@ const TransactionItem = ({ logo, name, time, amount }: SpendingItemProps) => {
           <Text style={styles.time}>{time}</Text>
         </View>
       </View>
-      <Text style={styles.amount}>-{amount}</Text>
+      <Text style={styles.amount}>
+        {direction ? "+" : "-"}
+        {amount}
+      </Text>
     </View>
   );
 };
 
 export default TransactionItem;
 
-const createStyles = (colors: any) =>
+const createStyles = (colors: any, direction: boolean, giveTint: boolean) =>
   StyleSheet.create({
     itemContainer: {
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-
       padding: 16,
       borderRadius: 12,
       borderBottomColor: colors.border,
@@ -51,6 +63,7 @@ const createStyles = (colors: any) =>
       width: 40,
       height: 40,
       borderRadius: 20,
+      tintColor: giveTint ? colors.textPrimary : null,
     },
     name: {
       color: colors.textPrimary,
@@ -62,7 +75,7 @@ const createStyles = (colors: any) =>
       fontSize: 12,
     },
     amount: {
-      color: colors.warning,
+      color: direction ? colors.success : colors.error,
       fontWeight: "600",
       fontSize: 16,
     },

@@ -58,7 +58,7 @@ const Spending = () => {
           bgColor={"secondary"}
         />
       </View>
-      <BarChart data={[20, 20, 30, 40, 20]} />
+      <BarChart data={[20, 20, 30, 40, 20]} screen="spending" />
       <View style={styles.heading}>
         <Text style={styles.listTitle}>Spending list</Text>
         <Image source={icons.filter} style={styles.filterIcon} />
@@ -71,6 +71,8 @@ const Spending = () => {
             name={item.title}
             time={item.dateTime}
             amount={item.amount}
+            direction={false} // false represents outgoing
+            giveTint={false}
           />
         ))}
       </ScrollView>

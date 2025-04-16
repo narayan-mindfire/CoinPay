@@ -4,9 +4,27 @@ import { View, Text, StyleSheet } from "react-native";
 
 interface BarChartProps {
   data: number[];
+  screen: "spending" | "income" | "bills" | "savings";
 }
 
-const BarChart: React.FC<BarChartProps> = ({ data }) => {
+const screenColorMap = (
+  screen: "spending" | "income" | "bills" | "savings"
+) => {
+  switch (screen) {
+    case "spending":
+      return "primary";
+    case "income":
+      return "success";
+    case "bills":
+      return "error";
+    case "savings":
+      return "warning";
+    default:
+      return "gray";
+  }
+};
+
+const BarChart: React.FC<BarChartProps> = ({ data, screen }) => {
   // Find the maximum data value to normalize the bar heights
   const maxDataValue = Math.max(...data);
   const { colors } = useTheme();
@@ -18,6 +36,12 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
     <View style={styles.container}>
       {data.map((value, index) => {
         const barHeight = (value / maxDataValue) * maxBarHeight;
+        const barColor =
+          colors[
+            screenColorMap(
+              screen as "spending" | "income" | "bills" | "savings"
+            )
+          ];
         return (
           <View key={index} style={styles.barContainer}>
             <Text style={styles.valueLabel}>${value}</Text>
@@ -27,7 +51,7 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
                 {
                   height: barHeight,
                   backgroundColor:
-                    index % 2 === 0 ? colors.secondary : colors.primary,
+                    index % 2 === 0 ? colors.secondary : barColor,
                   width: barWidth,
                 },
               ]}

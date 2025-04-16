@@ -37,7 +37,7 @@ const tabItems = [
   },
 ];
 
-const CustomTabBar = ({ state, descriptors, navigation }: any) => {
+const CustomTabBar = ({ state, navigation }: any) => {
   const { colors } = useTheme();
   const styles = createStyles(colors);
 
