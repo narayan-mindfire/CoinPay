@@ -13,7 +13,7 @@ import {
 import { Dimensions } from "react-native";
 
 import images from "@/src/Assets/images";
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const { colors } = useTheme();
   const styles = createStyles(colors);
   return (
@@ -54,7 +54,9 @@ const HomeScreen = () => {
           </View>
           <View style={styles.transactionHeading}>
             <Text style={styles.transactionTitle}>Transaction</Text>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("StatisticsTab")}
+            >
               <Image
                 source={icons.arrowRight}
                 style={styles.arrowStyles}
@@ -70,6 +72,8 @@ const HomeScreen = () => {
               color="primary"
               backgroundColor="backgroundAccent"
               colors={colors}
+              navigation={navigation}
+              screen="Spending"
             />
             <TransactionItem
               icon="coins"
@@ -78,6 +82,8 @@ const HomeScreen = () => {
               color="success"
               colors={colors}
               backgroundColor="backgroundSuccess"
+              navigation={navigation}
+              screen="Income"
             />
             <TransactionItem
               icon="invoice"
@@ -86,6 +92,8 @@ const HomeScreen = () => {
               color="error"
               colors={colors}
               backgroundColor="backgroundError"
+              navigation={navigation}
+              screen="Bills"
             />
             <TransactionItem
               icon="sack"
@@ -94,6 +102,8 @@ const HomeScreen = () => {
               color="warning"
               colors={colors}
               backgroundColor="backgroundWarning"
+              navigation={navigation}
+              screen="Savings"
             />
           </View>
         </View>
@@ -135,6 +145,8 @@ const TransactionItem = ({
   color,
   colors,
   backgroundColor,
+  navigation,
+  screen,
 }: {
   icon: string;
   label: string;
@@ -142,6 +154,8 @@ const TransactionItem = ({
   color: string;
   colors: any;
   backgroundColor: string;
+  navigation: any;
+  screen: any;
 }) => {
   const styles = createTransactionStyles(colors);
   return (
@@ -164,14 +178,20 @@ const TransactionItem = ({
       </View>
       <Text style={styles.transactionLabel}>{label}</Text>
       <View style={{ flexDirection: "row" }}>
-        <Text style={[{ color: colors[color] }]}>
-          {amount.toString().startsWith("-") ? amount : `+${amount}`}
-        </Text>
-        <Image
-          source={icons.angleRight}
-          tintColor={colors.textPrimary}
-          style={styles.angleIcon}
-        />
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("StatisticsTab", { screen: screen })
+          }
+        >
+          <Text style={[{ color: colors[color] }]}>
+            {amount.toString().startsWith("-") ? amount : `+${amount}`}
+          </Text>
+          <Image
+            source={icons.angleRight}
+            tintColor={colors.textPrimary}
+            style={styles.angleIcon}
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );
