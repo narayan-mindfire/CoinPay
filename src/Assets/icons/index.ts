@@ -38,6 +38,11 @@ const icons = {
   angleRight: require("./angleRight.png"),
   netflix: require("./netflix.png"),
   google: require("./google.png"),
+  filter: require("./filter.png"),
+  ytMusic: require("./ytMusic.png"),
+  twitch: require("./twitch.png"),
+  spotify: require("./spotify.png"),
+  chrome: require("./chrome.png"),
 };
 
 export default icons;
