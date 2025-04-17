@@ -1,16 +1,22 @@
 import React from "react";
+
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { ScanIdScreenProps } from "@/src/navigation/NavigationTypes";
-import { useTheme } from "@react-navigation/native";
+
 import icons from "@/src/Assets/icons";
 import images from "@/src/Assets/images";
+
+import { useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
+
+import { ScanIdScreenProps } from "@/src/navigation/NavigationTypes";
 
 // ScanId page that lets you scan a document/identity proof
 const ScanId = ({ navigation }: ScanIdScreenProps) => {
-  const { colors, dark } = useTheme();
-  const styles = createStyles(colors);
   const { t } = useTranslation();
+  const { colors, dark } = useTheme();
+
+  const styles = createStyles(colors);
+
   return (
     <View style={styles.container}>
       <Image
@@ -51,7 +57,6 @@ const createStyles = (colors: any) =>
     },
     image: {
       width: "100%",
-      // height: 150,
       resizeMode: "contain",
       marginBottom: 20,
       marginTop: -70,

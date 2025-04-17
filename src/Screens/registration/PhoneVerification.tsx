@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import {
   View,
   Text,
@@ -12,20 +13,23 @@ import {
   ScrollView,
   Keyboard,
 } from "react-native";
+
 import Button from "@/src/components/Button";
-import { PhoneVerificationScreenProps } from "@/src/navigation/NavigationTypes";
-import { useTheme } from "@react-navigation/native";
 import icons from "@/src/Assets/icons";
 import countryIcons from "@/src/Assets/icons/country-icons";
 import countryCodes from "@/src/utils/country-code";
 import CountryModal from "@/src/components/CountryModal";
 import PhoneVerificationModal from "@/src/components/verifyPhoneModal";
-import { useTranslation } from "react-i18next";
+
+import { PhoneVerificationScreenProps } from "@/src/navigation/NavigationTypes";
 import {
   validateEmail,
   validatePassword,
   validatePhone,
 } from "@/src/utils/formFieldValidators";
+
+import { useTheme } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RootState, useAppSelector } from "@/src/redux/store";
 import { updateUserForm } from "@/src/redux/slices/userFormSlice";
@@ -36,6 +40,8 @@ import { updateUserForm } from "@/src/redux/slices/userFormSlice";
 
 const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
   const { colors } = useTheme();
+  const { t } = useTranslation();
+
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
@@ -47,11 +53,13 @@ const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
   const [verifyModal, setVerifyModalVisible] = useState(false);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [email, setEmail] = useState("");
-  const { t } = useTranslation();
 
   const emailError = validateEmail(email);
   const passwordError = validatePassword(password);
   const phoneError = validatePhone(phone);
+
+  const styles = createStyles(colors);
+
   /**
    * Effect to listen for keyboard visibility changes.
    */
@@ -91,7 +99,6 @@ const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
     );
   };
 
-  const styles = createStyles(colors);
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -392,22 +399,6 @@ const createStyles = (colors: any) =>
       color: colors.textTertiary,
       width: "100%",
     },
-    // phoneInput: {
-    //   flex: 1,
-    //   fontSize: 18,
-    //   color: colors.textTertiary,
-    //   borderWidth: 2,
-    //   borderRadius: 8,
-    //   paddingLeft: 10,
-    //   letterSpacing: 2,
-    // },
-    // passwordInput: {
-    //   fontSize: 18,
-    //   color: colors.textTertiary,
-    //   borderWidth: 2,
-    //   borderRadius: 8,
-    //   padding: 10,
-    // },
     passwordContainer: {
       flexDirection: "row",
       alignItems: "center",
@@ -417,12 +408,10 @@ const createStyles = (colors: any) =>
       paddingHorizontal: 10,
       height: 50,
     },
-
     inputWrapper: {
       flex: 1,
       position: "relative",
     },
-
     placeholderText: {
       position: "absolute",
       left: 0,
@@ -444,14 +433,12 @@ const createStyles = (colors: any) =>
       width: "100%",
       letterSpacing: 5,
     },
-
     lockIcon: {
       width: 25,
       height: 25,
       marginRight: 10,
       tintColor: colors.border,
     },
-
     eyeIcon: {
       width: 25,
       height: 25,

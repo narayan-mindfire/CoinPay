@@ -1,16 +1,19 @@
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useEffect, useState } from "react";
+
 import { View, Text, StyleSheet, TextInput, Keyboard } from "react-native";
-import Button from "@/src/components/Button";
+
 import { HomeAddressScreenProps } from "@/src/navigation/NavigationTypes";
-import { useTheme } from "@react-navigation/native";
-import { useTranslation } from "react-i18next";
+import Button from "@/src/components/Button";
 import {
+  validateAddress,
   validateCity,
   validatePostCode,
 } from "@/src/utils/formFieldValidators";
-import { RootState, useAppDispatch, useAppSelector } from "@/src/redux/store";
+import { useAppDispatch } from "@/src/redux/store";
 import { updateUserForm } from "@/src/redux/slices/userFormSlice";
 
+import { useTheme } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 /**
  * HomeAddress Screen Component
  * Allows users to add their address to account setup
@@ -18,24 +21,19 @@ import { updateUserForm } from "@/src/redux/slices/userFormSlice";
 
 const HomeAddress = ({ navigation }: HomeAddressScreenProps) => {
   const { colors } = useTheme();
+  const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [postCode, setPostCode] = useState("");
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-  const { t } = useTranslation();
-  const [addressError, setAddressError] = useState("");
-
-  // validation functions
-  const validateAddress = (address: string) => {
-    if (address.length < 5) {
-      setAddressError("Enter valid address");
-    } else {
-      setAddressError("");
-    }
-  };
 
   const cityError = validateCity(city);
+  const addressError = validateAddress(address);
   const postCodeError = validatePostCode(postCode);
+
+  const styles = createStyles(colors, addressError, cityError, postCodeError);
   /**
    * Effect to listen for keyboard visibility changes.
    */
@@ -60,8 +58,6 @@ const HomeAddress = ({ navigation }: HomeAddressScreenProps) => {
     };
   }, []);
 
-  const dispatch = useAppDispatch();
-
   const addData = () => {
     dispatch(
       updateUserForm({
@@ -72,131 +68,107 @@ const HomeAddress = ({ navigation }: HomeAddressScreenProps) => {
     );
   };
 
-  const styles = createStyles(colors);
   return (
     <View style={styles.container}>
-      <View style={{ paddingHorizontal: 14 }}>
-        <Text style={styles.title}>{t("homeAddress.title")}</Text>
-        <Text style={styles.subtitle}>{t("homeAddress.subtitle")}</Text>
-        {/* Address Input */}
-        <Text style={styles.label}>{t("homeAddress.addressLabel")}</Text>
-        <View
-          style={[
-            styles.emailContainer,
-            {
-              borderColor: addressError ? colors.error : colors.primary,
-            },
-          ]}
-        >
-          <View style={styles.inputWrapper}>
-            {!address && (
-              <Text style={styles.placeholderText}>
-                {t("homeAddress.addressPlaceholder")}
-              </Text>
-            )}
-            <TextInput
-              style={styles.addressInput}
-              placeholder=""
-              value={address}
-              onChangeText={(text) => {
-                setAddress(text);
-                validateAddress(text);
-              }}
-            />
-          </View>
+      <Text style={styles.title}>{t("homeAddress.title")}</Text>
+      <Text style={styles.subtitle}>{t("homeAddress.subtitle")}</Text>
+      {/* Address Input */}
+      <Text style={styles.label}>{t("homeAddress.addressLabel")}</Text>
+      <View style={[styles.addressContainer]}>
+        <View style={styles.inputWrapper}>
+          {!address && (
+            <Text style={styles.placeholderText}>
+              {t("homeAddress.addressPlaceholder")}
+            </Text>
+          )}
+          <TextInput
+            style={styles.addressInput}
+            placeholder=""
+            value={address}
+            onChangeText={(text) => {
+              setAddress(text);
+              validateAddress(text);
+            }}
+          />
         </View>
-        {addressError ? (
-          <Text style={{ color: colors.error, fontSize: 12 }}>
-            {addressError}
-          </Text>
-        ) : null}
-        {/* city input  */}
-        <Text style={styles.label}>{t("homeAddress.cityLabel")}</Text>
-        <View
-          style={[
-            styles.emailContainer,
-            {
-              borderColor: cityError ? colors.error : colors.primary,
-            },
-          ]}
-        >
-          <View style={styles.inputWrapper}>
-            {!city && (
-              <Text style={styles.placeholderText}>
-                {t("homeAddress.cityPlaceholder")}
-              </Text>
-            )}
-            <TextInput
-              style={styles.addressInput}
-              placeholder=""
-              value={city}
-              onChangeText={(text) => {
-                setCity(text);
-                validateCity(text);
-              }}
-            />
-          </View>
-        </View>
-        {cityError ? (
-          <Text style={{ color: colors.error, fontSize: 12 }}>{cityError}</Text>
-        ) : null}
-        {/* postcode input  */}
-        <Text style={styles.label}>{t("homeAddress.postCodeLabel")}</Text>
-        <View
-          style={[
-            styles.emailContainer,
-            {
-              borderColor: postCodeError ? colors.error : colors.primary,
-            },
-          ]}
-        >
-          <View style={styles.inputWrapper}>
-            {!postCode && (
-              <Text style={styles.placeholderText}>
-                {t("homeAddress.postCodePlaceholder")}
-              </Text>
-            )}
-            <TextInput
-              style={styles.addressInput}
-              placeholder=""
-              value={postCode}
-              onChangeText={(text) => {
-                validatePostCode(text);
-                setPostCode(text);
-              }}
-            />
-          </View>
-        </View>
-        {postCodeError ? (
-          <Text style={{ color: colors.error, fontSize: 12 }}>
-            {postCodeError}
-          </Text>
-        ) : null}
-
-        {/* button set to disabled when either password or phone number not given, button height adjusted based on keyboardvisibility */}
-        <Button
-          buttonText={t("homeAddress.continue")}
-          handleButton={() => {
-            navigation.navigate("PersonalInfo");
-            addData();
-          }}
-          outlined={false}
-          disabled={
-            addressError !== "" || cityError !== "" || postCodeError !== ""
-          }
-          buttonStyles={{ marginTop: isKeyboardVisible ? 20 : 300 }}
-        />
       </View>
+      {addressError ? (
+        <Text style={styles.addressError}>{addressError}</Text>
+      ) : null}
+      {/* city input  */}
+      <Text style={styles.label}>{t("homeAddress.cityLabel")}</Text>
+      <View style={styles.cityContainer}>
+        <View style={styles.inputWrapper}>
+          {!city && (
+            <Text style={styles.placeholderText}>
+              {t("homeAddress.cityPlaceholder")}
+            </Text>
+          )}
+          <TextInput
+            style={styles.addressInput}
+            placeholder=""
+            value={city}
+            onChangeText={(text) => {
+              setCity(text);
+              validateCity(text);
+            }}
+          />
+        </View>
+      </View>
+      {cityError ? <Text style={styles.cityError}>{cityError}</Text> : null}
+      {/* postcode input  */}
+      <Text style={styles.label}>{t("homeAddress.postCodeLabel")}</Text>
+      <View style={styles.postCodeContainer}>
+        <View style={styles.inputWrapper}>
+          {!postCode && (
+            <Text style={styles.placeholderText}>
+              {t("homeAddress.postCodePlaceholder")}
+            </Text>
+          )}
+          <TextInput
+            style={styles.addressInput}
+            placeholder=""
+            value={postCode}
+            onChangeText={(text) => {
+              validatePostCode(text);
+              setPostCode(text);
+            }}
+          />
+        </View>
+      </View>
+      {postCodeError ? (
+        <Text style={styles.postCodeError}>{postCodeError}</Text>
+      ) : null}
+
+      {/* button set to disabled when either password or phone number not given, button height adjusted based on keyboardvisibility */}
+      <Button
+        buttonText={t("homeAddress.continue")}
+        handleButton={() => {
+          navigation.navigate("PersonalInfo");
+          addData();
+        }}
+        outlined={false}
+        disabled={
+          addressError !== "" || cityError !== "" || postCodeError !== ""
+        }
+        buttonStyles={{ marginTop: isKeyboardVisible ? 20 : 300 }}
+      />
     </View>
   );
 };
 
 // handled styles to dynamically take color values from theme to remove the need to write inline style
-const createStyles = (colors: any) =>
+const createStyles = (
+  colors: any,
+  addressError: string,
+  cityError: string,
+  postCodeError: string
+) =>
   StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: colors.background,
+      paddingHorizontal: 14,
     },
     title: {
       fontSize: 22,
@@ -216,14 +188,32 @@ const createStyles = (colors: any) =>
       color: colors.textPrimary,
       marginVertical: 7,
     },
-    emailContainer: {
+    cityContainer: {
       flexDirection: "row",
       alignItems: "center",
       borderWidth: 2,
-      borderColor: colors.border,
       borderRadius: 8,
       paddingHorizontal: 10,
       height: 50,
+      borderColor: cityError ? colors.error : colors.primary,
+    },
+    postCodeContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      borderWidth: 2,
+      borderRadius: 8,
+      paddingHorizontal: 10,
+      height: 50,
+      borderColor: postCodeError ? colors.error : colors.primary,
+    },
+    addressContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      borderWidth: 2,
+      borderRadius: 8,
+      paddingHorizontal: 10,
+      height: 50,
+      borderColor: addressError ? colors.error : colors.primary,
     },
     inputWrapper: {
       flex: 1,
@@ -240,6 +230,18 @@ const createStyles = (colors: any) =>
       fontSize: 18,
       color: colors.textTertiary,
       width: "100%",
+    },
+    addressError: {
+      color: colors.error,
+      fontSize: 12,
+    },
+    cityError: {
+      color: colors.error,
+      fontSize: 12,
+    },
+    postCodeError: {
+      color: colors.error,
+      fontSize: 12,
     },
   });
 

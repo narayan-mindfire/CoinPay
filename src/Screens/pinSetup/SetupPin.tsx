@@ -1,22 +1,29 @@
 import React, { useState } from "react";
+
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { SetupPinScreenProps } from "@/src/navigation/NavigationTypes";
+
+import Button from "@/src/components/Button";
+
+import { useAppDispatch } from "@/src/redux/store";
+import { updateUserForm } from "@/src/redux/slices/userFormSlice";
+
 import { useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
-import Button from "@/src/components/Button";
-import { RootState, useAppDispatch, useAppSelector } from "@/src/redux/store";
-import { updateUserForm } from "@/src/redux/slices/userFormSlice";
+
+import { SetupPinScreenProps } from "@/src/navigation/NavigationTypes";
 /**
  * SetupPin Screen Component
  * Allows users to add their email to account setup
  */
 
 const SetupPin = ({ navigation }: SetupPinScreenProps) => {
-  const { colors, dark } = useTheme();
-  const { t } = useTranslation();
-  const [pin, setPin] = useState("");
-  const styles = createStyles(colors);
   const dispatch = useAppDispatch();
+  const { colors } = useTheme();
+  const { t } = useTranslation();
+
+  const [pin, setPin] = useState("");
+
+  const styles = createStyles(colors);
 
   const addData = () => {
     dispatch(
@@ -177,12 +184,6 @@ const createStyles = (colors: any) =>
       alignItems: "center",
       justifyContent: "center",
     },
-    // keyNumber: {
-    //   fontSize: 48,
-    //   fontWeight: "bold",
-    //   color: "#000",
-    //   textAlign: "center",
-    // },
     keyLetters: {
       fontSize: 10,
       color: "#555",

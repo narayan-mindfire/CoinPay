@@ -1,6 +1,5 @@
-import icons from "@/src/Assets/icons";
-import { useTheme } from "@react-navigation/native";
 import React from "react";
+
 import {
   View,
   Text,
@@ -10,12 +9,17 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
-import { Dimensions } from "react-native";
 
+import { Dimensions } from "react-native";
+import icons from "@/src/Assets/icons";
 import images from "@/src/Assets/images";
+
+import { useTheme } from "@react-navigation/native";
+
 const HomeScreen = ({ navigation }) => {
   const { colors } = useTheme();
   const styles = createStyles(colors);
+
   return (
     <ScrollView style={styles.container}>
       <ImageBackground
@@ -222,9 +226,7 @@ const createTransactionStyles = (colors: any) =>
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      //   marginBottom: 12,
       borderBottomColor: colors.border,
-      //   paddingVertical: 20,
     },
     transactionLabel: {
       color: colors.textSecondary,

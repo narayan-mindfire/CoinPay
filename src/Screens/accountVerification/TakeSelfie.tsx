@@ -1,16 +1,21 @@
 import React from "react";
+
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { TakeSelfieScreenProps } from "@/src/navigation/NavigationTypes";
-import { useTheme } from "@react-navigation/native";
+
 import icons from "@/src/Assets/icons";
 import images from "@/src/Assets/images";
+
 import { useTranslation } from "react-i18next";
+import { useTheme } from "@react-navigation/native";
+
+import { TakeSelfieScreenProps } from "@/src/navigation/NavigationTypes";
 
 // take selfie screen that lets the user take selfie as verification and user profile image
 const TakeSelfie = ({ navigation }: TakeSelfieScreenProps) => {
-  const { colors, dark } = useTheme();
-  const styles = createStyles(colors);
   const { t } = useTranslation();
+  const { colors, dark } = useTheme();
+
+  const styles = createStyles(colors);
   return (
     <View style={styles.container}>
       <Image

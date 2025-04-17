@@ -1,6 +1,8 @@
-import { useTheme } from "@react-navigation/native";
 import React from "react";
+
 import { View, Text, StyleSheet } from "react-native";
+
+import { useTheme } from "@react-navigation/native";
 
 interface BarChartProps {
   data: number[];

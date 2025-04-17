@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   Modal,
   View,
@@ -9,6 +10,7 @@ import {
   TouchableWithoutFeedback,
   StyleSheet,
 } from "react-native";
+
 import { useTheme } from "@react-navigation/native";
 
 //modal component that shows a list of countries with their country dial code

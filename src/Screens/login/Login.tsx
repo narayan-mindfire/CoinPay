@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import {
   View,
   Text,
@@ -12,14 +13,17 @@ import {
   ScrollView,
   Keyboard,
 } from "react-native";
+
 import Button from "@/src/components/Button";
-import { LoginScreenProps } from "@/src/navigation/NavigationTypes";
-import { useTheme } from "@react-navigation/native";
 import icons from "@/src/Assets/icons";
-import { useTranslation } from "react-i18next";
+
 import { validateEmail } from "@/src/utils/formFieldValidators";
 import { loginUser } from "@/src/redux/slices/authSlice";
 import { useAppDispatch } from "@/src/redux/store";
+
+import { useTranslation } from "react-i18next";
+import { useTheme } from "@react-navigation/native";
+
 /**
  * Login Screen Component
  * Allows users to register using their phone number and password.
@@ -27,15 +31,18 @@ import { useAppDispatch } from "@/src/redux/store";
 
 const Login = () => {
   const { colors } = useTheme();
+  const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-  const { t } = useTranslation();
+
   const emailError = validateEmail(email);
 
-  const dispatch = useAppDispatch();
+  const styles = createStyles(colors, emailError);
+
   const handleLogin = () => {
     console.log("logging in user");
     setTimeout(() => {
@@ -46,6 +53,7 @@ const Login = () => {
   /**
    * Effect to listen for keyboard visibility changes.
    */
+
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
@@ -67,7 +75,6 @@ const Login = () => {
     };
   }, []);
 
-  const styles = createStyles(colors);
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -75,88 +82,82 @@ const Login = () => {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView
-          contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+          contentContainerStyle={styles.contentContainer}
           keyboardShouldPersistTaps="handled"
         >
           <View style={styles.container}>
-            <View style={{ paddingHorizontal: 14 }}>
-              <Text style={styles.title}>{t("login.title")}</Text>
-              <Text style={styles.subtitle}>{t("login.subtitle")}</Text>
-              {/* Phone Input */}
-              <Text style={styles.label}>{t("addEmail.label")}</Text>
-              <View
-                style={[
-                  styles.emailContainer,
-                  {
-                    borderColor: emailError ? colors.error : colors.primary,
-                  },
-                ]}
-              >
-                <Image source={icons.envelope} style={styles.envelopeIcon} />
+            <Text style={styles.title}>{t("login.title")}</Text>
+            <Text style={styles.subtitle}>{t("login.subtitle")}</Text>
+            {/* Phone Input */}
+            <Text style={styles.label}>{t("addEmail.label")}</Text>
+            <View
+              style={[
+                styles.emailContainer,
+                {
+                  borderColor: emailError ? colors.error : colors.primary,
+                },
+              ]}
+            >
+              <Image source={icons.envelope} style={styles.envelopeIcon} />
 
-                <View style={styles.inputWrapper}>
-                  {!email && (
-                    <Text style={styles.placeholderText}>
-                      {t("addEmail.placeholder")}
-                    </Text>
-                  )}
-                  <TextInput
-                    style={styles.emailInput}
-                    placeholder=""
-                    value={email}
-                    onChangeText={(text) => {
-                      setEmail(text);
-                      validateEmail(text);
-                    }}
-                  />
-                </View>
+              <View style={styles.inputWrapper}>
+                {!email && (
+                  <Text style={styles.placeholderText}>
+                    {t("addEmail.placeholder")}
+                  </Text>
+                )}
+                <TextInput
+                  style={styles.emailInput}
+                  placeholder=""
+                  value={email}
+                  onChangeText={(text) => {
+                    setEmail(text);
+                    validateEmail(text);
+                  }}
+                />
               </View>
-              {emailError ? (
-                <Text style={{ color: colors.error, fontSize: 12 }}>
-                  {emailError}
-                </Text>
-              ) : null}
-              <Text style={styles.label}>{t("login.passwordLabel")}</Text>
-              <View style={styles.passwordContainer}>
-                <Image source={icons.lock} style={styles.lockIcon} />
-
-                <View style={styles.inputWrapper}>
-                  {!password && (
-                    <Text style={styles.placeholderText}> ◉ ◉ ◉ ◉ ◉ ◉ ◉</Text>
-                  )}
-                  <TextInput
-                    style={styles.passwordInput}
-                    placeholder=""
-                    secureTextEntry={!passwordVisible}
-                    value={password}
-                    onChangeText={setPassword}
-                  />
-                </View>
-
-                <TouchableOpacity
-                  onPress={() => setPasswordVisible(!passwordVisible)}
-                >
-                  <Image
-                    source={passwordVisible ? icons.eyeSlash : icons.eye}
-                    style={styles.eyeIcon}
-                  />
-                </TouchableOpacity>
-              </View>
-              <TouchableOpacity>
-                <Text style={styles.forgotLink}>
-                  {t("login.forgotPassword")}
-                </Text>
-              </TouchableOpacity>
-
-              {/* button set to disabled when either password or phone number not given, button height adjusted based on keyboardvisibility */}
-              <Button
-                buttonText={t("login.loginButton")}
-                handleButton={handleLogin}
-                outlined={false}
-                disabled={password === "" || emailError !== ""}
-                buttonStyles={{ marginTop: isKeyboardVisible ? 60 : 320 }}
-              />
             </View>
+            {emailError ? (
+              <Text style={styles.emailError}>{emailError}</Text>
+            ) : null}
+            <Text style={styles.label}>{t("login.passwordLabel")}</Text>
+            <View style={styles.passwordContainer}>
+              <Image source={icons.lock} style={styles.lockIcon} />
+
+              <View style={styles.inputWrapper}>
+                {!password && (
+                  <Text style={styles.placeholderText}> ◉ ◉ ◉ ◉ ◉ ◉ ◉</Text>
+                )}
+                <TextInput
+                  style={styles.passwordInput}
+                  placeholder=""
+                  secureTextEntry={!passwordVisible}
+                  value={password}
+                  onChangeText={setPassword}
+                />
+              </View>
+
+              <TouchableOpacity
+                onPress={() => setPasswordVisible(!passwordVisible)}
+              >
+                <Image
+                  source={passwordVisible ? icons.eyeSlash : icons.eye}
+                  style={styles.eyeIcon}
+                />
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity>
+              <Text style={styles.forgotLink}>{t("login.forgotPassword")}</Text>
+            </TouchableOpacity>
+
+            {/* button set to disabled when either password or phone number not given, button height adjusted based on keyboardvisibility */}
+            <Button
+              buttonText={t("login.loginButton")}
+              handleButton={handleLogin}
+              outlined={false}
+              disabled={password === "" || emailError !== ""}
+              buttonStyles={{ marginTop: isKeyboardVisible ? 60 : 320 }}
+            />
           </View>
         </ScrollView>
       </TouchableWithoutFeedback>
@@ -165,11 +166,16 @@ const Login = () => {
 };
 
 // handled styles to dynamically take color values from theme to remove the need to write inline style
-const createStyles = (colors: any) =>
+const createStyles = (colors: any, emailError: string) =>
   StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: colors.background,
+      paddingHorizontal: 14,
+    },
+    contentContainer: {
+      flexGrow: 1,
+      justifyContent: "center",
     },
     title: {
       fontSize: 32,
@@ -209,10 +215,10 @@ const createStyles = (colors: any) =>
       flexDirection: "row",
       alignItems: "center",
       borderWidth: 2,
-      borderColor: colors.border,
       borderRadius: 8,
       paddingHorizontal: 10,
       height: 50,
+      borderColor: emailError ? colors.error : colors.primary,
     },
 
     inputContainer: {
@@ -233,11 +239,14 @@ const createStyles = (colors: any) =>
       color: colors.textTertiary,
       width: "100%",
     },
+    emailError: {
+      color: colors.error,
+      fontSize: 12,
+    },
     inputWrapper: {
       flex: 1,
       position: "relative",
     },
-
     placeholderText: {
       position: "absolute",
       left: 0,

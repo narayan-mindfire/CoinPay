@@ -1,5 +1,7 @@
 import React from "react";
+
 import { View, Text, Image, StyleSheet } from "react-native";
+
 import Button from "@/src/components/Button";
 import { WelcomeScreenProps } from "@/src/navigation/NavigationTypes";
 import { useTheme } from "@react-navigation/native";
@@ -9,8 +11,9 @@ import images from "@/src/Assets/images";
 // Welcome page indicating completion of registration process
 const Welcome = ({ navigation }: WelcomeScreenProps) => {
   const { colors, dark } = useTheme();
-  const styles = createStyles(colors);
   const { t } = useTranslation();
+
+  const styles = createStyles(colors);
   return (
     <View style={styles.container}>
       <Image

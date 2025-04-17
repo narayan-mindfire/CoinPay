@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+
 import {
   View,
   Text,
@@ -7,10 +8,13 @@ import {
   TouchableOpacity,
   Keyboard,
 } from "react-native";
-import { useTheme } from "@react-navigation/native";
+
 import { RegistrationScreenProps } from "@/src/navigation/NavigationTypes";
 import Button from "@/src/components/Button";
+
+import { useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
+
 interface PhoneVerificationProps extends RegistrationScreenProps {
   phone?: string;
   countryCode?: string;
@@ -18,16 +22,18 @@ interface PhoneVerificationProps extends RegistrationScreenProps {
 
 const PhoneVerification = ({ navigation, route }: PhoneVerificationProps) => {
   const { colors } = useTheme();
-  const { phone } = (route.params as { phone: string }) || {};
-  const { countryCode } = (route.params as { countryCode: string }) || {};
-  const [code, setCode] = useState(["", "", "", "", "", ""]);
-  const isOriginalState = code.every((digit) => digit === "");
-  const [filled, setFilled] = useState(false);
-  const inputRefs = useRef<Array<TextInput | null>>([]);
-  const styles = createStyles(colors, isOriginalState);
   const { t } = useTranslation();
 
+  const { phone } = (route.params as { phone: string }) || {};
+  const { countryCode } = (route.params as { countryCode: string }) || {};
+
+  const [filled, setFilled] = useState(false);
+  const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const inputRefs = useRef<Array<TextInput | null>>([]);
+
+  const isOriginalState = code.every((digit) => digit === "");
+  const styles = createStyles(colors, isOriginalState);
 
   /**
    * Effect to listen for keyboard visibility changes.

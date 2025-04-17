@@ -1,8 +1,9 @@
-import { View, Text, Image, StyleSheet } from "react-native";
 import React from "react";
+
+import { View, Text, Image, StyleSheet } from "react-native";
 import icons from "../Assets/icons";
+
 import { useTheme } from "@react-navigation/native";
-import { getViewProp } from "react-native-reanimated";
 
 type SpendingItemProps = {
   logo: string;
@@ -21,8 +22,9 @@ const TransactionItem = ({
   direction,
   giveTint,
 }: SpendingItemProps) => {
-  const { colors, dark } = useTheme();
+  const { colors } = useTheme();
   const styles = createStyles(colors, direction, giveTint);
+
   return (
     <View style={styles.itemContainer}>
       <View style={styles.leftSection}>

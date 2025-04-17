@@ -1,10 +1,13 @@
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { useTheme } from "@react-navigation/native";
+
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+
 import MoneyBox from "@/src/components/MoneyBox";
 import BarChart from "@/src/components/BarChart";
-import icons from "@/src/Assets/icons";
 import TransactionItem from "@/src/components/TransactionItem";
+import icons from "@/src/Assets/icons";
+
+import { useTheme } from "@react-navigation/native";
 
 const spendingData = [
   {

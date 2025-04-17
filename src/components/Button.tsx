@@ -1,5 +1,12 @@
-import { Dimensions, StyleSheet, Text, TouchableOpacity } from "react-native";
 import React from "react";
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ViewStyle,
+  TextStyle,
+} from "react-native";
 import { useTheme } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
@@ -21,45 +28,25 @@ const Button = ({
 }: ButtonProps) => {
   const { colors } = useTheme();
   const styles = createStyles(colors);
+
+  const buttonStateStyle = disabled
+    ? styles.buttonDisabled
+    : outlined
+    ? styles.buttonOutlined
+    : styles.buttonFilled;
+
+  const textStateStyle = disabled
+    ? styles.textDisabled
+    : outlined
+    ? styles.textOutlined
+    : styles.textFilled;
+
   return (
     <TouchableOpacity
-      // checks if button needs to be disabled if no then checks for button to be outlined and applies styling conditionally
-      style={[
-        styles.button,
-        disabled
-          ? {
-              backgroundColor: colors.textDisabled,
-              borderColor: colors.textDisabled,
-            }
-          : outlined
-          ? {
-              backgroundColor: "rgba(0, 0, 0, 0)",
-              borderColor: colors.borderAccent,
-              borderWidth: 2,
-            }
-          : {
-              backgroundColor: colors.primary,
-              borderColor: colors.primary,
-            },
-        buttonStyles,
-      ]}
+      style={[styles.buttonBase, buttonStateStyle, buttonStyles as ViewStyle]}
       onPress={disabled ? () => {} : handleButton}
     >
-      {/* conditionally  gives color to button text */}
-      <Text
-        style={[
-          styles.buttonText,
-          {
-            color: disabled
-              ? colors.textTertiary
-              : outlined
-              ? colors.primary
-              : "#fff",
-          },
-        ]}
-      >
-        {buttonText}
-      </Text>
+      <Text style={[styles.buttonText, textStateStyle]}>{buttonText}</Text>
     </TouchableOpacity>
   );
 };
@@ -68,18 +55,38 @@ export default Button;
 
 const createStyles = (colors: any) =>
   StyleSheet.create({
-    button: {
+    buttonBase: {
       margin: 10,
       width: width * 0.8,
       borderWidth: 2,
-      borderColor: colors.primary,
       borderRadius: 30,
       paddingVertical: 15,
       alignItems: "center",
       alignSelf: "center",
     },
+    buttonFilled: {
+      backgroundColor: colors.primary,
+      borderColor: colors.primary,
+    },
+    buttonOutlined: {
+      backgroundColor: "transparent",
+      borderColor: colors.borderAccent,
+    },
+    buttonDisabled: {
+      backgroundColor: colors.textDisabled,
+      borderColor: colors.textDisabled,
+    },
     buttonText: {
       fontSize: 18,
-      fontWeight: 500,
+      fontWeight: "500" as TextStyle["fontWeight"],
+    },
+    textFilled: {
+      color: "#fff",
+    },
+    textOutlined: {
+      color: colors.primary,
+    },
+    textDisabled: {
+      color: colors.textTertiary,
     },
   });

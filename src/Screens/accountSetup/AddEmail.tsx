@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import {
   View,
   Text,
@@ -7,6 +8,7 @@ import {
   TextInput,
   Keyboard,
 } from "react-native";
+
 import Button from "@/src/components/Button";
 import { AddEmailProps } from "@/src/navigation/NavigationTypes";
 import { useTheme } from "@react-navigation/native";
@@ -20,9 +22,11 @@ import { validateEmail } from "@/src/utils/formFieldValidators";
 
 const AddEmail = ({ navigation }: AddEmailProps) => {
   const { colors } = useTheme();
+  const { t } = useTranslation();
+
   const [email, setEmail] = useState("");
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-  const { t } = useTranslation();
+
   const emailError = validateEmail(email);
   /**
    * Effect to listen for keyboard visibility changes.
@@ -51,55 +55,48 @@ const AddEmail = ({ navigation }: AddEmailProps) => {
   const styles = createStyles(colors);
   return (
     <View style={styles.container}>
-      <View style={{ paddingHorizontal: 14 }}>
-        <Text style={styles.title}>{t("addEmail.title")}</Text>
-        <Text style={styles.subtitle}>{t("addEmail.subtitle")}</Text>
-        {/* Email Input */}
-        <Text style={styles.label}>{t("addEmail.label")}</Text>
-        <View
-          style={[
-            styles.emailContainer,
-            {
-              borderColor: emailError ? colors.error : colors.primary,
-            },
-          ]}
-        >
-          <Image source={icons.envelope} style={styles.envelopeIcon} />
-
-          <View style={styles.inputWrapper}>
-            {!email && (
-              <Text style={styles.placeholderText}>
-                {t("addEmail.placeholder")}
-              </Text>
-            )}
-            <TextInput
-              style={styles.emailInput}
-              placeholder=""
-              value={email}
-              onChangeText={(text) => {
-                setEmail(text);
-                validateEmail(text);
-              }}
-            />
-          </View>
+      <Text style={styles.title}>{t("addEmail.title")}</Text>
+      <Text style={styles.subtitle}>{t("addEmail.subtitle")}</Text>
+      {/* Email Input */}
+      <Text style={styles.label}>{t("addEmail.label")}</Text>
+      <View
+        style={[
+          styles.emailContainer,
+          {
+            borderColor: emailError ? colors.error : colors.primary,
+          },
+        ]}
+      >
+        <Image source={icons.envelope} style={styles.envelopeIcon} />
+        <View style={styles.inputWrapper}>
+          {!email && (
+            <Text style={styles.placeholderText}>
+              {t("addEmail.placeholder")}
+            </Text>
+          )}
+          <TextInput
+            style={styles.emailInput}
+            placeholder=""
+            value={email}
+            onChangeText={(text) => {
+              setEmail(text);
+              validateEmail(text);
+            }}
+          />
         </View>
-        {emailError ? (
-          <Text style={{ color: colors.error, fontSize: 12 }}>
-            {emailError}
-          </Text>
-        ) : null}
-
-        {/* button set to disabled when either password or phone number not given, button height adjusted based on keyboardvisibility */}
-        <Button
-          buttonText={t("addEmail.button")}
-          handleButton={() => {
-            navigation.navigate("HomeAddress");
-          }}
-          outlined={false}
-          disabled={emailError !== ""}
-          buttonStyles={{ marginTop: isKeyboardVisible ? 180 : 420 }}
-        />
       </View>
+      {emailError ? <Text style={styles.emailError}>{emailError}</Text> : null}
+
+      {/* button set to disabled when either password or phone number not given, button height adjusted based on keyboardvisibility */}
+      <Button
+        buttonText={t("addEmail.button")}
+        handleButton={() => {
+          navigation.navigate("HomeAddress");
+        }}
+        outlined={false}
+        disabled={emailError !== ""}
+        buttonStyles={{ marginTop: isKeyboardVisible ? 180 : 420 }}
+      />
     </View>
   );
 };
@@ -110,8 +107,8 @@ const createStyles = (colors: any) =>
     container: {
       flex: 1,
       backgroundColor: colors.background,
+      paddingHorizontal: 14,
     },
-
     title: {
       fontSize: 22,
       fontWeight: "bold",
@@ -214,7 +211,10 @@ const createStyles = (colors: any) =>
       color: colors.textTertiary,
       width: "100%",
     },
-
+    emailError: {
+      color: colors.error,
+      fontSize: 12,
+    },
     envelopeIcon: {
       width: 25,
       height: 25,

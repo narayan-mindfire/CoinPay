@@ -1,13 +1,17 @@
-import { useTheme } from "@react-navigation/native";
-import { CameraView, useCameraPermissions } from "expo-camera";
-import { useTranslation } from "react-i18next";
 import { Button, StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import Animated from "react-native-reanimated";
+
+import { CameraView, useCameraPermissions } from "expo-camera";
+
+import { useTheme } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
+
 export default function ScanDoc({ navigation }) {
-  const [permission, requestPermission] = useCameraPermissions();
   const { colors } = useTheme();
-  const styles = createStyles(colors);
   const { t } = useTranslation();
+  const [permission, requestPermission] = useCameraPermissions();
+
+  const styles = createStyles(colors);
+
   if (!permission) {
     return <View />;
   }
@@ -54,9 +58,7 @@ export default function ScanDoc({ navigation }) {
                 <View style={styles.progressBarFill} />
               </View>
               <TouchableOpacity onPress={() => navigation.push("TakeSelfie")}>
-                <Text style={{ color: "white", marginTop: 30 }}>
-                  {t("scanDoc.next")}
-                </Text>
+                <Text style={styles.scanDocText}>{t("scanDoc.next")}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -169,5 +171,6 @@ const createStyles = (colors: any) => {
       height: "100%",
       backgroundColor: colors.primary,
     },
+    scanDocText: { color: "white", marginTop: 30 },
   });
 };
