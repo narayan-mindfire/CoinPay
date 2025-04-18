@@ -47,7 +47,10 @@ const icons = {
   electricity: require("./electricity.png"),
   tuition: require("./tuition.png"),
   creditCardPlus: require("./creditCardPlus.png"),
-  
+  moon: require("./moon.png"),
+  transaction: require("./transaction.png"),
+  settings: require("./settings.png"),
+  edit: require("./edit.png"),
 };
 
 export default icons;

@@ -25,6 +25,7 @@ export interface CustomTheme extends Theme {
       backgroundError: string;
       backgroundInfo: string;
       backgroundModal: string;
+      backgroundPrimary: string,
   
       textPrimary: string;
       textSecondary: string;
@@ -72,6 +73,7 @@ export const LightThemeCustom : CustomTheme= {
     backgroundError: "rgba(244, 67, 54, 0.15)",
     backgroundInfo: "rgba(184, 184, 184, 1)",
     backgroundModal : "rgba(255, 255, 255, 1)",
+    backgroundPrimary: "rgba(170, 190, 245, 0.3)",
 
     // Text & Icon
     text: "rgba(0, 0, 0, 255)",
@@ -120,6 +122,7 @@ export const DarkThemeCustom : CustomTheme = {
     backgroundError: "rgba(244, 67, 54, 0.15)",
     backgroundInfo: "rgba(184, 184, 184, 1)",
     backgroundModal : "rgba(42, 42, 42, 1)",
+    backgroundPrimary: "rgba(170, 190, 245, 0.3)",
 
     // Text & Icon
     text: "rgba(0, 0, 0, 255)",
