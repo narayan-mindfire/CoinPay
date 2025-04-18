@@ -161,7 +161,7 @@ const TransactionItem = ({
   navigation: any;
   screen: any;
 }) => {
-  const styles = createTransactionStyles(colors);
+  const styles = createTransactionStyles(colors, color);
   return (
     <View
       style={[
@@ -181,13 +181,11 @@ const TransactionItem = ({
         <Image source={icons[icon]} tintColor={colors[color]} />
       </View>
       <Text style={styles.transactionLabel}>{label}</Text>
-      <View style={{ flexDirection: "row" }}>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("StatisticsTab", { screen: screen })
-          }
-        >
-          <Text style={[{ color: colors[color] }]}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("StatisticsTab", { screen: screen })}
+      >
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.amountStyles}>
             {amount.toString().startsWith("-") ? amount : `+${amount}`}
           </Text>
           <Image
@@ -195,8 +193,8 @@ const TransactionItem = ({
             tintColor={colors.textPrimary}
             style={styles.angleIcon}
           />
-        </TouchableOpacity>
-      </View>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -220,7 +218,7 @@ const createActionButtonStyles = (colors: any) =>
     },
   });
 
-const createTransactionStyles = (colors: any) =>
+const createTransactionStyles = (colors: any, color: string) =>
   StyleSheet.create({
     transactionItem: {
       flexDirection: "row",
@@ -242,6 +240,9 @@ const createTransactionStyles = (colors: any) =>
     transactionIconStyles: {
       padding: 10,
       borderRadius: 30,
+    },
+    amountStyles: {
+      color: colors[color],
     },
   });
 
@@ -293,7 +294,6 @@ const createStyles = (colors: any) =>
       backgroundColor: colors.backgroundModal,
       borderRadius: 15,
     },
-
     transactionTitle: {
       color: colors.textPrimary,
       fontSize: 23,

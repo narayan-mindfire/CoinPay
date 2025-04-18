@@ -112,6 +112,7 @@ const od = {
       subtext: "ଅପେକ୍ଷା କରନ୍ତୁ, ଏହା ବେଶି ସମୟ ନେବେନାହିଁ",
       next: "ଆଗକୁ",
       requestpermission: "ଅନୁମତି ଦିଅନ୍ତୁ",
+      scanButton: "ସ୍କାନ୍ କରନ୍ତୁ",
     },
     
     selfieCam: {

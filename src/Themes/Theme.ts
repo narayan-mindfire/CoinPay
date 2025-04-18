@@ -4,6 +4,7 @@ import { DefaultTheme, DarkTheme, Theme } from "@react-navigation/native";
 export interface CustomTheme extends Theme {
     dark: boolean;
     colors: {
+      white: string;
       primary: string;
       background: string;
       card: string;
@@ -55,7 +56,7 @@ export const LightThemeCustom : CustomTheme= {
     ...DefaultTheme.colors,
 
     card: "rgb(245, 245, 245)",
-
+    white: "rgb(255, 255, 255)",
     primary: "rgba(48, 79, 254, 1)",
     secondary: "rgba(253, 216, 53, 1)",
     success: "rgba(67, 160, 72, 1)",
@@ -101,6 +102,7 @@ export const DarkThemeCustom : CustomTheme = {
   dark: true,
   colors: {
     ...DarkTheme.colors,
+    white: "rgb(255, 255, 255)",
     card: "rgb(78, 77, 77)",
 
     primary: "rgba(48, 79, 254, 1)",

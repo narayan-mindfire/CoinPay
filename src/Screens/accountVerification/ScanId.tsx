@@ -1,14 +1,14 @@
 import React from "react";
 
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, Image, StyleSheet } from "react-native";
 
-import icons from "@/src/Assets/icons";
 import images from "@/src/Assets/images";
 
 import { useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
 import { ScanIdScreenProps } from "@/src/navigation/NavigationTypes";
+import CamButton from "@/src/components/CamButton";
 
 // ScanId page that lets you scan a document/identity proof
 const ScanId = ({ navigation }: ScanIdScreenProps) => {
@@ -29,17 +29,12 @@ const ScanId = ({ navigation }: ScanIdScreenProps) => {
       <View style={styles.subtitleContainer}>
         <Text style={styles.subtitle}>{t("scanId.subtitle")}</Text>
       </View>
-      <TouchableOpacity
-        style={styles.scanButtonContainer}
-        onPress={() => {
-          navigation.navigate("ScanDoc");
-        }}
-      >
-        <View style={styles.scanButton}>
-          <Image source={icons.scanQr} tintColor="#fff" />
-        </View>
-        <Text style={styles.scanStyle}>{t("scanId.scanButton")}</Text>
-      </TouchableOpacity>
+      <CamButton
+        navigation={navigation}
+        to="ScanDoc"
+        icon="scanQr"
+        text="Scan"
+      />
     </View>
   );
 };
@@ -80,24 +75,5 @@ const createStyles = (colors: any) =>
       textAlign: "center",
       marginBottom: 30,
       paddingHorizontal: 10,
-    },
-    scanButtonContainer: {
-      justifyContent: "center",
-      alignItems: "center",
-      marginTop: 40,
-    },
-    scanButton: {
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: colors.primary,
-      borderRadius: 25,
-      height: 50,
-      width: 50,
-    },
-    scanStyle: {
-      marginTop: 10,
-      color: colors.textPrimary,
-      fontSize: 18,
-      textAlign: "center",
     },
   });

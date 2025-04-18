@@ -49,7 +49,7 @@ export default function ScanDoc({ navigation }) {
           <View style={styles.scanBox} />
           <View style={styles.buttonContainer}>
             <TouchableOpacity>
-              <Image source={icons.flash} tintColor={"#fff"} />
+              <Image source={icons.flash} style={styles.iconStyle} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.push("SetupPin")}>
               <View style={styles.clickOuter}>
@@ -57,7 +57,7 @@ export default function ScanDoc({ navigation }) {
               </View>
             </TouchableOpacity>
             <TouchableOpacity>
-              <Image source={icons.retry} tintColor={"#fff"} />
+              <Image source={icons.retry} style={styles.iconStyle} />
             </TouchableOpacity>
           </View>
         </View>
@@ -140,5 +140,8 @@ const createStyles = (colors: any) =>
       height: 40,
       borderRadius: 20,
       backgroundColor: "rgba(255, 255, 255, 1)",
+    },
+    iconStyle: {
+      tintColor: colors.white,
     },
   });

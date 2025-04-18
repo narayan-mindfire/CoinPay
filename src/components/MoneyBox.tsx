@@ -7,7 +7,7 @@ interface MoneyBoxProps {
   color: string;
   title: string;
   icon: keyof typeof icons;
-  amount: number;
+  amount: string;
   bgColor: string;
 }
 

@@ -1,9 +1,10 @@
-import { Button, StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
 
 import { CameraView, useCameraPermissions } from "expo-camera";
 
 import { useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
+import CamButton from "@/src/components/CamButton";
 
 export default function ScanDoc({ navigation }) {
   const { colors } = useTheme();
@@ -57,9 +58,12 @@ export default function ScanDoc({ navigation }) {
               <View style={styles.progressBarBackground}>
                 <View style={styles.progressBarFill} />
               </View>
-              <TouchableOpacity onPress={() => navigation.push("TakeSelfie")}>
-                <Text style={styles.scanDocText}>{t("scanDoc.next")}</Text>
-              </TouchableOpacity>
+              <CamButton
+                navigation={navigation}
+                to="TakeSelfie"
+                icon="camera"
+                text={t("scanDoc.scanButton")}
+              />
             </View>
           </View>
         </View>
@@ -147,8 +151,8 @@ const createStyles = (colors: any) => {
       alignItems: "center",
     },
     verificationText: {
-      marginTop: 200,
-      color: "#fff",
+      marginTop: 100,
+      color: colors.white,
       fontSize: 18,
       textAlign: "center",
       fontWeight: "600",
