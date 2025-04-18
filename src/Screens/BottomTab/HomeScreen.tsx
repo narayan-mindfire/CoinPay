@@ -1,6 +1,5 @@
-import icons from "@/src/Assets/icons";
-import { useTheme } from "@react-navigation/native";
 import React from "react";
+
 import {
   View,
   Text,
@@ -10,12 +9,17 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
-import { Dimensions } from "react-native";
 
+import { Dimensions } from "react-native";
+import icons from "@/src/Assets/icons";
 import images from "@/src/Assets/images";
+
+import { useTheme } from "@react-navigation/native";
+
 const HomeScreen = ({ navigation }) => {
   const { colors } = useTheme();
   const styles = createStyles(colors);
+
   return (
     <ScrollView style={styles.container}>
       <ImageBackground
@@ -157,7 +161,7 @@ const TransactionItem = ({
   navigation: any;
   screen: any;
 }) => {
-  const styles = createTransactionStyles(colors);
+  const styles = createTransactionStyles(colors, color);
   return (
     <View
       style={[
@@ -177,13 +181,11 @@ const TransactionItem = ({
         <Image source={icons[icon]} tintColor={colors[color]} />
       </View>
       <Text style={styles.transactionLabel}>{label}</Text>
-      <View style={{ flexDirection: "row" }}>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("StatisticsTab", { screen: screen })
-          }
-        >
-          <Text style={[{ color: colors[color] }]}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("StatisticsTab", { screen: screen })}
+      >
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.amountStyles}>
             {amount.toString().startsWith("-") ? amount : `+${amount}`}
           </Text>
           <Image
@@ -191,8 +193,8 @@ const TransactionItem = ({
             tintColor={colors.textPrimary}
             style={styles.angleIcon}
           />
-        </TouchableOpacity>
-      </View>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -216,15 +218,13 @@ const createActionButtonStyles = (colors: any) =>
     },
   });
 
-const createTransactionStyles = (colors: any) =>
+const createTransactionStyles = (colors: any, color: string) =>
   StyleSheet.create({
     transactionItem: {
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      //   marginBottom: 12,
       borderBottomColor: colors.border,
-      //   paddingVertical: 20,
     },
     transactionLabel: {
       color: colors.textSecondary,
@@ -240,6 +240,9 @@ const createTransactionStyles = (colors: any) =>
     transactionIconStyles: {
       padding: 10,
       borderRadius: 30,
+    },
+    amountStyles: {
+      color: colors[color],
     },
   });
 
@@ -291,7 +294,6 @@ const createStyles = (colors: any) =>
       backgroundColor: colors.backgroundModal,
       borderRadius: 15,
     },
-
     transactionTitle: {
       color: colors.textPrimary,
       fontSize: 23,

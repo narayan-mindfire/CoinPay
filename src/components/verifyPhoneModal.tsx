@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   View,
   Text,
@@ -7,10 +8,12 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import { useTheme } from "@react-navigation/native";
+
 import Button from "@/src/components/Button";
 import icons from "@/src/Assets/icons";
 import images from "../Assets/images";
+
+import { useTheme } from "@react-navigation/native";
 import { t } from "i18next";
 
 interface PhoneVerificationModalProps {

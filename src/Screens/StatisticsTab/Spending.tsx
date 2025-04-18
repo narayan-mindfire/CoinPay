@@ -1,10 +1,13 @@
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { useTheme } from "@react-navigation/native";
+
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+
 import MoneyBox from "@/src/components/MoneyBox";
 import BarChart from "@/src/components/BarChart";
 import icons from "@/src/Assets/icons";
 import TransactionItem from "@/src/components/TransactionItem";
+
+import { useTheme } from "@react-navigation/native";
 
 const spendingData = [
   {
@@ -36,6 +39,7 @@ const spendingData = [
 const Spending = () => {
   const { colors } = useTheme();
   const styles = createStyles(colors);
+
   return (
     <View style={styles.container}>
       <View style={styles.title}>

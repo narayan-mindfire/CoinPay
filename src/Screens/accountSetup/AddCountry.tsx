@@ -1,23 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+
 import {
   View,
   Text,
   StyleSheet,
-  Keyboard,
   TouchableOpacity,
   FlatList,
   Pressable,
   Image,
 } from "react-native";
+
 import Button from "@/src/components/Button";
-import { AddEmailProps } from "@/src/navigation/NavigationTypes";
-import { useTheme } from "@react-navigation/native";
 import countryNames from "@/src/utils/country-name";
 import countryIcons from "@/src/Assets/icons/country-icons";
 import icons from "@/src/Assets/icons";
+
+import { useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
-import { RootState, useAppDispatch, useAppSelector } from "@/src/redux/store";
+import { useAppDispatch } from "@/src/redux/store";
 import { updateUserForm } from "@/src/redux/slices/userFormSlice";
+
+import { AddEmailProps } from "@/src/navigation/NavigationTypes";
+
 /**
  * AddCountry Screen Component
  * Allows users to add their email to account setup
@@ -25,15 +29,15 @@ import { updateUserForm } from "@/src/redux/slices/userFormSlice";
 
 const AddCountry = ({ navigation }: AddEmailProps) => {
   const { colors } = useTheme();
+  const { t } = useTranslation();
+
   const [country, setCountry] = useState("IN");
-  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const [isKeyboardVisible] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const handleSelectCountry = (code: string) => {
-    setCountry(code);
-    setShowDropdown(false);
-  };
 
   const dispatch = useAppDispatch();
+  const styles = createStyles(colors);
+
   const addData = () => {
     dispatch(
       updateUserForm({
@@ -41,9 +45,12 @@ const AddCountry = ({ navigation }: AddEmailProps) => {
       })
     );
   };
-  const { t } = useTranslation();
 
-  const styles = createStyles(colors);
+  const handleSelectCountry = (code: string) => {
+    setCountry(code);
+    setShowDropdown(false);
+  };
+
   return (
     <View style={styles.container}>
       <View style={{ paddingHorizontal: 14 }}>
@@ -52,7 +59,6 @@ const AddCountry = ({ navigation }: AddEmailProps) => {
         {/* country Input */}
         <Text style={styles.label}>{t("addCountry.countryLabel")}</Text>
         {/* Country Selection */}
-        {/* Custom Dropdown */}
         <View style={{ position: "relative" }}>
           <TouchableOpacity
             style={styles.countryBox}
@@ -61,11 +67,9 @@ const AddCountry = ({ navigation }: AddEmailProps) => {
             <View style={{ flexDirection: "row" }}>
               <Image
                 source={countryIcons[country]}
-                style={{ width: 24, height: 16, marginRight: 10 }}
+                style={styles.countryIcon}
               />
-              <Text style={{ color: colors.textPrimary, fontSize: 16 }}>
-                {countryNames[country]}
-              </Text>
+              <Text style={styles.country}>{countryNames[country]}</Text>
             </View>
             <View>
               <Image
@@ -94,9 +98,7 @@ const AddCountry = ({ navigation }: AddEmailProps) => {
                       }}
                     >
                       <View style={styles.dropdownItemContainer}>
-                        <View
-                          style={{ flexDirection: "row", alignItems: "center" }}
-                        >
+                        <View style={styles.cont}>
                           <Image
                             source={countryIcons[item]}
                             style={styles.countryIconStyle}
@@ -141,7 +143,6 @@ const createStyles = (colors: any) =>
       flex: 1,
       backgroundColor: colors.background,
     },
-
     title: {
       fontSize: 22,
       fontWeight: "bold",
@@ -161,7 +162,6 @@ const createStyles = (colors: any) =>
       marginBottom: 10,
     },
     countryBox: {
-      // width: "100%%",
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
@@ -172,12 +172,24 @@ const createStyles = (colors: any) =>
       borderWidth: 2,
       borderColor: colors.border,
     },
-
+    country: {
+      color: colors.textPrimary,
+      fontSize: 16,
+    },
+    countryIcon: {
+      width: 24,
+      height: 16,
+      marginRight: 10,
+    },
     iconStyle: {
       width: 25,
       height: 25,
       marginRight: 10,
       tintColor: colors.border,
+    },
+    cont: {
+      flexDirection: "row",
+      alignItems: "center",
     },
     dropDownContainer: {
       position: "absolute",
@@ -185,7 +197,6 @@ const createStyles = (colors: any) =>
       left: 0,
       right: 0,
       backgroundColor: colors.backgroundModal,
-      // borderWidth: 1,
       elevation: 10,
       borderRadius: 8,
       zIndex: 100,

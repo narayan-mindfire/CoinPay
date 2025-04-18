@@ -51,3 +51,11 @@
           return ("");
         }
       };
+
+      export const validateAddress = (address: string) => {
+        if (address.length < 5) {
+          return ("Enter valid address");
+        } else {
+          return("");
+        }
+      };

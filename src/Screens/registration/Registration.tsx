@@ -1,18 +1,25 @@
 import React from "react";
+
 import { View, Text, Image, StyleSheet } from "react-native";
+
 import Button from "@/src/components/Button";
-import { RegistrationScreenProps } from "@/src/navigation/NavigationTypes";
-import { useTheme } from "@react-navigation/native";
 import registrationImages from "@/src/Assets/registration";
+
+import { useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
+
+import { RegistrationScreenProps } from "@/src/navigation/NavigationTypes";
 
 // registration page showing signup and login options
 const Registration = ({ navigation }: RegistrationScreenProps) => {
   const { colors, dark } = useTheme();
+  const { t } = useTranslation();
+
+  const styles = createStyles(colors);
+
   const registrationDark = registrationImages.registrationDark;
   const registration = registrationImages.registration;
-  const styles = createStyles(colors);
-  const { t } = useTranslation();
+
   return (
     <View style={styles.container}>
       <Image

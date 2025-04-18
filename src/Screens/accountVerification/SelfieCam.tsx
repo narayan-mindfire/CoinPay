@@ -1,12 +1,5 @@
 import icons from "@/src/Assets/icons";
-import { useTheme } from "@react-navigation/native";
-import {
-  CameraView,
-  useCameraPermissions,
-  CameraType,
-  FlashMode,
-} from "expo-camera";
-import { useTranslation } from "react-i18next";
+
 import {
   Button,
   Image,
@@ -16,12 +9,20 @@ import {
   View,
 } from "react-native";
 
+import { CameraView, useCameraPermissions } from "expo-camera";
+
+import { useTranslation } from "react-i18next";
+import { useTheme } from "@react-navigation/native";
+
 export default function ScanDoc({ navigation }) {
-  const facing = "front";
-  const [permission, requestPermission] = useCameraPermissions();
-  const { colors } = useTheme();
-  const styles = createStyles(colors);
   const { t } = useTranslation();
+  const { colors } = useTheme();
+
+  const [permission, requestPermission] = useCameraPermissions();
+
+  const styles = createStyles(colors);
+
+  const facing = "front";
   if (!permission) {
     return <View />;
   }
@@ -48,7 +49,7 @@ export default function ScanDoc({ navigation }) {
           <View style={styles.scanBox} />
           <View style={styles.buttonContainer}>
             <TouchableOpacity>
-              <Image source={icons.flash} tintColor={"white"} />
+              <Image source={icons.flash} style={styles.iconStyle} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.push("SetupPin")}>
               <View style={styles.clickOuter}>
@@ -56,7 +57,7 @@ export default function ScanDoc({ navigation }) {
               </View>
             </TouchableOpacity>
             <TouchableOpacity>
-              <Image source={icons.retry} tintColor={"white"} />
+              <Image source={icons.retry} style={styles.iconStyle} />
             </TouchableOpacity>
           </View>
         </View>
@@ -139,5 +140,8 @@ const createStyles = (colors: any) =>
       height: 40,
       borderRadius: 20,
       backgroundColor: "rgba(255, 255, 255, 1)",
+    },
+    iconStyle: {
+      tintColor: colors.white,
     },
   });

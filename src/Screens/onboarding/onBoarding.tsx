@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+
 import {
   View,
   Text,
@@ -7,25 +8,32 @@ import {
   StyleSheet,
   Dimensions,
 } from "react-native";
-import { useFocusEffect, useTheme } from "@react-navigation/native";
-import Button from "@/src/components/Button";
-import { OnBoardingScreenProps } from "@/src/navigation/NavigationTypes";
-import images from "@/src/Assets/images";
-import { useTranslation } from "react-i18next";
 
-const { width } = Dimensions.get("window");
+import images from "@/src/Assets/images";
+import Button from "@/src/components/Button";
+
+import { useTranslation } from "react-i18next";
+import { useFocusEffect, useTheme } from "@react-navigation/native";
+
+import { OnBoardingScreenProps } from "@/src/navigation/NavigationTypes";
 
 interface Slide {
   key: string;
   title: string;
   image: any;
 }
+const { width } = Dimensions.get("window");
 
 // main screen
 const OnboardingScreen: React.FC = ({ navigation }: OnBoardingScreenProps) => {
+  const { t } = useTranslation();
+  const { colors, dark } = useTheme();
+
   const flatListRef = useRef<FlatList>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const { t } = useTranslation();
+
+  const styles = createStyles(colors);
+
   const slidesDark: Slide[] = [
     {
       key: "1",
@@ -61,7 +69,6 @@ const OnboardingScreen: React.FC = ({ navigation }: OnBoardingScreenProps) => {
       image: images.slide1,
     },
   ];
-  const { colors, dark } = useTheme();
 
   const slides = dark ? slidesDark : slidesLight;
 
@@ -112,7 +119,6 @@ const OnboardingScreen: React.FC = ({ navigation }: OnBoardingScreenProps) => {
       setActiveIndex(viewableItems[0].index);
     }
   };
-  const styles = createStyles(colors);
 
   return (
     <View style={styles.container}>
@@ -200,18 +206,3 @@ const createStyles = (colors: any) =>
   });
 
 export default OnboardingScreen;
-
-// import { StyleSheet, Text, View } from "react-native";
-// import React from "react";
-
-// const OnboardingScreen = () => {
-//   return (
-//     <View>
-//       <Text>OnboardingScreen</Text>
-//     </View>
-//   );
-// };
-
-// export default OnboardingScreen;
-
-// const styles = StyleSheet.create({});

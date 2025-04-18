@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   View,
   StyleSheet,
@@ -6,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
+
 import {
   useTheme,
   useNavigation,
@@ -15,6 +17,7 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
+
 import icons from "../Assets/icons";
 
 const numberOfSteps = 12;
@@ -61,10 +64,11 @@ function useInStepScreen() {
 
 export const Progress = () => {
   const { colors } = useTheme();
-  const styles = createStyles(colors);
-  const navigation = useNavigation();
   const { width } = useWindowDimensions();
+  const navigation = useNavigation();
+
   const step = useInStepScreen();
+  const styles = createStyles(colors);
 
   const style = useAnimatedStyle(() => {
     return {

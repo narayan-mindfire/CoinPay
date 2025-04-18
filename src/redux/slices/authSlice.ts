@@ -1,7 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { isAnyOf } from '@reduxjs/toolkit';
+
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth } from '@/firebaseConfig';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 interface AuthState {
     token: string | null;
@@ -80,29 +84,10 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder
-      .addCase(registerUser.pending, state => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(registerUser.fulfilled, state => {
-        state.loading = false;
-      })
-      .addCase(registerUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
-      .addCase(loginUser.pending, state => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
-      })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
@@ -112,6 +97,29 @@ const authSlice = createSlice({
         state.user = action.payload.user;
         state.token = action.payload.token;
       })
+      // Matching all pending states
+      .addMatcher(
+        isAnyOf(registerUser.pending, loginUser.pending),
+        (state) => {
+          state.loading = true;
+          state.error = null;
+        }
+      )
+      //Matching all rejected states
+      .addMatcher(
+        isAnyOf(registerUser.rejected, loginUser.rejected),
+        (state, action) => {
+          state.loading = false;
+          state.error = action.payload as string;
+        }
+      )
+      //Matching all fulfilled states
+      .addMatcher(
+        isAnyOf(registerUser.fulfilled),
+        (state) => {
+          state.loading = false;
+        }
+      );
   },
 });
 
