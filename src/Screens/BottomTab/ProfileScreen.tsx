@@ -14,18 +14,22 @@ import icons from "@/src/Assets/icons";
 import images from "@/src/Assets/images";
 import Button from "@/src/components/Button";
 
-import { useAppDispatch, useAppSelector } from "@/src/redux/store";
+import { RootState, useAppDispatch, useAppSelector } from "@/src/redux/store";
 import { logoutUser } from "@/src/redux/slices/authSlice";
 import { toggleTheme } from "@/src/redux/slices/themeSlice";
 
 import { useTheme } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ProfileIcon from "@/src/components/ProfileIcon";
+import LoaderModal from "@/src/components/LoaderModal";
 
 const ProfileScreen = () => {
   const { colors } = useTheme();
   const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth.user);
   const theme = useAppSelector((state) => state.theme.theme);
+
+  const loading = useAppSelector((state: RootState) => state.auth.loading);
 
   const isDarkMode = theme === "dark";
 
@@ -49,7 +53,7 @@ const ProfileScreen = () => {
       icon: icons.user,
       label: "Personal Info",
       tintColor: "primary",
-      bgColor: "backgroundPrimary",
+      bgColor: "backgroundAccent",
     },
     {
       icon: icons.bank,
@@ -67,7 +71,7 @@ const ProfileScreen = () => {
       icon: icons.settings,
       label: "Settings",
       tintColor: "primary",
-      bgColor: "backgroundPrimary",
+      bgColor: "backgroundAccent",
     },
     {
       icon: icons.lock,
@@ -83,9 +87,9 @@ const ProfileScreen = () => {
         <View style={styles.profileHeader}>
           <Image source={images.profile} style={styles.avatar} />
           <View style={styles.userInfo}>
-            <Text style={styles.name}>Mehedi Hasan</Text>
-            <Text style={styles.email}>helloyouthmind@gmail.com</Text>
-            <Text style={styles.phone}>+8801995867406</Text>
+            <Text style={styles.name}>{user?.name || "Your Name"}</Text>
+            <Text style={styles.email}>{user?.email || "your@email.com"}</Text>
+            <Text style={styles.phone}>{user?.phone || "+91xxxxxxxxxx"}</Text>
           </View>
           <TouchableOpacity style={styles.editIcon}>
             <Image source={icons.edit} style={styles.iconSmall} />
@@ -128,6 +132,7 @@ const ProfileScreen = () => {
         <View style={styles.logoutContainer}>
           <Button handleButton={handleLogout} buttonText="Log Out" />
         </View>
+        <LoaderModal visible={loading} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -142,7 +147,7 @@ const createStyles = (colors) =>
       paddingBottom: 100,
     },
     profileHeader: {
-      backgroundColor: colors.card,
+      backgroundColor: colors.backgroundModal,
       padding: 16,
       borderRadius: 12,
       alignItems: "center",
@@ -189,11 +194,11 @@ const createStyles = (colors) =>
     },
     moonContainer: {
       padding: 10,
-      borderRadius: 5,
+      borderRadius: 20,
       backgroundColor: colors.textDisabled,
     },
     profileItems: {
-      backgroundColor: colors.card,
+      backgroundColor: colors.backgroundModal,
       padding: 16,
       borderRadius: 12,
       marginBottom: 24,

@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   Dimensions,
   StyleSheet,
@@ -7,6 +8,7 @@ import {
   ViewStyle,
   TextStyle,
 } from "react-native";
+
 import { useTheme } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");

@@ -1,5 +1,7 @@
 import React from "react";
+
 import { View, Text, Image, StyleSheet } from "react-native";
+
 import icons from "../Assets/icons";
 import { useTheme } from "@react-navigation/native";
 
@@ -12,6 +14,7 @@ interface MoneyBoxProps {
 }
 
 const MoneyBox = ({ color, title, icon, amount, bgColor }: MoneyBoxProps) => {
+  
   const { colors } = useTheme();
   const styles = createStyles(colors[bgColor], color);
 

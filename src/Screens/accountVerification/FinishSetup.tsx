@@ -71,12 +71,13 @@ const StepItem = ({
 };
 
 const FinishSetup = ({ navigation }: FinishSetupScreenProps) => {
+  const { t } = useTranslation();
   const { colors, dark } = useTheme();
+  const loading = useAppSelector((state: RootState) => state.auth.loading);
+
   const styles = createStyles(colors);
-  const stepStyles = createStepStyles(colors);
 
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const { t } = useTranslation();
 
   const initialSteps: Step[] = [
     { id: 1, label: t("finishSetup.steps.s1"), status: "in-progress" },
@@ -120,12 +121,22 @@ const FinishSetup = ({ navigation }: FinishSetupScreenProps) => {
       };
 
       try {
-        await setDoc(doc(db, "users", userForm.username), userData);
-        console.log("User data saved successfully");
-        dispatch(
+        const result: any = await dispatch(
           registerUser({ email: userForm.email, password: userForm.password })
         );
-        console.log("user created");
+
+        if (registerUser.fulfilled.match(result)) {
+          const uid = result.payload.uid;
+          await setDoc(doc(db, "users", uid), {
+            ...userData,
+            uid,
+            email: userForm.email,
+          });
+          console.log("User data saved successfully in Firestore with UID");
+          navigation.push("Welcome");
+        } else {
+          console.error("Error registering user: ", result.payload);
+        }
       } catch (error) {
         console.error("Error creating user / saving user data:", error);
       }
@@ -155,7 +166,9 @@ const FinishSetup = ({ navigation }: FinishSetupScreenProps) => {
             {...step}
             colors={colors}
             spinning={
-              step.status === "in-progress" && index === currentStepIndex
+              step.status === "in-progress" &&
+              (index === currentStepIndex ||
+                (index === steps.length - 1 && loading))
             }
           />
         ))}

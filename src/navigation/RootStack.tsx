@@ -11,17 +11,12 @@ import { RootStackParamList } from "./NavigationTypes";
 import PrimaryStack from "./PrimaryStack";
 
 import { RootState, useAppDispatch, useAppSelector } from "../redux/store";
-import { loadUserFromStorage } from "../redux/slices/authSlice";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const RootStack: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const token = useAppSelector((state: RootState) => state.authenticator.token);
+  const token = useAppSelector((state: RootState) => state.auth.token);
   //getting user logged in state on app start
   console.log("token", token);
-  useEffect(() => {
-    dispatch(loadUserFromStorage());
-  }, [dispatch]);
   const systemTheme = useColorScheme();
   const theme = useAppSelector((state) => state.theme.theme);
 
