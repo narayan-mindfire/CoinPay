@@ -4,6 +4,7 @@ import { DefaultTheme, DarkTheme, Theme } from "@react-navigation/native";
 export interface CustomTheme extends Theme {
     dark: boolean;
     colors: {
+      white: string;
       primary: string;
       background: string;
       card: string;
@@ -24,6 +25,7 @@ export interface CustomTheme extends Theme {
       backgroundError: string;
       backgroundInfo: string;
       backgroundModal: string;
+      backgroundPrimary: string,
   
       textPrimary: string;
       textSecondary: string;
@@ -55,7 +57,7 @@ export const LightThemeCustom : CustomTheme= {
     ...DefaultTheme.colors,
 
     card: "rgb(245, 245, 245)",
-
+    white: "rgb(255, 255, 255)",
     primary: "rgba(48, 79, 254, 1)",
     secondary: "rgba(253, 216, 53, 1)",
     success: "rgba(67, 160, 72, 1)",
@@ -71,6 +73,7 @@ export const LightThemeCustom : CustomTheme= {
     backgroundError: "rgba(244, 67, 54, 0.15)",
     backgroundInfo: "rgba(184, 184, 184, 1)",
     backgroundModal : "rgba(255, 255, 255, 1)",
+    backgroundPrimary: "rgba(170, 190, 245, 0.3)",
 
     // Text & Icon
     text: "rgba(0, 0, 0, 255)",
@@ -84,7 +87,7 @@ export const LightThemeCustom : CustomTheme= {
     textSuccess: "rgba(27, 94, 33, 1)",
 
     // Border & Divider
-    border: "rgba(208, 208, 208, 1)",
+    border: "rgb(187, 186, 186)",
     borderAccent: "rgba(87, 108, 255, 1)",
     borderSuccess: "rgba(102, 187, 107, 1)",
     borderWarning: "rgba(255, 165, 37, 1)",
@@ -101,6 +104,7 @@ export const DarkThemeCustom : CustomTheme = {
   dark: true,
   colors: {
     ...DarkTheme.colors,
+    white: "rgb(255, 255, 255)",
     card: "rgb(78, 77, 77)",
 
     primary: "rgba(48, 79, 254, 1)",
@@ -113,11 +117,12 @@ export const DarkThemeCustom : CustomTheme = {
     // Background
     background: "rgba(18, 18, 18, 1)",
     backgroundAccent: "rgba(48, 79, 254, 0.12)",
-    backgroundSuccess: "rgba(184, 218, 186, 0.42)",
+    backgroundSuccess: "rgba(184, 218, 186, 0.10)",
     backgroundWarning: "rgba(251, 138, 0, 0.16)",
     backgroundError: "rgba(244, 67, 54, 0.15)",
     backgroundInfo: "rgba(184, 184, 184, 1)",
     backgroundModal : "rgba(42, 42, 42, 1)",
+    backgroundPrimary: "rgba(170, 190, 245, 0.3)",
 
     // Text & Icon
     text: "rgba(0, 0, 0, 255)",

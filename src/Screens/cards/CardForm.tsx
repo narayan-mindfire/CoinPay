@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useEffect, useState } from "react";
+
 import {
   View,
   Text,
@@ -7,12 +8,14 @@ import {
   Keyboard,
   Image,
 } from "react-native";
+
 import Button from "@/src/components/Button";
-import { CardFormScreenProps } from "@/src/navigation/NavigationTypes";
-import { useTheme } from "@react-navigation/native";
-import { useTranslation } from "react-i18next";
 import icons from "@/src/Assets/icons";
 
+import { useTranslation } from "react-i18next";
+import { useTheme } from "@react-navigation/native";
+
+import { CardFormScreenProps } from "@/src/navigation/NavigationTypes";
 /**
  * CardForm Screen Component
  * Allows users to add their card details to the platform
@@ -20,13 +23,16 @@ import icons from "@/src/Assets/icons";
 
 const CardForm = ({ navigation }: CardFormScreenProps) => {
   const { colors } = useTheme();
+  const { t } = useTranslation();
+
   const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
   const [card, setCard] = useState("");
   const [expiry, setExpiry] = useState("");
   const [cvv, setCvv] = useState("");
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-  const { t } = useTranslation();
+
+  const styles = createStyles(colors);
   /**
    * Effect to listen for keyboard visibility changes.
    */
@@ -51,7 +57,6 @@ const CardForm = ({ navigation }: CardFormScreenProps) => {
     };
   }, []);
 
-  const styles = createStyles(colors);
   return (
     <View style={styles.container}>
       <View style={{ paddingHorizontal: 14 }}>

@@ -1,16 +1,21 @@
 import React from "react";
+
 import { View, Text, Image, StyleSheet } from "react-native";
+
 import Button from "@/src/components/Button";
-import { AddCardScreenProps } from "@/src/navigation/NavigationTypes";
+import images from "@/src/Assets/images";
+
 import { useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
-import images from "@/src/Assets/images";
+
+import { AddCardScreenProps } from "@/src/navigation/NavigationTypes";
 
 // AddCard page indicating completion of registration process
 const AddCard = ({ navigation }: AddCardScreenProps) => {
   const { colors, dark } = useTheme();
-  const styles = createStyles(colors);
   const { t } = useTranslation();
+
+  const styles = createStyles(colors);
   return (
     <View style={styles.container}>
       <Image

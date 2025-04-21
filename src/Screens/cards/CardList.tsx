@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import {
   View,
   Text,
@@ -8,17 +9,21 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import Button from "@/src/components/Button";
-import { CardListProps } from "@/src/navigation/NavigationTypes";
-import { useTheme } from "@react-navigation/native";
+
 import icons from "@/src/Assets/icons";
-import { useTranslation } from "react-i18next";
+import Button from "@/src/components/Button";
 import Message from "@/src/components/Message";
+import { CardListProps } from "@/src/navigation/NavigationTypes";
+
+import { useTheme } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 
 const CardList = ({ navigation }: CardListProps) => {
   const { colors } = useTheme();
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const { t } = useTranslation();
+
+  const styles = createStyles(colors);
 
   const [cards, setCards] = useState([
     { id: "1", cardNumber: "**** **** **** 1234", cardType: "visa" },
@@ -43,15 +48,13 @@ const CardList = ({ navigation }: CardListProps) => {
     };
   }, []);
 
-  const styles = createStyles(colors);
-
   return (
     <View style={styles.container}>
-      <View style={{ justifyContent: "center", alignItems: "center" }}>
+      <View style={styles.message}>
         <Message message={t("cardList.successMessage")} type="success" />
       </View>
 
-      <View style={{ paddingHorizontal: 14, flex: 1 }}>
+      <View style={styles.cardsContainer}>
         <Text style={styles.title}>{t("cardList.title")}</Text>
         <Text style={styles.subtitle}>{t("cardList.subtitle")}</Text>
 
@@ -103,6 +106,14 @@ const createStyles = (colors: any) =>
       color: colors.textTertiary,
       marginBottom: 20,
     },
+    message: {
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    cardsContainer: {
+      paddingHorizontal: 14,
+      flex: 1,
+    },
     scrollContainer: {
       maxHeight: 600,
       marginBottom: 20,
@@ -111,8 +122,6 @@ const createStyles = (colors: any) =>
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
-      //   paddingVertical: 12,
-      //   paddingHorizontal: 14,
       height: 50,
       borderRadius: 10,
       backgroundColor: colors.card,

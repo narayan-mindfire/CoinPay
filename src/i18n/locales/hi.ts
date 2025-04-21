@@ -113,6 +113,7 @@ no: "नहीं",
     subtext: "थोड़ा इंतजार करें, यह ज़्यादा समय नहीं लेगा",
     next: "आगे",
     requestpermission: "अनुमति दें",
+    scanButton: "स्कैन करें",
   },
   
   selfieCam: {

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+
 import {
   View,
   Text,
@@ -7,24 +8,32 @@ import {
   TouchableOpacity,
   Keyboard,
 } from "react-native";
-import { useTheme } from "@react-navigation/native";
-import { VerifyCardProps } from "@/src/navigation/NavigationTypes";
+
 import Button from "@/src/components/Button";
+
+import { useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
+
+import { VerifyCardProps } from "@/src/navigation/NavigationTypes";
+
 interface VerifyProps extends VerifyCardProps {
   email: string;
 }
+
 const VerifyCard = ({ navigation, route }: VerifyProps) => {
   const { colors } = useTheme();
-  const { email } = (route.params as { email: string }) || {};
-  const [code, setCode] = useState(["", "", "", "", "", ""]);
-  const isOriginalState = code.every((digit) => digit === "");
-  const [filled, setFilled] = useState(false);
-  const inputRefs = useRef<Array<TextInput | null>>([]);
-  const styles = createStyles(colors, isOriginalState);
   const { t } = useTranslation();
 
+  const { email } = (route.params as { email: string }) || {};
+
+  const [code, setCode] = useState(["", "", "", "", "", ""]);
+  const [filled, setFilled] = useState(false);
+  const inputRefs = useRef<Array<TextInput | null>>([]);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  const isOriginalState = code.every((digit) => digit === "");
+
+  const styles = createStyles(colors, isOriginalState);
 
   /**
    * Effect to listen for keyboard visibility changes.

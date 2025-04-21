@@ -1,16 +1,21 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { TakeSelfieScreenProps } from "@/src/navigation/NavigationTypes";
-import { useTheme } from "@react-navigation/native";
-import icons from "@/src/Assets/icons";
+
+import { View, Text, Image, StyleSheet } from "react-native";
+
 import images from "@/src/Assets/images";
+
 import { useTranslation } from "react-i18next";
+import { useTheme } from "@react-navigation/native";
+
+import { TakeSelfieScreenProps } from "@/src/navigation/NavigationTypes";
+import CamButton from "@/src/components/CamButton";
 
 // take selfie screen that lets the user take selfie as verification and user profile image
 const TakeSelfie = ({ navigation }: TakeSelfieScreenProps) => {
-  const { colors, dark } = useTheme();
-  const styles = createStyles(colors);
   const { t } = useTranslation();
+  const { colors, dark } = useTheme();
+
+  const styles = createStyles(colors);
   return (
     <View style={styles.container}>
       <Image
@@ -23,15 +28,12 @@ const TakeSelfie = ({ navigation }: TakeSelfieScreenProps) => {
       <View style={styles.subtitleContainer}>
         <Text style={styles.subtitle}>{t("takeSelfie.subtitle")}</Text>
       </View>
-      <TouchableOpacity
-        style={styles.scanButtonContainer}
-        onPress={() => navigation.push("SelfieCam")}
-      >
-        <View style={styles.scanButton}>
-          <Image source={icons.camera} tintColor={"#fff"} />
-        </View>
-        <Text style={styles.scanStyle}>{t("takeSelfie.button")}</Text>
-      </TouchableOpacity>
+      <CamButton
+        navigation={navigation}
+        to="SelfieCam"
+        icon="camera"
+        text={t("takeSelfie.button")}
+      />
     </View>
   );
 };
@@ -50,7 +52,6 @@ const createStyles = (colors: any) =>
     },
     image: {
       width: "100%",
-      // height: 150,
       resizeMode: "contain",
       marginBottom: 20,
       marginTop: -50,
@@ -74,24 +75,5 @@ const createStyles = (colors: any) =>
       textAlign: "center",
       marginBottom: 20,
       paddingHorizontal: 10,
-    },
-    scanButtonContainer: {
-      justifyContent: "center",
-      alignItems: "center",
-      marginTop: 40,
-    },
-    scanButton: {
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: colors.primary,
-      borderRadius: 25,
-      height: 50,
-      width: 50,
-    },
-    scanStyle: {
-      marginTop: 5,
-      color: colors.textPrimary,
-      fontSize: 18,
-      textAlign: "center",
     },
   });

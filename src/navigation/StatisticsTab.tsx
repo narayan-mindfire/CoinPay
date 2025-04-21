@@ -1,12 +1,18 @@
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { View, Image, TouchableOpacity, Text, StyleSheet } from "react-native";
+
+import { View, StyleSheet } from "react-native";
+
+import {
+  SpendingScreen,
+  IncomeScreen,
+  BillsScreen,
+  SavingsScreen,
+} from "@/src/Screens/StatisticsTab";
 import icons from "../Assets/icons";
-import SpendingScreen from "../Screens/BottomTab/SpendingScreen";
-import IncomeScreen from "../Screens/StatisticsTab/Income";
-import BillsScreen from "../Screens/StatisticsTab/Bills";
-import SavingsScreen from "../Screens/StatisticsTab/Savings";
+import TabIconButton from "../components/TabIconButton";
+
 import { useTheme } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const Tab = createBottomTabNavigator();
 
@@ -37,7 +43,7 @@ const tabItems = [
   },
 ];
 
-const CustomTabBar = ({ state, descriptors, navigation }: any) => {
+const CustomTabBar = ({ state, navigation }: any) => {
   const { colors } = useTheme();
   const styles = createStyles(colors);
 
@@ -47,48 +53,24 @@ const CustomTabBar = ({ state, descriptors, navigation }: any) => {
         const isFocused = state.index === index;
         const { name, icon, color, bg } = tabItems[index];
 
+        //handling button press -> navigates to corresponding screen if the tab is not focused already
         const onPress = () => {
-          const event = navigation.emit({
-            type: "tabPress",
-            target: route.key,
-            canPreventDefault: true,
-          });
-          if (!isFocused && !event.defaultPrevented) {
+          if (!isFocused) {
             navigation.navigate(route.name);
           }
         };
 
         return (
-          <TouchableOpacity
+          <TabIconButton
             key={route.key}
-            style={styles.tabWrapper}
+            name={name}
+            icon={icons[icon]}
+            isFocused={isFocused}
+            color={color}
+            bg={bg}
             onPress={onPress}
-          >
-            <View
-              style={[
-                styles.tabItem,
-                {
-                  backgroundColor: colors[bg],
-                },
-              ]}
-            >
-              <Image
-                source={icons[icon]}
-                style={{ tintColor: colors[color] }}
-              />
-            </View>
-            <Text
-              style={[
-                styles.label,
-                { color: isFocused ? colors[color] : colors.text },
-              ]}
-            >
-              {name}
-            </Text>
-            {isFocused && (
-              <View style={[styles.dot, { backgroundColor: colors[color] }]} />
-            )}
-          </TouchableOpacity>
+            colors={colors}
+          />
         );
       })}
     </View>
@@ -96,46 +78,35 @@ const CustomTabBar = ({ state, descriptors, navigation }: any) => {
 };
 
 const StatisticsTab = () => {
-  const { colors } = useTheme();
   return (
-    <View style={{ height: 200 }}>
-      <Tab.Navigator
-        id={undefined}
-        screenOptions={{
-          headerShown: false,
-          tabBarStyle: {
-            backgroundColor: colors.backgroundModal,
-            height: 70,
-            width: "90%",
-            marginBottom: 20,
-            borderTopWidth: 0,
-            position: "absolute",
-            borderRadius: 10,
-            marginLeft: "5%",
-            marginRight: "5%",
-            paddingTop: 16,
-          },
-        }}
-        tabBar={(props) => <CustomTabBar {...props} />}
-      >
-        <Tab.Screen name="Spending" component={SpendingScreen} />
-        <Tab.Screen name="Income" component={IncomeScreen} />
-        <Tab.Screen name="Bills" component={BillsScreen} />
-        <Tab.Screen name="Savings" component={SavingsScreen} />
-      </Tab.Navigator>
-    </View>
+    <Tab.Navigator
+      id={undefined}
+      screenOptions={{
+        tabBarStyle: { display: "none" },
+        headerShown: false,
+      }}
+      initialRouteName="Spending"
+      tabBar={(props) => <CustomTabBar {...props} />}
+    >
+      <Tab.Screen name="Spending" component={SpendingScreen} />
+      <Tab.Screen name="Income" component={IncomeScreen} />
+      <Tab.Screen name="Bills" component={BillsScreen} />
+      <Tab.Screen name="Savings" component={SavingsScreen} />
+    </Tab.Navigator>
   );
 };
 
 export default StatisticsTab;
 
-// handled styles to dynamically take color values from theme to remove the need to write inline style
 const createStyles = (colors: any) =>
   StyleSheet.create({
     tabBar: {
+      position: "absolute",
+      width: "90%",
+      alignSelf: "center",
       flexDirection: "row",
       justifyContent: "space-around",
-      backgroundColor: colors.card,
+      backgroundColor: colors.backgroundModal,
       borderRadius: 16,
       paddingVertical: 12,
       marginHorizontal: 10,
@@ -144,6 +115,7 @@ const createStyles = (colors: any) =>
       shadowRadius: 8,
       shadowOffset: { width: 0, height: 2 },
       elevation: 3,
+      top: "48%",
     },
     tabWrapper: {
       alignItems: "center",
@@ -167,5 +139,10 @@ const createStyles = (colors: any) =>
       height: 6,
       borderRadius: 3,
       marginTop: 2,
+    },
+    icon: {
+      width: 24,
+      height: 24,
+      resizeMode: "contain",
     },
   });

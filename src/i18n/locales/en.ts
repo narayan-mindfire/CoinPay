@@ -111,7 +111,8 @@ const en = {
     verificationText: "ID verification \n in progress",
     subtext: "Hold tight, it won’t take long",
     next: "Next",
-    requestpermission: "Grant Permission"
+    requestpermission: "Grant Permission",
+    scanButton: "Scan",
   },
   selfieCam: {
     subtext: "Take your photo at arms length. Make sure your \n whole face is visible"

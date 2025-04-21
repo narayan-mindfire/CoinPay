@@ -1,7 +1,10 @@
-import { Dimensions, StyleSheet, Text, View, Image } from "react-native";
 import React from "react";
-import { useTheme } from "@react-navigation/native";
+
+import { Dimensions, StyleSheet, Text, View, Image } from "react-native";
+
 import icons from "../Assets/icons";
+
+import { useTheme } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
 
@@ -10,20 +13,9 @@ interface messageProps {
   type: "success" | "danger" | "warning" | "primary";
 }
 
-const getTintColor = (type: messageProps["type"]) => {
-  const tintColors: Record<messageProps["type"], string> = {
-    success: "#4CAF50",
-    danger: "#F44336",
-    warning: "#FF9800",
-    primary: "#2196F3",
-  };
-  return tintColors[type];
-};
-
 const Message = ({ message, type }: messageProps) => {
   const { colors } = useTheme();
-  const tintColor = getTintColor(type);
-  const styles = createStyles(colors, tintColor);
+  const styles = createStyles(colors);
 
   return (
     <View style={styles.container}>
@@ -36,7 +28,7 @@ const Message = ({ message, type }: messageProps) => {
 
 export default Message;
 
-const createStyles = (colors: any, tintColor: string) =>
+const createStyles = (colors: any) =>
   StyleSheet.create({
     container: {
       width: width * 0.9,

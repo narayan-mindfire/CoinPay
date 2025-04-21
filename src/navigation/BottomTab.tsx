@@ -43,7 +43,7 @@ export default function BottomTab() {
             case "Home":
               iconSource = icons.home;
               break;
-            case "Statistics":
+            case "StatisticsTab":
               iconSource = icons.chart;
               break;
             case "Scan":
@@ -101,7 +101,7 @@ export default function BottomTab() {
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Statistics" component={StatisticsTab} />
+      <Tab.Screen name="StatisticsTab" component={StatisticsTab} />
       <Tab.Screen name="Scan" component={ScanScreen} />
       <Tab.Screen name="Support" component={SupportScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />

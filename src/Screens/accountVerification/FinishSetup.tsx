@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet, Animated, Easing } from "react-native";
-import { FinishSetupScreenProps } from "@/src/navigation/NavigationTypes";
-import { useTheme } from "@react-navigation/native";
+
 import icons from "@/src/Assets/icons";
 import images from "@/src/Assets/images";
-import { useTranslation } from "react-i18next";
+import { FinishSetupScreenProps } from "@/src/navigation/NavigationTypes";
 import { RootState, useAppDispatch, useAppSelector } from "@/src/redux/store";
-import { doc, setDoc } from "firebase/firestore";
+import { registerUser } from "@/src/redux/slices/authSlice";
 import { db } from "@/firebaseConfig";
-import { loginUser, registerUser } from "@/src/redux/slices/authSlice";
+
+import { useTranslation } from "react-i18next";
+import { doc, setDoc } from "firebase/firestore";
+import { useTheme } from "@react-navigation/native";
 
 type Step = {
   id: number;
@@ -31,6 +33,7 @@ const StepItem = ({
 }) => {
   const spinAnim = new Animated.Value(0);
   const stepStyles = createStepStyles(colors);
+
   useEffect(() => {
     if (spinning) {
       Animated.loop(
@@ -51,30 +54,16 @@ const StepItem = ({
 
   return (
     <View style={stepStyles.row}>
-      <View style={[stepStyles.circle, { backgroundColor: "#333" }]}>
-        <Text style={{ color: "#fff", fontSize: 12 }}>{id}</Text>
+      <View style={stepStyles.circle}>
+        <Text style={stepStyles.idText}>{id}</Text>
       </View>
-
-      <Text style={[stepStyles.label, { color: colors.textPrimary }]}>
-        {label}
-      </Text>
-
+      <Text style={stepStyles.label}>{label}</Text>
       {status === "done" ? (
-        <Image
-          source={icons.check}
-          style={[stepStyles.icon]}
-          tintColor={colors.primary}
-        />
+        <Image source={icons.check} style={stepStyles.icon} />
       ) : (
         <Animated.Image
           source={icons.loading}
-          style={[
-            stepStyles.icon,
-            {
-              tintColor: colors.primary,
-              transform: [{ rotate: spin }],
-            },
-          ]}
+          style={[stepStyles.icon, { transform: [{ rotate: spin }] }]}
         />
       )}
     </View>
@@ -82,11 +71,13 @@ const StepItem = ({
 };
 
 const FinishSetup = ({ navigation }: FinishSetupScreenProps) => {
+  const { t } = useTranslation();
   const { colors, dark } = useTheme();
+  const loading = useAppSelector((state: RootState) => state.auth.loading);
+
   const styles = createStyles(colors);
 
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const { t } = useTranslation();
 
   const initialSteps: Step[] = [
     { id: 1, label: t("finishSetup.steps.s1"), status: "in-progress" },
@@ -110,14 +101,10 @@ const FinishSetup = ({ navigation }: FinishSetupScreenProps) => {
   }, [currentStepIndex, steps]);
 
   const userForm = useAppSelector((state: RootState) => state.userForm);
-  // console.log(userForm);
-
   const dispatch = useAppDispatch();
 
-  //saving user data to firestore and creating user with email password authentication of firebase
   useEffect(() => {
     const timer = setTimeout(async () => {
-      //user object  that will be pushed into firestore
       const userData = {
         DOB: userForm.DOB,
         addressLine: userForm.addressLine,
@@ -134,12 +121,22 @@ const FinishSetup = ({ navigation }: FinishSetupScreenProps) => {
       };
 
       try {
-        await setDoc(doc(db, "users", userForm.username), userData);
-        console.log("User data saved successfully");
-        dispatch(
+        const result: any = await dispatch(
           registerUser({ email: userForm.email, password: userForm.password })
         );
-        console.log("user created");
+
+        if (registerUser.fulfilled.match(result)) {
+          const uid = result.payload.uid;
+          await setDoc(doc(db, "users", uid), {
+            ...userData,
+            uid,
+            email: userForm.email,
+          });
+          console.log("User data saved successfully in Firestore with UID");
+          navigation.push("Welcome");
+        } else {
+          console.error("Error registering user: ", result.payload);
+        }
       } catch (error) {
         console.error("Error creating user / saving user data:", error);
       }
@@ -162,14 +159,16 @@ const FinishSetup = ({ navigation }: FinishSetupScreenProps) => {
         <Text style={styles.subtitle}>{t("scanId.subtitle")}</Text>
       </View>
 
-      <View style={{ width: "90%", marginTop: 20 }}>
+      <View style={styles.stepsContainer}>
         {steps.map((step, index) => (
           <StepItem
             key={step.id}
             {...step}
             colors={colors}
             spinning={
-              step.status === "in-progress" && index === currentStepIndex
+              step.status === "in-progress" &&
+              (index === currentStepIndex ||
+                (index === steps.length - 1 && loading))
             }
           />
         ))}
@@ -180,7 +179,7 @@ const FinishSetup = ({ navigation }: FinishSetupScreenProps) => {
 
 export default FinishSetup;
 
-// Theme-based styles
+// Main screen styles
 const createStyles = (colors: any) =>
   StyleSheet.create({
     container: {
@@ -214,8 +213,13 @@ const createStyles = (colors: any) =>
       marginBottom: 30,
       paddingHorizontal: 10,
     },
+    stepsContainer: {
+      width: "90%",
+      marginTop: 20,
+    },
   });
 
+// StepItem component styles
 const createStepStyles = (colors: any) =>
   StyleSheet.create({
     row: {
@@ -233,13 +237,20 @@ const createStepStyles = (colors: any) =>
       justifyContent: "center",
       alignItems: "center",
       marginRight: 12,
+      backgroundColor: "#333",
+    },
+    idText: {
+      fontSize: 12,
+      color: "#fff",
     },
     label: {
       flex: 1,
       fontSize: 15,
+      color: colors.textPrimary,
     },
     icon: {
       width: 20,
       height: 20,
+      tintColor: colors.primary,
     },
   });

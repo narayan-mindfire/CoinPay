@@ -9,60 +9,62 @@ import {
   TouchableOpacity,
   Modal,
 } from "react-native";
+
 import Button from "@/src/components/Button";
-import { HomeAddressScreenProps } from "@/src/navigation/NavigationTypes";
-import { useTheme } from "@react-navigation/native";
 import icons from "@/src/Assets/icons";
-import { Calendar } from "react-native-calendars";
-import { useTranslation } from "react-i18next";
+
+import { updateUserForm } from "@/src/redux/slices/userFormSlice";
+import { HomeAddressScreenProps } from "@/src/navigation/NavigationTypes";
+import { useAppDispatch } from "@/src/redux/store";
 import {
   validateFullName,
   validateUserName,
 } from "@/src/utils/formFieldValidators";
-import { RootState, useAppDispatch, useAppSelector } from "@/src/redux/store";
-import { updateUserForm } from "@/src/redux/slices/userFormSlice";
 
-/**
- * PersonalInfo Screen Component
- * Allows users to add their name to account setup
- */
+import { useTheme } from "@react-navigation/native";
+import { Calendar } from "react-native-calendars";
+import { useTranslation } from "react-i18next";
 
 const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
+  const { t } = useTranslation();
   const { colors } = useTheme();
+  const dispatch = useAppDispatch();
+
   const [fullName, setFullName] = useState("");
   const [userName, setUserName] = useState("");
   const [dob, setDob] = useState("");
   const [showCalendar, setShowCalendar] = useState(false);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
-  const { t } = useTranslation();
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string) => {
     const [year, month, day] = dateString.split("-");
     return `${month}/${day}/${year}`;
   };
-  const handleDateSelect = (day) => {
+
+  const handleDateSelect = (day: any) => {
     setDob(formatDate(day.dateString));
     setShowCalendar(false);
   };
 
   const fullNameError = validateFullName(fullName);
   const userNameError = validateUserName(userName);
-  /**
-   * Effect to listen for keyboard visibility changes.
-   */
+
+  const styles = createStyles(
+    colors,
+    fullNameError,
+    userNameError,
+    dob,
+    isKeyboardVisible
+  );
+
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
-      () => {
-        setKeyboardVisible(true);
-      }
+      () => setKeyboardVisible(true)
     );
-
     const keyboardDidHideListener = Keyboard.addListener(
       "keyboardDidHide",
-      () => {
-        setKeyboardVisible(false);
-      }
+      () => setKeyboardVisible(false)
     );
 
     return () => {
@@ -70,9 +72,6 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
       keyboardDidHideListener.remove();
     };
   }, []);
-
-  const dispatch = useAppDispatch();
-  const userForm = useAppSelector((state: RootState) => state.userForm);
 
   const addData = () => {
     dispatch(
@@ -84,7 +83,6 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
     );
   };
 
-  const styles = createStyles(colors);
   return (
     <View style={styles.container}>
       <Modal visible={showCalendar} transparent animationType="slide">
@@ -115,17 +113,13 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
           </View>
         </View>
       </Modal>
-      <View style={{ paddingHorizontal: 14 }}>
+
+      <View style={styles.formContainer}>
         <Text style={styles.title}>{t("personalInfo.title")}</Text>
         <Text style={styles.subtitle}>{t("personalInfo.subtitle")}</Text>
-        {/* Full Name Input */}
+
         <Text style={styles.label}>{t("personalInfo.fullName")}</Text>
-        <View
-          style={[
-            styles.emailContainer,
-            { borderColor: fullNameError ? colors.error : colors.primary },
-          ]}
-        >
+        <View style={styles.nameContainer}>
           <View style={styles.inputWrapper}>
             {!fullName && (
               <Text style={styles.placeholderText}>
@@ -136,41 +130,20 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
               style={styles.emailInput}
               placeholder=""
               value={fullName}
-              onChangeText={(text) => {
-                setFullName(text);
-                validateFullName(text);
-              }}
+              onChangeText={(text) => setFullName(text)}
             />
           </View>
         </View>
         {fullNameError ? (
-          <Text style={{ color: colors.error, fontSize: 12 }}>
-            {fullNameError}
-          </Text>
+          <Text style={styles.errorText}>{fullNameError}</Text>
         ) : null}
-        {/* username input  */}
+
         <Text style={styles.label}>{t("personalInfo.username")}</Text>
-        <View
-          style={[
-            styles.emailContainer,
-            { borderColor: userNameError ? colors.error : colors.primary },
-          ]}
-        >
+        <View style={styles.usernameContainer}>
           <View style={styles.inputWrapper}>
-            <Text
-              style={[
-                styles.placeholderText,
-                {
-                  color: userName ? colors.contentAccent : colors.textDisabled,
-                },
-              ]}
-            >
-              @
-            </Text>
+            <Text style={styles.usernamePrefix}>@</Text>
             {!userName && (
-              <Text style={styles.placeholderText}>
-                {" "}
-                {"   "}
+              <Text style={styles.usernamePlaceholder}>
                 {t("personalInfo.usernamePlaceholder")}
               </Text>
             )}
@@ -178,22 +151,17 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
               style={styles.usernameInput}
               placeholder=""
               value={userName}
-              onChangeText={(text) => {
-                setUserName(text);
-                validateUserName(text);
-              }}
+              onChangeText={(text) => setUserName(text)}
             />
           </View>
         </View>
         {userNameError ? (
-          <Text style={{ color: colors.error, fontSize: 12 }}>
-            {userNameError}
-          </Text>
+          <Text style={styles.errorText}>{userNameError}</Text>
         ) : null}
-        {/* Date of birth input  */}
+
         <Text style={styles.label}>{t("personalInfo.dob")}</Text>
         <TouchableOpacity onPress={() => setShowCalendar(true)}>
-          <View style={styles.emailContainer}>
+          <View style={styles.dobContainer}>
             <Image source={icons.calendar} style={styles.calendarIcon} />
             {!dob && (
               <Text style={styles.datePlaceholderText}>
@@ -205,23 +173,27 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
         </TouchableOpacity>
       </View>
 
-      {/* button set to disabled when either password or phone number not given, button height adjusted based on keyboardvisibility */}
       <Button
         buttonText={t("personalInfo.continue")}
         handleButton={() => {
-          navigation.navigate("ScanId");
           addData();
+          navigation.navigate("ScanId");
         }}
         outlined={false}
-        disabled={fullNameError !== "" || userNameError !== "" || dob === ""}
-        buttonStyles={{ marginTop: isKeyboardVisible ? 20 : 280 }}
+        disabled={!!fullNameError || !!userNameError || dob === ""}
+        buttonStyles={styles.continueButton}
       />
     </View>
   );
 };
 
-// handled styles to dynamically take color values from theme to remove the need to write inline style
-const createStyles = (colors: any) =>
+const createStyles = (
+  colors: any,
+  fullNameError: string,
+  userNameError: string,
+  dob: string,
+  isKeyboardVisible: boolean
+) =>
   StyleSheet.create({
     container: {
       flex: 1,
@@ -235,7 +207,7 @@ const createStyles = (colors: any) =>
     },
     subtitle: {
       fontSize: 18,
-      fontWeight: 400,
+      fontWeight: "400",
       color: colors.textTertiary,
       marginBottom: 20,
     },
@@ -245,21 +217,40 @@ const createStyles = (colors: any) =>
       color: colors.textPrimary,
       marginVertical: 7,
     },
-    emailContainer: {
+    nameContainer: {
       flexDirection: "row",
       alignItems: "center",
       borderWidth: 2,
-      borderColor: colors.border,
       borderRadius: 8,
       paddingHorizontal: 10,
       height: 50,
+      borderColor: fullNameError ? colors.error : colors.primary,
     },
-
+    usernameContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      borderWidth: 2,
+      borderRadius: 8,
+      paddingHorizontal: 10,
+      height: 50,
+      borderColor: userNameError ? colors.error : colors.primary,
+    },
+    dobContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      borderWidth: 2,
+      borderRadius: 8,
+      paddingHorizontal: 10,
+      height: 50,
+      borderColor: dob === "" ? colors.border : colors.primary,
+    },
+    formContainer: {
+      paddingHorizontal: 14,
+    },
     inputWrapper: {
       flex: 1,
       position: "relative",
     },
-
     placeholderText: {
       position: "absolute",
       top: "20%",
@@ -267,10 +258,23 @@ const createStyles = (colors: any) =>
       fontSize: 18,
       color: colors.textDisabled,
     },
+    usernamePrefix: {
+      position: "absolute",
+      top: "20%",
+      left: 0,
+      fontSize: 18,
+      color: colors.contentAccent,
+    },
+    usernamePlaceholder: {
+      position: "absolute",
+      top: "20%",
+      left: 20,
+      fontSize: 18,
+      color: colors.textDisabled,
+    },
     datePlaceholderText: {
       position: "absolute",
-      left: 5,
-      paddingLeft: 38,
+      left: 38,
       top: "43%",
       transform: [{ translateY: -8 }],
       fontSize: 18,
@@ -285,7 +289,11 @@ const createStyles = (colors: any) =>
       fontSize: 18,
       color: colors.textTertiary,
       width: "100%",
-      paddingLeft: 15,
+      paddingLeft: 20,
+    },
+    errorText: {
+      color: colors.error,
+      fontSize: 12,
     },
     modalContainer: {
       flex: 1,
@@ -293,36 +301,11 @@ const createStyles = (colors: any) =>
       alignItems: "center",
       backgroundColor: "rgba(0, 0, 0, 0.5)",
     },
-    modalContent: {
-      width: "80%",
+    calendarWrapper: {
+      width: "85%",
       backgroundColor: colors.backgroundModal,
       borderRadius: 10,
-      borderWidth: 3,
-      borderColor: colors.border,
       padding: 20,
-      maxHeight: 400,
-    },
-    modalItem: {
-      flexDirection: "row",
-      alignItems: "center",
-      paddingVertical: 10,
-      borderBottomWidth: 1,
-      borderBottomColor: colors.border,
-    },
-    modalFlag: {
-      width: 24,
-      height: 16,
-      marginRight: 10,
-    },
-    modalText: {
-      fontSize: 16,
-      color: colors.textPrimary,
-    },
-    progressContainer: {
-      width: "100%",
-      alignItems: "center",
-      top: 50,
-      marginBottom: 30,
     },
     calendarIcon: {
       width: 25,
@@ -330,11 +313,8 @@ const createStyles = (colors: any) =>
       marginRight: 10,
       tintColor: colors.border,
     },
-    calendarWrapper: {
-      width: "85%",
-      backgroundColor: colors.backgroundModal,
-      borderRadius: 10,
-      padding: 20,
+    continueButton: {
+      marginTop: isKeyboardVisible ? 20 : 280,
     },
   });
 
