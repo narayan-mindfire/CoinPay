@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AuthStackParamList } from "./NavigationTypes";
-import OnboardingScreen from "../Screens/OnBoarding/OnBoarding";
+
 import Registration from "../Screens/registration/Registration";
 import PhoneVerification from "../Screens/registration/PhoneVerification";
 import OtpVerification from "../Screens/registration/OtpVerification";
@@ -17,6 +17,7 @@ import SetupPin from "../Screens/pinSetup/SetupPin";
 import Welcome from "../Screens/welcome/Welcome";
 import Login from "../Screens/login/Login";
 import { Progress } from "../components/Progress";
+import OnboardingScreen from "../Screens/OnBoarding/OnBoarding";
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
 

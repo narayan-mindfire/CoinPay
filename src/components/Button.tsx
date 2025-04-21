@@ -1,12 +1,14 @@
 import React from "react";
-
 import {
   Dimensions,
   StyleSheet,
   Text,
   TouchableOpacity,
+  View,
   ViewStyle,
   TextStyle,
+  Image,
+  ImageSourcePropType,
 } from "react-native";
 
 import { useTheme } from "@react-navigation/native";
@@ -18,6 +20,7 @@ interface ButtonProps {
   handleButton: () => any;
   outlined?: boolean;
   disabled?: boolean;
+  icon?: ImageSourcePropType;
   buttonStyles?: object;
 }
 
@@ -26,6 +29,7 @@ const Button = ({
   handleButton,
   outlined,
   disabled,
+  icon,
   buttonStyles = {},
 }: ButtonProps) => {
   const { colors } = useTheme();
@@ -47,8 +51,14 @@ const Button = ({
     <TouchableOpacity
       style={[styles.buttonBase, buttonStateStyle, buttonStyles as ViewStyle]}
       onPress={disabled ? () => {} : handleButton}
+      activeOpacity={0.8}
     >
-      <Text style={[styles.buttonText, textStateStyle]}>{buttonText}</Text>
+      <View style={styles.row}>
+        {icon && (
+          <Image source={icon} style={styles.icon} resizeMode="contain" />
+        )}
+        <Text style={[styles.buttonText, textStateStyle]}>{buttonText}</Text>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -90,5 +100,15 @@ const createStyles = (colors: any) =>
     },
     textDisabled: {
       color: colors.textTertiary,
+    },
+    row: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 10,
+    },
+    icon: {
+      width: 20,
+      height: 20,
+      tintColor: colors.primary,
     },
   });

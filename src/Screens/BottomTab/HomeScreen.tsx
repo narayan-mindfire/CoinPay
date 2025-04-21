@@ -16,6 +16,7 @@ import images from "@/src/Assets/images";
 import ProfileIcon from "@/src/components/ProfileIcon";
 
 import { useTheme } from "@react-navigation/native";
+import ActionButton from "@/src/components/ActionButton";
 
 const HomeScreen = ({ navigation }) => {
   const { colors } = useTheme();
@@ -43,18 +44,24 @@ const HomeScreen = ({ navigation }) => {
               icon="sendMoney"
               colors={colors}
               tintColor="primary"
+              goTo="ChooseRecepient"
+              navigation={navigation}
             />
             <ActionButton
               label="Request"
               icon="getMoney"
               colors={colors}
               tintColor="warning"
+              goTo="ReceiveQR"
+              navigation={navigation}
             />
             <ActionButton
               label="Bank"
               icon="bank"
               colors={colors}
               tintColor="warning"
+              goTo="ChooseRecepient"
+              navigation={navigation}
             />
           </View>
           <View style={styles.transactionHeading}>
@@ -117,32 +124,6 @@ const HomeScreen = ({ navigation }) => {
   );
 };
 
-const ActionButton = ({
-  label,
-  icon,
-  colors,
-  tintColor,
-}: {
-  label: string;
-  icon: string;
-  colors: any;
-  tintColor: string;
-}) => {
-  const styles = createActionButtonStyles(colors);
-  return (
-    <View style={{ alignItems: "center" }}>
-      <View style={styles.actionButton}>
-        <Image
-          source={icons[icon]}
-          tintColor={colors[tintColor]}
-          style={[styles.actionIcon]}
-        />
-      </View>
-      <Text style={styles.actionLabel}>{label}</Text>
-    </View>
-  );
-};
-
 const TransactionItem = ({
   icon,
   label,
@@ -199,25 +180,6 @@ const TransactionItem = ({
   );
 };
 
-const createActionButtonStyles = (colors: any) =>
-  StyleSheet.create({
-    actionIcon: {
-      height: 34,
-      width: 34,
-      padding: 20,
-    },
-    actionButton: {
-      paddingTop: 16,
-      paddingBottom: 4,
-    },
-    actionLabel: {
-      color: colors.textSecondary,
-      fontWeight: 600,
-      textAlign: "center",
-      paddingBottom: 16,
-    },
-  });
-
 const createTransactionStyles = (colors: any, color: string) =>
   StyleSheet.create({
     transactionItem: {
@@ -252,7 +214,7 @@ const createStyles = (colors: any) =>
     container: {
       backgroundColor: colors.background,
       flex: 1,
-      marginTop: 40,
+      marginTop: 20,
     },
     contentContainer: {
       padding: 16,

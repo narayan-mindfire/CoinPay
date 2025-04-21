@@ -43,7 +43,6 @@ const Spending = () => {
   return (
     <View style={styles.container}>
       <View style={styles.title}>
-        <Image source={icons.angleLeft} style={styles.goBackIcon} />
         <Text style={styles.titleLabel}>Spending</Text>
       </View>
       <View style={styles.data}>
@@ -100,7 +99,7 @@ const createStyles = (colors: any) =>
     title: {
       justifyContent: "center",
       alignItems: "center",
-      marginVertical: 40,
+      marginBottom: 40,
     },
     titleLabel: {
       fontSize: 28,
@@ -129,12 +128,5 @@ const createStyles = (colors: any) =>
       fontSize: 24,
       fontWeight: 500,
       color: colors.textPrimary,
-    },
-    goBackIcon: {
-      tintColor: colors.textPrimary,
-      width: 24,
-      height: 24,
-      position: "absolute",
-      left: 20,
     },
   });

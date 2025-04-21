@@ -1,6 +1,6 @@
 const hi = {
   common: {
-    appName: 'QuickLaunchReactNativeKit',
+    appName: 'CoinPay',
     success: 'Success',
     error: 'Error',
     info: 'Information',

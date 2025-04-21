@@ -50,23 +50,47 @@ export type PrimaryStackParamList = {
   VerifyCard: undefined;
   CardList: undefined;
   BottomTab: any;
+  ChooseRecepient: undefined;
+  PurposeSelection: undefined;
+  SendSummary: undefined;
+  ChooseSender: undefined;
+  PurposeSelectionReceive: undefined;
+  ReceiveQR: undefined;
 }
 
 export type AddCardScreenProps = NativeStackScreenProps<PrimaryStackParamList, "AddCard">;
 export type CardFormScreenProps = NativeStackScreenProps<PrimaryStackParamList, "CardForm">;
 export type VerifyCardProps = NativeStackScreenProps<PrimaryStackParamList, "VerifyCard">;
 export type CardListProps = NativeStackScreenProps<PrimaryStackParamList, "CardList">;
+export type ChooseRecepientProps = NativeStackScreenProps<PrimaryStackParamList, "ChooseRecepient">;
+export type PurposeSelectionProps = NativeStackScreenProps<PrimaryStackParamList, "PurposeSelection">;
+export type SendSummaryProps = NativeStackScreenProps<PrimaryStackParamList, "SendSummary">;
+export type ChooseSenderProps = NativeStackScreenProps<PrimaryStackParamList, "ChooseSender">;
+export type PurposeSelectionReceiveProps = NativeStackScreenProps<PrimaryStackParamList, "PurposeSelectionReceive">;
+export type ReceiveQRProps = NativeStackScreenProps<PrimaryStackParamList, "ReceiveQR">;
 
 export type BottomTabParamList = {
   Home: undefined;
-  Spending: undefined;
+  Statistics: undefined;
   Scan: undefined;
   Support: undefined;
   Profile: undefined;
 };
 
 export type HomeTabScreenProps = BottomTabScreenProps<BottomTabParamList, "Home">;
-export type SpendingTabScreenProps = BottomTabScreenProps<BottomTabParamList, "Spending">;
+export type StaticticsTabScreenProps = BottomTabScreenProps<BottomTabParamList, "Statistics">;
 export type ScanTabScreenProps = BottomTabScreenProps<BottomTabParamList, "Scan">;
 export type SupportTabScreenProps = BottomTabScreenProps<BottomTabParamList, "Support">;
 export type ProfileTabScreenProps = BottomTabScreenProps<BottomTabParamList, "Profile">;
+
+export type StaticsTabParamList = {
+  Spending: undefined;
+  Income: undefined;
+  Bills: undefined;   
+  Savings: undefined;
+};
+
+export type SpendingTabScreenProps = BottomTabScreenProps<StaticsTabParamList, "Spending">;
+export type IncomeTabScreenProps = BottomTabScreenProps<StaticsTabParamList, "Income">;
+export type BillsTabScreenProps = BottomTabScreenProps<StaticsTabParamList, "Bills">;
+export type SavingsTabScreenProps = BottomTabScreenProps<StaticsTabParamList, "Savings">;

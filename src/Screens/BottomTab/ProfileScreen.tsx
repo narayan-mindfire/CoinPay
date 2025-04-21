@@ -141,14 +141,12 @@ const ProfileScreen = () => {
 const createStyles = (colors) =>
   StyleSheet.create({
     container: {
-      padding: 16,
+      paddingHorizontal: 16,
       backgroundColor: colors.background,
       flexGrow: 1,
-      paddingBottom: 100,
     },
     profileHeader: {
       backgroundColor: colors.backgroundModal,
-      padding: 16,
       borderRadius: 12,
       alignItems: "center",
       position: "relative",
@@ -199,12 +197,12 @@ const createStyles = (colors) =>
     },
     profileItems: {
       backgroundColor: colors.backgroundModal,
-      padding: 16,
+      padding: 8,
       borderRadius: 12,
-      marginBottom: 24,
+      marginBottom: 14,
     },
     settingRow: {
-      paddingVertical: 22,
+      paddingVertical: 18,
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
@@ -222,6 +220,7 @@ const createStyles = (colors) =>
     },
     logoutContainer: {
       marginTop: 10,
+      marginBottom: 90,
       alignItems: "center",
     },
   });

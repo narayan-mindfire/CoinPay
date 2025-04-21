@@ -1,6 +1,6 @@
 const od = {
     common: {
-      appName: 'QuickLaunchReactNativeKit',
+      appName: 'କୋଇନ୍ପେ',
       success: 'ସଫଳତା',
       error: 'ତ୍ରୁଟି',
       info: 'ସୂଚନା',
