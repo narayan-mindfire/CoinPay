@@ -53,6 +53,7 @@ const icons = {
   edit: require("./edit.png"),
   briefCase: require("./briefCase.png"),
   share: require("./share.png"),
+  question: require("./question.png"),
 };
 
 export default icons;
