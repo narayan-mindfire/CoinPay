@@ -24,6 +24,7 @@ import { RootState, useAppDispatch, useAppSelector } from "@/src/redux/store";
 
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@react-navigation/native";
+import CustomTextField from "@/src/components/CustomTextField";
 
 /**
  * Login Screen Component
@@ -90,38 +91,20 @@ const Login = () => {
           <View style={styles.container}>
             <Text style={styles.title}>{t("login.title")}</Text>
             <Text style={styles.subtitle}>{t("login.subtitle")}</Text>
-            {/* Phone Input */}
-            <Text style={styles.label}>{t("addEmail.label")}</Text>
-            <View
-              style={[
-                styles.emailContainer,
-                {
-                  borderColor: emailError ? colors.error : colors.primary,
-                },
-              ]}
-            >
-              <Image source={icons.envelope} style={styles.envelopeIcon} />
 
-              <View style={styles.inputWrapper}>
-                {!email && (
-                  <Text style={styles.placeholderText}>
-                    {t("addEmail.placeholder")}
-                  </Text>
-                )}
-                <TextInput
-                  style={styles.emailInput}
-                  placeholder=""
-                  value={email}
-                  onChangeText={(text) => {
-                    setEmail(text);
-                    validateEmail(text);
-                  }}
-                />
-              </View>
-            </View>
-            {emailError ? (
-              <Text style={styles.emailError}>{emailError}</Text>
-            ) : null}
+            <Text style={styles.label}>{t("addEmail.label")}</Text>
+            <CustomTextField
+              value={email}
+              onChangeText={(text) => {
+                setEmail(text);
+                validateEmail(text);
+              }}
+              placeholder={t("addEmail.placeholder")}
+              iconLeft={icons.envelope}
+              error={emailError}
+              touched={email !== ""}
+              style={{ marginBottom: 5 }}
+            />
             <Text style={styles.label}>{t("login.passwordLabel")}</Text>
             <View style={styles.passwordContainer}>
               <Image source={icons.lock} style={styles.lockIcon} />

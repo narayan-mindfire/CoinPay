@@ -4,7 +4,6 @@ import {
   Text,
   Image,
   StyleSheet,
-  TextInput,
   Keyboard,
   TouchableOpacity,
   Modal,
@@ -24,6 +23,7 @@ import {
 import { useTheme } from "@react-navigation/native";
 import { Calendar } from "react-native-calendars";
 import { useTranslation } from "react-i18next";
+import CustomTextField from "@/src/components/CustomTextField";
 
 const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
   const { t } = useTranslation();
@@ -119,45 +119,23 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
         <Text style={styles.subtitle}>{t("personalInfo.subtitle")}</Text>
 
         <Text style={styles.label}>{t("personalInfo.fullName")}</Text>
-        <View style={styles.nameContainer}>
-          <View style={styles.inputWrapper}>
-            {!fullName && (
-              <Text style={styles.placeholderText}>
-                {t("personalInfo.namePlaceholder")}
-              </Text>
-            )}
-            <TextInput
-              style={styles.emailInput}
-              placeholder=""
-              value={fullName}
-              onChangeText={(text) => setFullName(text)}
-            />
-          </View>
-        </View>
-        {fullNameError ? (
-          <Text style={styles.errorText}>{fullNameError}</Text>
-        ) : null}
+        <CustomTextField
+          value={fullName}
+          onChangeText={setFullName}
+          placeholder={t("personalInfo.namePlaceholder")}
+          error={fullNameError}
+          touched={true}
+        />
 
         <Text style={styles.label}>{t("personalInfo.username")}</Text>
-        <View style={styles.usernameContainer}>
-          <View style={styles.inputWrapper}>
-            <Text style={styles.usernamePrefix}>@</Text>
-            {!userName && (
-              <Text style={styles.usernamePlaceholder}>
-                {t("personalInfo.usernamePlaceholder")}
-              </Text>
-            )}
-            <TextInput
-              style={styles.usernameInput}
-              placeholder=""
-              value={userName}
-              onChangeText={(text) => setUserName(text)}
-            />
-          </View>
-        </View>
-        {userNameError ? (
-          <Text style={styles.errorText}>{userNameError}</Text>
-        ) : null}
+        <CustomTextField
+          value={userName}
+          onChangeText={setUserName}
+          placeholder={t("personalInfo.usernamePlaceholder")}
+          // iconLeft={{ uri: "at-sign" }}
+          error={userNameError}
+          touched={true}
+        />
 
         <Text style={styles.label}>{t("personalInfo.dob")}</Text>
         <TouchableOpacity onPress={() => setShowCalendar(true)}>

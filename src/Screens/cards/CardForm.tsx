@@ -16,6 +16,8 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "@react-navigation/native";
 
 import { CardFormScreenProps } from "@/src/navigation/NavigationTypes";
+import { validateEmail } from "@/src/utils/formFieldValidators";
+import CustomTextField from "@/src/components/CustomTextField";
 /**
  * CardForm Screen Component
  * Allows users to add their card details to the platform
@@ -25,12 +27,14 @@ const CardForm = ({ navigation }: CardFormScreenProps) => {
   const { colors } = useTheme();
   const { t } = useTranslation();
 
-  const [address, setAddress] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [card, setCard] = useState("");
   const [expiry, setExpiry] = useState("");
   const [cvv, setCvv] = useState("");
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  const emailError = validateEmail(email);
 
   const styles = createStyles(colors);
   /**
@@ -64,41 +68,30 @@ const CardForm = ({ navigation }: CardFormScreenProps) => {
         <Text style={styles.subtitle}>{t("cardForm.subtitle")}</Text>
         {/* Address Input */}
         <Text style={styles.label}>{t("cardForm.nameLabel")}</Text>
-        <View style={styles.emailContainer}>
-          <View style={styles.inputWrapper}>
-            {!address && (
-              <Text style={styles.placeholderText}>
-                {t("cardForm.namePlaceholder")}
-              </Text>
-            )}
-            <TextInput
-              style={styles.emailInput}
-              placeholder=""
-              value={address}
-              onChangeText={setAddress}
-            />
-          </View>
-        </View>
+        <CustomTextField
+          value={name}
+          onChangeText={(text) => {
+            setName(text);
+          }}
+          placeholder={t("cardForm.namePlaceholder")}
+          error=""
+          touched={email !== ""}
+          style={{ marginBottom: 5 }}
+        />
         {/* email input  */}
         <Text style={styles.label}>{t("cardForm.emailLabel")}</Text>
-        <View style={styles.emailContainer}>
-          <Image source={icons.envelope} tintColor={colors.border} />
-
-          <View style={styles.inputWrapper}>
-            {!email && (
-              <Text style={styles.placeholderText}>
-                {" "}
-                {t("cardForm.emailPlaceholder")}
-              </Text>
-            )}
-            <TextInput
-              style={styles.emailInput}
-              placeholder=""
-              value={email}
-              onChangeText={setEmail}
-            />
-          </View>
-        </View>
+        <CustomTextField
+          value={email}
+          onChangeText={(text) => {
+            setEmail(text);
+            validateEmail(text);
+          }}
+          placeholder={t("addEmail.placeholder")}
+          iconLeft={icons.envelope}
+          error={emailError}
+          touched={email !== ""}
+          style={{ marginBottom: 5 }}
+        />
         {/* postcode input  */}
         <Text style={styles.label}>{t("cardForm.cardLabel")}</Text>
         <View style={styles.emailContainer}>
@@ -108,6 +101,7 @@ const CardForm = ({ navigation }: CardFormScreenProps) => {
             <TextInput
               style={[styles.inputField, styles.cardNumber]}
               placeholder="Card Number"
+              placeholderTextColor={colors.textDisabled}
               value={card}
               onChangeText={setCard}
               keyboardType="number-pad"
@@ -116,6 +110,7 @@ const CardForm = ({ navigation }: CardFormScreenProps) => {
             <TextInput
               style={[styles.inputField, styles.expiry]}
               placeholder="MM/YY"
+              placeholderTextColor={colors.textDisabled}
               value={expiry}
               onChangeText={setExpiry}
               keyboardType="number-pad"
@@ -124,6 +119,7 @@ const CardForm = ({ navigation }: CardFormScreenProps) => {
             <TextInput
               style={[styles.inputField, styles.cvv]}
               placeholder="CVV"
+              placeholderTextColor={colors.textDisabled}
               value={cvv}
               onChangeText={setCvv}
               keyboardType="number-pad"
@@ -138,7 +134,7 @@ const CardForm = ({ navigation }: CardFormScreenProps) => {
           buttonText={t("cardForm.button")}
           handleButton={() => navigation.navigate("VerifyCard")}
           outlined={false}
-          disabled={address === "" || email === "" || card === ""}
+          disabled={name === "" || email === "" || card === ""}
           buttonStyles={{ marginTop: isKeyboardVisible ? 20 : 300 }}
         />
       </View>
@@ -211,12 +207,15 @@ const createStyles = (colors: any) =>
     },
     cardNumber: {
       flex: 2.5,
+      color: colors.textPrimary,
     },
     expiry: {
       flex: 1,
+      color: colors.textPrimary,
     },
     cvv: {
       flex: 0.8,
+      color: colors.textPrimary,
     },
   });
 

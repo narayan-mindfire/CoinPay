@@ -33,6 +33,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RootState, useAppSelector } from "@/src/redux/store";
 import { updateUserForm } from "@/src/redux/slices/userFormSlice";
+import CustomTextField from "@/src/components/CustomTextField";
 /**
  * PhoneVerification Screen Component
  * Allows users to register using their phone number and password.
@@ -161,64 +162,39 @@ const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
                 </View>
 
                 {/* Right Box - Phone Input */}
-                <View
-                  style={[
-                    styles.rightBox,
-                    { borderColor: phoneError ? colors.error : colors.primary },
-                  ]}
-                >
-                  {!phone && (
-                    <Text style={styles.placeholderTextMobile}>
-                      {" "}
-                      {"      "} {t("phoneVerification.mobilePlaceholder")}
-                    </Text>
-                  )}
-                  <TextInput
-                    style={[styles.phoneInput]}
-                    placeholder=""
-                    keyboardType="phone-pad"
-                    value={phone}
-                    onChangeText={(text) => {
-                      setPhone(text);
-                      validatePhone(text);
-                    }}
-                  />
-                </View>
+                <CustomTextField
+                  value={phone}
+                  onChangeText={(text) => {
+                    setPhone(text);
+                    validatePhone(text);
+                  }}
+                  width={"73%"}
+                  placeholder="Enter your phone number"
+                  error={phoneError}
+                  touched={false}
+                  inputStyle={{ fontSize: 16 }}
+                  showPlaceholder={true}
+                />
+                {phoneError ? (
+                  <Text style={{ color: "red", fontSize: 12 }}>
+                    {phoneError}
+                  </Text>
+                ) : null}
               </View>
-              {phoneError ? (
-                <Text style={{ color: colors.error, fontSize: 12 }}>
-                  {phoneError}
-                </Text>
-              ) : null}
-
               <Text style={styles.label}>{t("addEmail.label")}</Text>
-              <View
-                style={[
-                  styles.emailContainer,
-                  {
-                    borderColor: emailError ? colors.error : colors.primary,
-                  },
-                ]}
-              >
-                <Image source={icons.envelope} style={styles.envelopeIcon} />
+              <CustomTextField
+                value={email}
+                onChangeText={(text) => {
+                  setEmail(text);
+                }}
+                placeholder={t("addEmail.placeholder")}
+                error={emailError}
+                touched={false}
+                inputStyle={{ fontSize: 16 }}
+                showPlaceholder={true}
+                iconLeft={icons.envelope}
+              />
 
-                <View style={styles.inputWrapper}>
-                  {!email && (
-                    <Text style={styles.placeholderText}>
-                      {t("addEmail.placeholder")}
-                    </Text>
-                  )}
-                  <TextInput
-                    style={styles.emailInput}
-                    placeholder=""
-                    value={email}
-                    onChangeText={(text) => {
-                      setEmail(text);
-                      validateEmail(text);
-                    }}
-                  />
-                </View>
-              </View>
               {emailError ? (
                 <Text style={{ color: colors.error, fontSize: 12 }}>
                   {emailError}

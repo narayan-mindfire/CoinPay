@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-
-import { View, Text, StyleSheet, TextInput, Keyboard } from "react-native";
-
+import { View, Text, StyleSheet, Keyboard } from "react-native";
 import { HomeAddressScreenProps } from "@/src/navigation/NavigationTypes";
 import Button from "@/src/components/Button";
 import {
@@ -11,13 +9,9 @@ import {
 } from "@/src/utils/formFieldValidators";
 import { useAppDispatch } from "@/src/redux/store";
 import { updateUserForm } from "@/src/redux/slices/userFormSlice";
-
 import { useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
-/**
- * HomeAddress Screen Component
- * Allows users to add their address to account setup
- */
+import CustomTextField from "@/src/components/CustomTextField";
 
 const HomeAddress = ({ navigation }: HomeAddressScreenProps) => {
   const { colors } = useTheme();
@@ -29,14 +23,16 @@ const HomeAddress = ({ navigation }: HomeAddressScreenProps) => {
   const [postCode, setPostCode] = useState("");
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
-  const cityError = validateCity(city);
+  const [touched, setTouched] = useState({
+    address: false,
+    city: false,
+    postCode: false,
+  });
+
   const addressError = validateAddress(address);
+  const cityError = validateCity(city);
   const postCodeError = validatePostCode(postCode);
 
-  const styles = createStyles(colors, addressError, cityError, postCodeError);
-  /**
-   * Effect to listen for keyboard visibility changes.
-   */
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
@@ -44,14 +40,12 @@ const HomeAddress = ({ navigation }: HomeAddressScreenProps) => {
         setKeyboardVisible(true);
       }
     );
-
     const keyboardDidHideListener = Keyboard.addListener(
       "keyboardDidHide",
       () => {
         setKeyboardVisible(false);
       }
     );
-
     return () => {
       keyboardDidShowListener.remove();
       keyboardDidHideListener.remove();
@@ -59,88 +53,54 @@ const HomeAddress = ({ navigation }: HomeAddressScreenProps) => {
   }, []);
 
   const addData = () => {
-    dispatch(
-      updateUserForm({
-        addressLine: address,
-        city,
-        postCode,
-      })
-    );
+    dispatch(updateUserForm({ addressLine: address, city, postCode }));
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{t("homeAddress.title")}</Text>
-      <Text style={styles.subtitle}>{t("homeAddress.subtitle")}</Text>
-      {/* Address Input */}
-      <Text style={styles.label}>{t("homeAddress.addressLabel")}</Text>
-      <View style={[styles.addressContainer]}>
-        <View style={styles.inputWrapper}>
-          {!address && (
-            <Text style={styles.placeholderText}>
-              {t("homeAddress.addressPlaceholder")}
-            </Text>
-          )}
-          <TextInput
-            style={styles.addressInput}
-            placeholder=""
-            value={address}
-            onChangeText={(text) => {
-              setAddress(text);
-              validateAddress(text);
-            }}
-          />
-        </View>
-      </View>
-      {addressError ? (
-        <Text style={styles.addressError}>{addressError}</Text>
-      ) : null}
-      {/* city input  */}
-      <Text style={styles.label}>{t("homeAddress.cityLabel")}</Text>
-      <View style={styles.cityContainer}>
-        <View style={styles.inputWrapper}>
-          {!city && (
-            <Text style={styles.placeholderText}>
-              {t("homeAddress.cityPlaceholder")}
-            </Text>
-          )}
-          <TextInput
-            style={styles.addressInput}
-            placeholder=""
-            value={city}
-            onChangeText={(text) => {
-              setCity(text);
-              validateCity(text);
-            }}
-          />
-        </View>
-      </View>
-      {cityError ? <Text style={styles.cityError}>{cityError}</Text> : null}
-      {/* postcode input  */}
-      <Text style={styles.label}>{t("homeAddress.postCodeLabel")}</Text>
-      <View style={styles.postCodeContainer}>
-        <View style={styles.inputWrapper}>
-          {!postCode && (
-            <Text style={styles.placeholderText}>
-              {t("homeAddress.postCodePlaceholder")}
-            </Text>
-          )}
-          <TextInput
-            style={styles.addressInput}
-            placeholder=""
-            value={postCode}
-            onChangeText={(text) => {
-              validatePostCode(text);
-              setPostCode(text);
-            }}
-          />
-        </View>
-      </View>
-      {postCodeError ? (
-        <Text style={styles.postCodeError}>{postCodeError}</Text>
-      ) : null}
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={[styles.title, { color: colors.textPrimary }]}>
+        {t("homeAddress.title")}
+      </Text>
+      <Text style={[styles.subtitle, { color: colors.textTertiary }]}>
+        {t("homeAddress.subtitle")}
+      </Text>
 
-      {/* button set to disabled when either password or phone number not given, button height adjusted based on keyboardvisibility */}
+      <Text style={[styles.label, { color: colors.textPrimary }]}>
+        {t("homeAddress.addressLabel")}
+      </Text>
+      <CustomTextField
+        value={address}
+        onChangeText={setAddress}
+        placeholder={t("homeAddress.addressPlaceholder")}
+        error={addressError}
+        touched={touched.address}
+        onBlur={() => setTouched((prev) => ({ ...prev, address: true }))}
+      />
+
+      <Text style={[styles.label, { color: colors.textPrimary }]}>
+        {t("homeAddress.cityLabel")}
+      </Text>
+      <CustomTextField
+        value={city}
+        onChangeText={setCity}
+        placeholder={t("homeAddress.cityPlaceholder")}
+        error={cityError}
+        touched={touched.city}
+        onBlur={() => setTouched((prev) => ({ ...prev, city: true }))}
+      />
+
+      <Text style={[styles.label, { color: colors.textPrimary }]}>
+        {t("homeAddress.postCodeLabel")}
+      </Text>
+      <CustomTextField
+        value={postCode}
+        onChangeText={setPostCode}
+        placeholder={t("homeAddress.postCodePlaceholder")}
+        error={postCodeError}
+        touched={touched.postCode}
+        onBlur={() => setTouched((prev) => ({ ...prev, postCode: true }))}
+      />
+
       <Button
         buttonText={t("homeAddress.continue")}
         handleButton={() => {
@@ -157,92 +117,26 @@ const HomeAddress = ({ navigation }: HomeAddressScreenProps) => {
   );
 };
 
-// handled styles to dynamically take color values from theme to remove the need to write inline style
-const createStyles = (
-  colors: any,
-  addressError: string,
-  cityError: string,
-  postCodeError: string
-) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: colors.background,
-      paddingHorizontal: 14,
-    },
-    title: {
-      fontSize: 22,
-      fontWeight: "bold",
-      color: colors.textPrimary,
-      marginTop: 30,
-    },
-    subtitle: {
-      fontSize: 18,
-      fontWeight: 400,
-      color: colors.textTertiary,
-      marginBottom: 20,
-    },
-    label: {
-      fontSize: 16,
-      fontWeight: "bold",
-      color: colors.textPrimary,
-      marginVertical: 7,
-    },
-    cityContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      borderWidth: 2,
-      borderRadius: 8,
-      paddingHorizontal: 10,
-      height: 50,
-      borderColor: cityError ? colors.error : colors.primary,
-    },
-    postCodeContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      borderWidth: 2,
-      borderRadius: 8,
-      paddingHorizontal: 10,
-      height: 50,
-      borderColor: postCodeError ? colors.error : colors.primary,
-    },
-    addressContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      borderWidth: 2,
-      borderRadius: 8,
-      paddingHorizontal: 10,
-      height: 50,
-      borderColor: addressError ? colors.error : colors.primary,
-    },
-    inputWrapper: {
-      flex: 1,
-      position: "relative",
-    },
-    placeholderText: {
-      position: "absolute",
-      top: "20%",
-      transform: [{ translateY: -8 }],
-      fontSize: 18,
-      color: colors.textDisabled,
-    },
-    addressInput: {
-      fontSize: 18,
-      color: colors.textTertiary,
-      width: "100%",
-    },
-    addressError: {
-      color: colors.error,
-      fontSize: 12,
-    },
-    cityError: {
-      color: colors.error,
-      fontSize: 12,
-    },
-    postCodeError: {
-      color: colors.error,
-      fontSize: 12,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 14,
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: "bold",
+    marginTop: 30,
+  },
+  subtitle: {
+    fontSize: 18,
+    fontWeight: "400",
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginVertical: 7,
+  },
+});
 
 export default HomeAddress;
