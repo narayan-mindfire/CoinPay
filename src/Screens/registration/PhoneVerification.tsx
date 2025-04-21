@@ -195,12 +195,6 @@ const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
                 iconLeft={icons.envelope}
               />
 
-              {emailError ? (
-                <Text style={{ color: colors.error, fontSize: 12 }}>
-                  {emailError}
-                </Text>
-              ) : null}
-
               <Text style={styles.label}>
                 {t("phoneVerification.passwordLabel")}
               </Text>
