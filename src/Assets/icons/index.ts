@@ -51,6 +51,8 @@ const icons = {
   transaction: require("./transaction.png"),
   settings: require("./settings.png"),
   edit: require("./edit.png"),
+  briefCase: require("./briefCase.png"),
+  share: require("./share.png"),
 };
 
 export default icons;
