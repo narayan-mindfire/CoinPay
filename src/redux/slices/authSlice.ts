@@ -2,9 +2,10 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { isAnyOf } from '@reduxjs/toolkit';
 
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { auth } from '@/firebaseConfig';
+import { auth, db } from '@/firebaseConfig';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { doc, getDoc } from 'firebase/firestore';
 
 
 interface AuthState {
@@ -27,56 +28,52 @@ export const registerUser = createAsyncThunk(
   async ({ email, password }: { email: string; password: string }, { rejectWithValue }) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      console.log("user credentials: ")
-      console.log(userCredential)
-      //immediately signing the user out to let them log-in in the subsequent screen
+      const uid = userCredential.user.uid;
       await signOut(auth);
-    // Saving usertoken and userdata in local async storage
-    return userCredential.user;
+      return { user: userCredential.user, uid };
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
   }
 );
 
+
 //user login thunk
 export const loginUser = createAsyncThunk(
-    'auth/login',
-    async ({ email, password }: { email: string; password: string }, { rejectWithValue, dispatch }) => {
-      try {
-        console.log("user logging in")
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        console.log("user credentials generated")
-        const token = await userCredential.user.getIdToken();
-        console.log("token: ", token)
-        await AsyncStorage.setItem('authToken', token);
-        await AsyncStorage.setItem('authUser', JSON.stringify(userCredential.user));
-        dispatch(loadUserFromStorage());
-        return { user: userCredential.user, token };
-      } catch (error: any) {
-        return rejectWithValue(error.message);
+  'auth/login',
+  async ({ email, password }: { email: string; password: string }, { rejectWithValue }) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const token = await userCredential.user.getIdToken();
+
+      const uid = userCredential.user.uid;
+
+      //getting user data while signing in 
+      const userDoc = await getDoc(doc(db, 'users', uid));
+      if (!userDoc.exists()) {
+        throw new Error('User profile not found in Firestore');
       }
+
+      const userData = userDoc.data();
+      console.log('User data:', userData);
+      return {
+        token,
+        user: {
+          uid,
+          email: userCredential.user.email,
+          ...userData, // merges custom Firestore fields
+        },
+      };
+    } catch (error: any) {
+      return rejectWithValue(error.message);
     }
-  );
+  }
+);
   
 export const logoutUser = createAsyncThunk('auth/logout', async () => {
   await signOut(auth);
-  AsyncStorage.removeItem("authToken")
-  AsyncStorage.removeItem("authUser")
 });
-
-// loading the persisted user when app launches
-export const loadUserFromStorage = createAsyncThunk('auth/loadUser', async () => {
-    const token = await AsyncStorage.getItem('authToken');
-    const user = await AsyncStorage.getItem('authUser');
-    return {
-      token,
-      user: user ? JSON.parse(user) : null,
-    };
-  });
   
-  
-
 // Slice
 const authSlice = createSlice({
   name: 'auth',
@@ -93,10 +90,10 @@ const authSlice = createSlice({
         state.user = null;
         state.token = null;
       })
-      .addCase(loadUserFromStorage.fulfilled, (state, action) => {
-        state.user = action.payload.user;
-        state.token = action.payload.token;
-      })
+      // .addCase(loadUserFromStorage.fulfilled, (state, action) => {
+      //   state.user = action.payload.user;
+      //   state.token = action.payload.token;
+      // })
       // Matching all pending states
       .addMatcher(
         isAnyOf(registerUser.pending, loginUser.pending),

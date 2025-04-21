@@ -1,7 +1,10 @@
-import { Dimensions, StyleSheet, Text, View, Image } from "react-native";
 import React from "react";
-import { useTheme } from "@react-navigation/native";
+
+import { Dimensions, StyleSheet, Text, View, Image } from "react-native";
+
 import icons from "../Assets/icons";
+
+import { useTheme } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
 

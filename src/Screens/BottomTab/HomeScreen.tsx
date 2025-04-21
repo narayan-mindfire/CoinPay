@@ -13,6 +13,7 @@ import {
 import { Dimensions } from "react-native";
 import icons from "@/src/Assets/icons";
 import images from "@/src/Assets/images";
+import ProfileIcon from "@/src/components/ProfileIcon";
 
 import { useTheme } from "@react-navigation/native";
 
@@ -172,19 +173,18 @@ const TransactionItem = ({
         },
       ]}
     >
-      <View
-        style={[
-          styles.transactionIconStyles,
-          { backgroundColor: colors[backgroundColor] },
-        ]}
-      >
-        <Image source={icons[icon]} tintColor={colors[color]} />
-      </View>
+      <ProfileIcon
+        icon={icons[icon]}
+        tintColor={colors[color]}
+        bgColor={colors[backgroundColor]}
+        size={40}
+      />
+
       <Text style={styles.transactionLabel}>{label}</Text>
       <TouchableOpacity
-        onPress={() => navigation.navigate("StatisticsTab", { screen: screen })}
+        onPress={() => navigation.navigate("StatisticsTab", { screen })}
       >
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text style={styles.amountStyles}>
             {amount.toString().startsWith("-") ? amount : `+${amount}`}
           </Text>
@@ -236,10 +236,6 @@ const createTransactionStyles = (colors: any, color: string) =>
       marginLeft: 5,
       height: 20,
       width: 20,
-    },
-    transactionIconStyles: {
-      padding: 10,
-      borderRadius: 30,
     },
     amountStyles: {
       color: colors[color],

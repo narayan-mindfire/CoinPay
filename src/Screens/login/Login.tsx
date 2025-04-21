@@ -15,11 +15,12 @@ import {
 } from "react-native";
 
 import Button from "@/src/components/Button";
+import LoaderModal from "@/src/components/LoaderModal";
 import icons from "@/src/Assets/icons";
 
 import { validateEmail } from "@/src/utils/formFieldValidators";
 import { loginUser } from "@/src/redux/slices/authSlice";
-import { useAppDispatch } from "@/src/redux/store";
+import { RootState, useAppDispatch, useAppSelector } from "@/src/redux/store";
 
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@react-navigation/native";
@@ -33,6 +34,7 @@ const Login = () => {
   const { colors } = useTheme();
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const loading = useAppSelector((state: RootState) => state.auth.loading);
 
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState("");
@@ -159,6 +161,7 @@ const Login = () => {
               buttonStyles={{ marginTop: isKeyboardVisible ? 60 : 320 }}
             />
           </View>
+          <LoaderModal visible={loading} />
         </ScrollView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
