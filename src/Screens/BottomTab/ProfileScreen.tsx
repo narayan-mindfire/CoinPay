@@ -151,6 +151,7 @@ const createStyles = (colors) =>
       alignItems: "center",
       position: "relative",
       marginBottom: 24,
+      paddingVertical: 5,
     },
     avatar: {
       height: 64,

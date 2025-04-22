@@ -98,7 +98,7 @@ const createStyles = (colors: any) =>
     title: {
       justifyContent: "center",
       alignItems: "center",
-      marginVertical: 40,
+      marginBottom: 40,
     },
     titleLabel: {
       fontSize: 28,

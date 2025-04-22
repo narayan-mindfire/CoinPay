@@ -23,7 +23,7 @@ const RootStack: React.FC = () => {
   return (
     <SafeAreaProvider>
       <StatusBar
-        barStyle={systemTheme === "dark" ? "light-content" : "dark-content"}
+        barStyle={theme === "dark" ? "light-content" : "dark-content"}
         backgroundColor="transparent"
         translucent
       />

@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Keyboard,
-  Image,
-} from "react-native";
+import { View, Text, StyleSheet, Keyboard, Image } from "react-native";
 
 import Button from "@/src/components/Button";
 import icons from "@/src/Assets/icons";
+import LoaderModal from "@/src/components/LoaderModal";
 
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@react-navigation/native";
@@ -18,6 +12,12 @@ import { useTheme } from "@react-navigation/native";
 import { CardFormScreenProps } from "@/src/navigation/NavigationTypes";
 import { validateEmail } from "@/src/utils/formFieldValidators";
 import CustomTextField from "@/src/components/CustomTextField";
+import { RootState, useAppDispatch, useAppSelector } from "@/src/redux/store";
+import {
+  addCardToFirebase,
+  resetCardState,
+} from "@/src/redux/slices/cardSlice";
+
 /**
  * CardForm Screen Component
  * Allows users to add their card details to the platform
@@ -26,6 +26,8 @@ import CustomTextField from "@/src/components/CustomTextField";
 const CardForm = ({ navigation }: CardFormScreenProps) => {
   const { colors } = useTheme();
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+  const loading = useAppSelector((state: RootState) => state.card.loading);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -61,8 +63,28 @@ const CardForm = ({ navigation }: CardFormScreenProps) => {
     };
   }, []);
 
+  const addCard = () => {
+    dispatch(
+      addCardToFirebase({
+        name,
+        email,
+        card,
+        expiry,
+        cvv,
+      })
+    ).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        console.log("card added successfully");
+        navigation.navigate("VerifyCard");
+        dispatch(resetCardState());
+      }
+    });
+  };
+
   return (
     <View style={styles.container}>
+      {/* the screen shows a loading state when card is begin added  */}
+      <LoaderModal visible={loading} />
       <View style={{ paddingHorizontal: 14 }}>
         <Text style={styles.title}>{t("cardForm.title")}</Text>
         <Text style={styles.subtitle}>{t("cardForm.subtitle")}</Text>
@@ -101,7 +123,8 @@ const CardForm = ({ navigation }: CardFormScreenProps) => {
               value={card}
               onChangeText={setCard}
               keyboardType="phone-pad"
-              width="40%"
+              width="50%"
+              error=""
               showPlaceholder
             />
 
@@ -109,7 +132,8 @@ const CardForm = ({ navigation }: CardFormScreenProps) => {
               value={expiry}
               onChangeText={setExpiry}
               keyboardType="phone-pad"
-              width="27%"
+              error=""
+              width="20%"
               showPlaceholder
             />
 
@@ -117,7 +141,8 @@ const CardForm = ({ navigation }: CardFormScreenProps) => {
               value={cvv}
               onChangeText={setCvv}
               keyboardType="phone-pad"
-              width="20%"
+              width="16%"
+              error=""
               showPlaceholder
             />
           </View>
@@ -126,8 +151,7 @@ const CardForm = ({ navigation }: CardFormScreenProps) => {
         {/* button set to disabled when either password or phone number not given, button height adjusted based on keyboardvisibility */}
         <Button
           buttonText={t("cardForm.button")}
-          handleButton={() => navigation.navigate("VerifyCard")}
-          outlined={false}
+          handleButton={addCard}
           disabled={name === "" || email === "" || card === ""}
           buttonStyles={{ marginTop: isKeyboardVisible ? 20 : 300 }}
         />
@@ -163,7 +187,8 @@ const createStyles = (colors: any) =>
     },
     emailContainer: {
       flexDirection: "row",
-      // justifyContent: "center",
+      justifyContent: "space-between",
+      alignItems: "baseline",
       borderWidth: 2,
       borderColor: colors.border,
       borderRadius: 8,

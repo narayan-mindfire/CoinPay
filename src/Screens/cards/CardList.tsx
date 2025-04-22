@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import {
   View,
   Text,
   Image,
   StyleSheet,
-  Keyboard,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 
 import icons from "@/src/Assets/icons";
@@ -15,38 +15,28 @@ import Button from "@/src/components/Button";
 import Message from "@/src/components/Message";
 import { CardListProps } from "@/src/navigation/NavigationTypes";
 
-import { useTheme } from "@react-navigation/native";
+import { useAppDispatch, useAppSelector } from "@/src/redux/store";
+import { getCardsFromFirebase } from "@/src/redux/slices/cardSlice";
+import { getCardType } from "@/src/utils/cardTypes";
+import { deleteCardFromFirebase } from "@/src/redux/slices/cardSlice";
+
+import { useFocusEffect, useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
 const CardList = ({ navigation }: CardListProps) => {
   const { colors } = useTheme();
-  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const { t } = useTranslation();
-
+  const dispatch = useAppDispatch();
+  const { cards, loading } = useAppSelector((state) => state.card);
   const styles = createStyles(colors);
 
-  const [cards, setCards] = useState([
-    { id: "1", cardNumber: "**** **** **** 1234", cardType: "visa" },
-    { id: "2", cardNumber: "**** **** **** 5678", cardType: "mastercard" },
-    { id: "3", cardNumber: "**** **** **** 9012", cardType: "amex" },
-  ]);
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(getCardsFromFirebase());
+    }, [dispatch])
+  );
 
-  const deleteCard = (id: string) => {
-    setCards((prev) => prev.filter((card) => card.id !== id));
-  };
-
-  useEffect(() => {
-    const showListener = Keyboard.addListener("keyboardDidShow", () =>
-      setKeyboardVisible(true)
-    );
-    const hideListener = Keyboard.addListener("keyboardDidHide", () =>
-      setKeyboardVisible(false)
-    );
-    return () => {
-      showListener.remove();
-      hideListener.remove();
-    };
-  }, []);
+  console.log(cards);
 
   return (
     <View style={styles.container}>
@@ -61,10 +51,32 @@ const CardList = ({ navigation }: CardListProps) => {
         <ScrollView style={styles.scrollContainer}>
           {cards.map((card) => (
             <View key={card.id} style={styles.cardItem}>
-              <Image source={icons[card.cardType]} style={styles.cardIcon} />
-              <Text style={styles.cardText}>{card.cardNumber}</Text>
+              <Image
+                source={icons[getCardType(card.card)]}
+                style={styles.cardIcon}
+              />
+              <View style={styles.cardDetails}>
+                <Text style={styles.cardText}>{card.card}</Text>
+              </View>
               <TouchableOpacity
-                onPress={() => deleteCard(card.id)}
+                onPress={() =>
+                  Alert.alert(
+                    t("cardList.deleteTitle"),
+                    t("cardList.deleteConfirm"),
+                    [
+                      {
+                        text: t("common.cancel"),
+                        style: "cancel",
+                      },
+                      {
+                        text: t("common.delete"),
+                        style: "destructive",
+                        onPress: () =>
+                          dispatch(deleteCardFromFirebase(card.id)),
+                      },
+                    ]
+                  )
+                }
                 style={styles.trashButton}
               >
                 <Image source={icons.trash} style={styles.deleteIcon} />
@@ -74,14 +86,17 @@ const CardList = ({ navigation }: CardListProps) => {
         </ScrollView>
 
         <Button
-          buttonText={t("cardList.button")}
-          handleButton={() => navigation.navigate("BottomTab")}
+          buttonText={t("cardList.addAnother")}
+          handleButton={() => navigation.navigate("CardForm")}
           outlined={false}
           disabled={false}
-          buttonStyles={{
-            marginTop: isKeyboardVisible ? 20 : 40,
-            marginBottom: isKeyboardVisible ? 10 : 30,
-          }}
+          icon={icons.plus}
+        />
+        <Button
+          buttonText={t("cardList.button")}
+          handleButton={() => navigation.navigate("BottomTab")}
+          outlined={true}
+          disabled={false}
         />
       </View>
     </View>
@@ -135,7 +150,6 @@ const createStyles = (colors: any) =>
       marginLeft: 12,
     },
     cardText: {
-      flex: 1,
       fontSize: 16,
       color: colors.textPrimary,
     },
@@ -154,6 +168,10 @@ const createStyles = (colors: any) =>
       tintColor: colors.notification,
       resizeMode: "contain",
       paddingVertical: "auto",
+    },
+    cardDetails: {
+      flex: 1,
+      justifyContent: "center",
     },
   });
 
