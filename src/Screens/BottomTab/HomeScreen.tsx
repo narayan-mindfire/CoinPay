@@ -219,12 +219,12 @@ const { height: screenHeight } = Dimensions.get("window");
 const createStyles = (colors: any) =>
   StyleSheet.create({
     image: {
-      height: screenHeight * 0.3,
+      height: screenHeight * 0.37,
     },
     container: {
       backgroundColor: colors.background,
       flex: 1,
-      marginTop: 20,
+      marginTop: 5,
     },
     contentContainer: {
       padding: 16,

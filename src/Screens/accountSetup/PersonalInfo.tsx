@@ -49,13 +49,7 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
   const fullNameError = validateFullName(fullName);
   const userNameError = validateUserName(userName);
 
-  const styles = createStyles(
-    colors,
-    fullNameError,
-    userNameError,
-    dob,
-    isKeyboardVisible
-  );
+  const styles = createStyles(colors, dob, isKeyboardVisible);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -124,7 +118,6 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
           onChangeText={setFullName}
           placeholder={t("personalInfo.namePlaceholder")}
           error={fullNameError}
-          touched={true}
         />
 
         <Text style={styles.label}>{t("personalInfo.username")}</Text>
@@ -132,9 +125,8 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
           value={userName}
           onChangeText={setUserName}
           placeholder={t("personalInfo.usernamePlaceholder")}
-          // iconLeft={{ uri: "at-sign" }}
+          iconLeft={icons.atTheRate}
           error={userNameError}
-          touched={true}
         />
 
         <Text style={styles.label}>{t("personalInfo.dob")}</Text>
@@ -165,13 +157,7 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
   );
 };
 
-const createStyles = (
-  colors: any,
-  fullNameError: string,
-  userNameError: string,
-  dob: string,
-  isKeyboardVisible: boolean
-) =>
+const createStyles = (colors: any, dob: string, isKeyboardVisible: boolean) =>
   StyleSheet.create({
     container: {
       flex: 1,
@@ -193,25 +179,7 @@ const createStyles = (
       fontSize: 16,
       fontWeight: "bold",
       color: colors.textPrimary,
-      marginVertical: 7,
-    },
-    nameContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      borderWidth: 2,
-      borderRadius: 8,
-      paddingHorizontal: 10,
-      height: 50,
-      borderColor: fullNameError ? colors.error : colors.primary,
-    },
-    usernameContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      borderWidth: 2,
-      borderRadius: 8,
-      paddingHorizontal: 10,
-      height: 50,
-      borderColor: userNameError ? colors.error : colors.primary,
+      marginBottom: 5,
     },
     dobContainer: {
       flexDirection: "row",
@@ -224,17 +192,6 @@ const createStyles = (
     },
     formContainer: {
       paddingHorizontal: 14,
-    },
-    inputWrapper: {
-      flex: 1,
-      position: "relative",
-    },
-    placeholderText: {
-      position: "absolute",
-      top: "20%",
-      transform: [{ translateY: -8 }],
-      fontSize: 18,
-      color: colors.textDisabled,
     },
     usernamePrefix: {
       position: "absolute",
@@ -262,16 +219,6 @@ const createStyles = (
       fontSize: 18,
       color: colors.textTertiary,
       width: "100%",
-    },
-    usernameInput: {
-      fontSize: 18,
-      color: colors.textTertiary,
-      width: "100%",
-      paddingLeft: 20,
-    },
-    errorText: {
-      color: colors.error,
-      fontSize: 12,
     },
     modalContainer: {
       flex: 1,

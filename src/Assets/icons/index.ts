@@ -54,6 +54,7 @@ const icons = {
   briefCase: require("./briefCase.png"),
   share: require("./share.png"),
   question: require("./question.png"),
+  atTheRate: require("./@.png"),
 };
 
 export default icons;

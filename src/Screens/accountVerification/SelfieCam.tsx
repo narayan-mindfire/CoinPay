@@ -13,6 +13,7 @@ import { CameraView, useCameraPermissions } from "expo-camera";
 
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@react-navigation/native";
+import CamClickButton from "@/src/components/CamClickButton";
 
 export default function ScanDoc({ navigation }) {
   const { t } = useTranslation();
@@ -51,11 +52,7 @@ export default function ScanDoc({ navigation }) {
             <TouchableOpacity>
               <Image source={icons.flash} style={styles.iconStyle} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.push("SetupPin")}>
-              <View style={styles.clickOuter}>
-                <View style={styles.clickInner}></View>
-              </View>
-            </TouchableOpacity>
+            <CamClickButton navigation={navigation} />
             <TouchableOpacity>
               <Image source={icons.retry} style={styles.iconStyle} />
             </TouchableOpacity>
@@ -126,20 +123,6 @@ const createStyles = (colors: any) =>
       height: 100,
       width: 200,
       bottom: 20,
-    },
-    clickOuter: {
-      width: 60,
-      height: 60,
-      borderRadius: 30,
-      backgroundColor: "rgba(255, 255, 255, 0.5)",
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    clickInner: {
-      width: 40,
-      height: 40,
-      borderRadius: 20,
-      backgroundColor: "rgba(255, 255, 255, 1)",
     },
     iconStyle: {
       tintColor: colors.white,

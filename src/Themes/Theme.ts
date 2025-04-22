@@ -72,7 +72,7 @@ export const LightThemeCustom : CustomTheme= {
     backgroundWarning: "rgba(251, 138, 0, 0.16)",
     backgroundError: "rgba(244, 67, 54, 0.15)",
     backgroundInfo: "rgba(184, 184, 184, 1)",
-    backgroundModal : "rgba(255, 255, 255, 1)",
+    backgroundModal : "rgb(245, 241, 241)",
     backgroundPrimary: "rgba(170, 190, 245, 0.3)",
 
     // Text & Icon

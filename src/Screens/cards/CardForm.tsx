@@ -75,7 +75,6 @@ const CardForm = ({ navigation }: CardFormScreenProps) => {
           }}
           placeholder={t("cardForm.namePlaceholder")}
           error=""
-          touched={email !== ""}
           style={{ marginBottom: 5 }}
         />
         {/* email input  */}
@@ -89,7 +88,7 @@ const CardForm = ({ navigation }: CardFormScreenProps) => {
           placeholder={t("addEmail.placeholder")}
           iconLeft={icons.envelope}
           error={emailError}
-          touched={email !== ""}
+          keyboardType="email-address"
           style={{ marginBottom: 5 }}
         />
         {/* postcode input  */}
@@ -98,33 +97,28 @@ const CardForm = ({ navigation }: CardFormScreenProps) => {
           <Image source={icons.mastercard} />
 
           <View style={styles.inputRow}>
-            <TextInput
-              style={[styles.inputField, styles.cardNumber]}
-              placeholder="Card Number"
-              placeholderTextColor={colors.textDisabled}
+            <CustomTextField
               value={card}
               onChangeText={setCard}
-              keyboardType="number-pad"
-              maxLength={16}
+              keyboardType="phone-pad"
+              width="40%"
+              showPlaceholder
             />
-            <TextInput
-              style={[styles.inputField, styles.expiry]}
-              placeholder="MM/YY"
-              placeholderTextColor={colors.textDisabled}
+
+            <CustomTextField
               value={expiry}
               onChangeText={setExpiry}
-              keyboardType="number-pad"
-              maxLength={5}
+              keyboardType="phone-pad"
+              width="27%"
+              showPlaceholder
             />
-            <TextInput
-              style={[styles.inputField, styles.cvv]}
-              placeholder="CVV"
-              placeholderTextColor={colors.textDisabled}
+
+            <CustomTextField
               value={cvv}
               onChangeText={setCvv}
-              keyboardType="number-pad"
-              maxLength={4}
-              secureTextEntry
+              keyboardType="phone-pad"
+              width="20%"
+              showPlaceholder
             />
           </View>
         </View>
@@ -169,12 +163,12 @@ const createStyles = (colors: any) =>
     },
     emailContainer: {
       flexDirection: "row",
-      alignItems: "center",
+      // justifyContent: "center",
       borderWidth: 2,
       borderColor: colors.border,
       borderRadius: 8,
       paddingHorizontal: 10,
-      height: 50,
+      height: 70,
     },
     inputWrapper: {
       flex: 1,

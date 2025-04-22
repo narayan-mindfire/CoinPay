@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import {
   View,
   TextInput,
@@ -9,6 +10,8 @@ import {
   ViewStyle,
   TextStyle,
 } from "react-native";
+
+import icons from "@/src/Assets/icons";
 import { useTheme } from "@react-navigation/native";
 
 interface CustomTextFieldProps {
@@ -16,17 +19,13 @@ interface CustomTextFieldProps {
   onChangeText: (text: string) => void;
   placeholder?: string;
   iconLeft?: any;
-  iconRight?: any;
-  onIconRightPress?: () => void;
   error?: string;
-  touched?: boolean;
-  secureTextEntry?: boolean;
   style?: ViewStyle;
   inputStyle?: TextStyle;
+  keyboardType?: "email-address" | "numeric" | "phone-pad";
   width?: string | number;
-  onBlur?: () => void;
-  onFocus?: () => void;
   showPlaceholder?: boolean;
+  isPasswordField?: boolean;
 }
 
 const CustomTextField: React.FC<CustomTextFieldProps> = ({
@@ -34,34 +33,31 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
   onChangeText,
   placeholder,
   iconLeft,
-  iconRight,
-  onIconRightPress,
   error,
-  touched,
-  secureTextEntry,
-  style,
   inputStyle,
+  style,
+  keyboardType,
   width = "100%",
-  onBlur,
-  onFocus,
   showPlaceholder = true,
+  isPasswordField = false,
 }) => {
   const { colors } = useTheme();
+
+  // is touched state to show error message
+  // when the user has interacted with the field
+  // and the field is invalid
   const [isTouched, setIsTouched] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const styles = createStyles(colors, width, isTouched, error);
 
-  const handleFocus = () => {
-    setIsTouched(true);
-    onFocus?.();
-  };
-
-  const handleBlur = () => {
-    onBlur?.();
+  // Shows placeholder only when the field is empty
+  const togglePassword = () => {
+    setShowPassword((prev) => !prev);
   };
 
   return (
-    <View style={styles.wrapper}>
+    <View style={[styles.wrapper, style]}>
       <View style={styles.container}>
         {iconLeft && <Image source={iconLeft} style={styles.icon} />}
 
@@ -70,18 +66,28 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
           placeholder={showPlaceholder ? placeholder : ""}
           placeholderTextColor={colors.border}
           value={value}
-          onChangeText={onChangeText}
-          secureTextEntry={secureTextEntry}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
+          onChangeText={(text) => {
+            onChangeText(text);
+            if (text.length >= 4 && !isTouched) {
+              setIsTouched(true);
+            }
+          }}
+          secureTextEntry={isPasswordField && !showPassword}
+          keyboardType={keyboardType}
         />
 
-        {iconRight && (
-          <TouchableOpacity onPress={onIconRightPress}>
-            <Image source={iconRight} style={styles.icon} />
+        {/* // Show the eye icon only when the field is a password field */}
+        {isPasswordField && (
+          <TouchableOpacity onPress={togglePassword}>
+            <Image
+              source={showPassword ? icons.eyeSlash : icons.eye}
+              style={styles.icon}
+            />
           </TouchableOpacity>
         )}
       </View>
+
+      {/* // Show error message only when the field is touched */}
 
       {error && isTouched && <Text style={styles.errorText}>{error}</Text>}
     </View>
@@ -96,8 +102,8 @@ const createStyles = (
 ) =>
   StyleSheet.create({
     wrapper: {
-      marginBottom: 8,
       width: width,
+      height: 70,
     } as ViewStyle,
     container: {
       flexDirection: "row",

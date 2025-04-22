@@ -4,7 +4,6 @@ import { isAnyOf } from '@reduxjs/toolkit';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth, db } from '@/firebaseConfig';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { doc, getDoc } from 'firebase/firestore';
 
 
@@ -45,15 +44,11 @@ export const loginUser = createAsyncThunk(
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const token = await userCredential.user.getIdToken();
-
       const uid = userCredential.user.uid;
-
-      //getting user data while signing in 
       const userDoc = await getDoc(doc(db, 'users', uid));
       if (!userDoc.exists()) {
         throw new Error('User profile not found in Firestore');
       }
-
       const userData = userDoc.data();
       console.log('User data:', userData);
       return {
@@ -61,7 +56,7 @@ export const loginUser = createAsyncThunk(
         user: {
           uid,
           email: userCredential.user.email,
-          ...userData, // merges custom Firestore fields
+          ...userData, 
         },
       };
     } catch (error: any) {
@@ -81,20 +76,16 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder
-      .addCase(loginUser.fulfilled, (state, action) => {
-        state.loading = false;
-        state.user = action.payload.user;
-        state.token = action.payload.token;
-      })
+    .addCase(loginUser.fulfilled, (state, action) => {
+      state.loading = false;
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+    })
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
         state.token = null;
       })
-      // .addCase(loadUserFromStorage.fulfilled, (state, action) => {
-      //   state.user = action.payload.user;
-      //   state.token = action.payload.token;
-      // })
-      // Matching all pending states
+
       .addMatcher(
         isAnyOf(registerUser.pending, loginUser.pending),
         (state) => {

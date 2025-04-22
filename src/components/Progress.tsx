@@ -50,9 +50,9 @@ function useInStepScreen() {
         return 8;
       case "TakeSelfie":
         return 9;
-      case "FinishSetup":
-        return 10;
       case "SetupPin":
+        return 10;
+      case "FinishSetup":
         return 11;
       case "Welcome":
         return 12;
