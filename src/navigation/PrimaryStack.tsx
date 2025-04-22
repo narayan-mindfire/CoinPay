@@ -17,7 +17,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const Stack = createNativeStackNavigator<PrimaryStackParamList>();
 
 const PrimaryStack: React.FC = () => {
-  const [cardsPresent, setCardsPresent] = React.useState(false);
+  const [cardsPresent, setCardsPresent] = React.useState(true);
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
       <HeaderPrimary />

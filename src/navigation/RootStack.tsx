@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import "../../src/i18n/i18n";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -10,7 +10,7 @@ import AuthStack from "./AuthStack";
 import { RootStackParamList } from "./NavigationTypes";
 import PrimaryStack from "./PrimaryStack";
 
-import { RootState, useAppDispatch, useAppSelector } from "../redux/store";
+import { RootState, useAppSelector } from "../redux/store";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const RootStack: React.FC = () => {

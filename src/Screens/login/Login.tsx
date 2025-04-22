@@ -3,10 +3,8 @@ import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
-  Image,
   StyleSheet,
   TouchableOpacity,
-  TextInput,
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
@@ -18,12 +16,16 @@ import Button from "@/src/components/Button";
 import LoaderModal from "@/src/components/LoaderModal";
 import icons from "@/src/Assets/icons";
 
-import { validateEmail } from "@/src/utils/formFieldValidators";
+import {
+  validateEmail,
+  validatePassword,
+} from "@/src/utils/formFieldValidators";
 import { loginUser } from "@/src/redux/slices/authSlice";
 import { RootState, useAppDispatch, useAppSelector } from "@/src/redux/store";
 
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@react-navigation/native";
+import CustomTextField from "@/src/components/CustomTextField";
 
 /**
  * Login Screen Component
@@ -42,8 +44,11 @@ const Login = () => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   const emailError = validateEmail(email);
+  const passwordError = validatePassword(password);
 
   const styles = createStyles(colors, emailError);
+
+  // Function to validate email input
 
   const handleLogin = () => {
     console.log("logging in user");
@@ -90,64 +95,32 @@ const Login = () => {
           <View style={styles.container}>
             <Text style={styles.title}>{t("login.title")}</Text>
             <Text style={styles.subtitle}>{t("login.subtitle")}</Text>
-            {/* Phone Input */}
+
             <Text style={styles.label}>{t("addEmail.label")}</Text>
-            <View
-              style={[
-                styles.emailContainer,
-                {
-                  borderColor: emailError ? colors.error : colors.primary,
-                },
-              ]}
-            >
-              <Image source={icons.envelope} style={styles.envelopeIcon} />
-
-              <View style={styles.inputWrapper}>
-                {!email && (
-                  <Text style={styles.placeholderText}>
-                    {t("addEmail.placeholder")}
-                  </Text>
-                )}
-                <TextInput
-                  style={styles.emailInput}
-                  placeholder=""
-                  value={email}
-                  onChangeText={(text) => {
-                    setEmail(text);
-                    validateEmail(text);
-                  }}
-                />
-              </View>
-            </View>
-            {emailError ? (
-              <Text style={styles.emailError}>{emailError}</Text>
-            ) : null}
+            {/* email input */}
+            <CustomTextField
+              value={email}
+              onChangeText={(text) => {
+                setEmail(text);
+                validateEmail(text);
+              }}
+              placeholder={t("addEmail.placeholder")}
+              iconLeft={icons.envelope}
+              error={emailError}
+            />
             <Text style={styles.label}>{t("login.passwordLabel")}</Text>
-            <View style={styles.passwordContainer}>
-              <Image source={icons.lock} style={styles.lockIcon} />
-
-              <View style={styles.inputWrapper}>
-                {!password && (
-                  <Text style={styles.placeholderText}> ◉ ◉ ◉ ◉ ◉ ◉ ◉</Text>
-                )}
-                <TextInput
-                  style={styles.passwordInput}
-                  placeholder=""
-                  secureTextEntry={!passwordVisible}
-                  value={password}
-                  onChangeText={setPassword}
-                />
-              </View>
-
-              <TouchableOpacity
-                onPress={() => setPasswordVisible(!passwordVisible)}
-              >
-                <Image
-                  source={passwordVisible ? icons.eyeSlash : icons.eye}
-                  style={styles.eyeIcon}
-                />
-              </TouchableOpacity>
-            </View>
+            <CustomTextField
+              value={password}
+              onChangeText={(text) => {
+                setPassword(text);
+              }}
+              placeholder={"◉◉◉◉◉◉◉"}
+              error={passwordError}
+              inputStyle={{ fontSize: 16, letterSpacing: 3 }}
+              showPlaceholder={true}
+              iconLeft={icons.lock}
+              isPasswordField={true}
+            />
             <TouchableOpacity>
               <Text style={styles.forgotLink}>{t("login.forgotPassword")}</Text>
             </TouchableOpacity>
@@ -157,8 +130,10 @@ const Login = () => {
               buttonText={t("login.loginButton")}
               handleButton={handleLogin}
               outlined={false}
-              disabled={password === "" || emailError !== ""}
-              buttonStyles={{ marginTop: isKeyboardVisible ? 60 : 320 }}
+              disabled={
+                password === "" || passwordError !== "" || emailError !== ""
+              }
+              buttonStyles={{ marginTop: isKeyboardVisible ? 60 : 380 }}
             />
           </View>
           <LoaderModal visible={loading} />
@@ -181,10 +156,9 @@ const createStyles = (colors: any, emailError: string) =>
       justifyContent: "center",
     },
     title: {
-      fontSize: 32,
+      fontSize: 28,
       fontWeight: "bold",
       color: colors.textPrimary,
-      marginTop: 30,
     },
     subtitle: {
       fontSize: 18,
@@ -199,124 +173,7 @@ const createStyles = (colors: any, emailError: string) =>
       marginBottom: 5,
       marginTop: 7,
     },
-    phoneContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      borderColor: colors.border,
-    },
-    envelopeIcon: {
-      width: 25,
-      height: 25,
-      marginRight: 10,
-      tintColor: colors.border,
-    },
-    countryButton: {
-      flexDirection: "row",
-      alignItems: "center",
-    },
-    emailContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      borderWidth: 2,
-      borderRadius: 8,
-      paddingHorizontal: 10,
-      height: 50,
-      borderColor: emailError ? colors.error : colors.primary,
-    },
-
-    inputContainer: {
-      flex: 1,
-      position: "relative",
-    },
-    passwordContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      borderWidth: 2,
-      borderColor: colors.border,
-      borderRadius: 8,
-      paddingHorizontal: 10,
-      height: 50,
-    },
-    emailInput: {
-      fontSize: 18,
-      color: colors.textTertiary,
-      width: "100%",
-    },
-    emailError: {
-      color: colors.error,
-      fontSize: 12,
-    },
-    inputWrapper: {
-      flex: 1,
-      position: "relative",
-    },
-    placeholderText: {
-      position: "absolute",
-      left: 0,
-      top: "20%",
-      transform: [{ translateY: -9 }],
-      fontSize: 18,
-      color: colors.textDisabled,
-    },
-    placeholderTextMobile: {
-      position: "absolute",
-      top: "45%",
-      transform: [{ translateY: -9 }],
-      fontSize: 18,
-      color: colors.textDisabled,
-    },
-    passwordInput: {
-      fontSize: 18,
-      color: colors.textTertiary,
-      width: "100%",
-      letterSpacing: 5,
-    },
-
-    lockIcon: {
-      width: 25,
-      height: 25,
-      marginRight: 10,
-      tintColor: colors.border,
-    },
-
-    eyeIcon: {
-      width: 25,
-      height: 25,
-      tintColor: colors.border,
-    },
-    modalContainer: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: "rgba(0, 0, 0, 0.5)",
-    },
-    modalContent: {
-      width: "80%",
-      backgroundColor: colors.background,
-      borderRadius: 10,
-      borderWidth: 3,
-      borderColor: colors.border,
-      padding: 20,
-      maxHeight: 400,
-    },
-    modalItem: {
-      flexDirection: "row",
-      alignItems: "center",
-      paddingVertical: 10,
-      borderBottomWidth: 1,
-      borderBottomColor: colors.border,
-    },
-    modalFlag: {
-      width: 24,
-      height: 16,
-      marginRight: 10,
-    },
-    modalText: {
-      fontSize: 16,
-      color: colors.textPrimary,
-    },
     forgotLink: {
-      marginTop: 10,
       fontSize: 16,
       color: colors.primary,
     },

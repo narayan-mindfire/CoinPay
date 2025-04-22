@@ -42,7 +42,6 @@ const Savings = () => {
   return (
     <View style={styles.container}>
       <View style={styles.title}>
-        <Image source={icons.angleLeft} style={styles.goBackIcon} />
         <Text style={styles.titleLabel}>Savings</Text>
       </View>
       <View style={styles.data}>
@@ -128,12 +127,5 @@ const createStyles = (colors: any) =>
       fontSize: 24,
       fontWeight: 500,
       color: colors.textPrimary,
-    },
-    goBackIcon: {
-      tintColor: colors.textPrimary,
-      width: 24,
-      height: 24,
-      position: "absolute",
-      left: 20,
     },
   });

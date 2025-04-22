@@ -55,7 +55,14 @@ const Button = ({
     >
       <View style={styles.row}>
         {icon && (
-          <Image source={icon} style={styles.icon} resizeMode="contain" />
+          <Image
+            source={icon}
+            style={[
+              styles.icon,
+              { tintColor: outlined ? colors.primary : colors.white },
+            ]}
+            resizeMode="contain"
+          />
         )}
         <Text style={[styles.buttonText, textStateStyle]}>{buttonText}</Text>
       </View>
@@ -109,6 +116,5 @@ const createStyles = (colors: any) =>
     icon: {
       width: 20,
       height: 20,
-      tintColor: colors.primary,
     },
   });

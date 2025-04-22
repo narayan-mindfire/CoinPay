@@ -23,6 +23,8 @@ const images = {
     addCard: require("./addCard.png"),
     bg: require("./bg1.png"),
     profile: require("./profile.png"),
+    support: require("./support.png"),
+    supportDark: require("./supportDark.png"),
   };
   
   export default images;

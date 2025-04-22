@@ -6,7 +6,6 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  TextInput,
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
@@ -33,6 +32,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RootState, useAppSelector } from "@/src/redux/store";
 import { updateUserForm } from "@/src/redux/slices/userFormSlice";
+import CustomTextField from "@/src/components/CustomTextField";
 /**
  * PhoneVerification Screen Component
  * Allows users to register using their phone number and password.
@@ -161,113 +161,49 @@ const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
                 </View>
 
                 {/* Right Box - Phone Input */}
-                <View
-                  style={[
-                    styles.rightBox,
-                    { borderColor: phoneError ? colors.error : colors.primary },
-                  ]}
-                >
-                  {!phone && (
-                    <Text style={styles.placeholderTextMobile}>
-                      {" "}
-                      {"      "} {t("phoneVerification.mobilePlaceholder")}
-                    </Text>
-                  )}
-                  <TextInput
-                    style={[styles.phoneInput]}
-                    placeholder=""
-                    keyboardType="phone-pad"
-                    value={phone}
-                    onChangeText={(text) => {
-                      setPhone(text);
-                      validatePhone(text);
-                    }}
-                  />
-                </View>
+                <CustomTextField
+                  value={phone}
+                  onChangeText={(text) => {
+                    setPhone(text);
+                    validatePhone(text);
+                  }}
+                  width={"73%"}
+                  placeholder="Enter your phone number"
+                  error={phoneError}
+                  inputStyle={{ fontSize: 16 }}
+                  keyboardType="phone-pad"
+                  showPlaceholder={true}
+                />
               </View>
-              {phoneError ? (
-                <Text style={{ color: colors.error, fontSize: 12 }}>
-                  {phoneError}
-                </Text>
-              ) : null}
-
               <Text style={styles.label}>{t("addEmail.label")}</Text>
-              <View
-                style={[
-                  styles.emailContainer,
-                  {
-                    borderColor: emailError ? colors.error : colors.primary,
-                  },
-                ]}
-              >
-                <Image source={icons.envelope} style={styles.envelopeIcon} />
-
-                <View style={styles.inputWrapper}>
-                  {!email && (
-                    <Text style={styles.placeholderText}>
-                      {t("addEmail.placeholder")}
-                    </Text>
-                  )}
-                  <TextInput
-                    style={styles.emailInput}
-                    placeholder=""
-                    value={email}
-                    onChangeText={(text) => {
-                      setEmail(text);
-                      validateEmail(text);
-                    }}
-                  />
-                </View>
-              </View>
-              {emailError ? (
-                <Text style={{ color: colors.error, fontSize: 12 }}>
-                  {emailError}
-                </Text>
-              ) : null}
+              <CustomTextField
+                value={email}
+                onChangeText={(text) => {
+                  setEmail(text);
+                }}
+                placeholder={t("addEmail.placeholder")}
+                error={emailError}
+                inputStyle={{ fontSize: 16 }}
+                keyboardType="email-address"
+                showPlaceholder={true}
+                iconLeft={icons.envelope}
+              />
 
               <Text style={styles.label}>
                 {t("phoneVerification.passwordLabel")}
               </Text>
-              <View
-                style={[
-                  styles.passwordContainer,
-                  {
-                    borderColor: passwordError ? colors.error : colors.primary,
-                  },
-                ]}
-              >
-                <Image source={icons.lock} style={styles.lockIcon} />
-
-                <View style={styles.inputWrapper}>
-                  {!password && (
-                    <Text style={styles.placeholderText}> ◉ ◉ ◉ ◉ ◉ ◉ ◉</Text>
-                  )}
-                  <TextInput
-                    style={[styles.passwordInput]}
-                    placeholder=""
-                    secureTextEntry={!passwordVisible}
-                    value={password}
-                    onChangeText={(text) => {
-                      setPassword(text);
-                      validatePassword(text);
-                    }}
-                  />
-                </View>
-
-                <TouchableOpacity
-                  onPress={() => setPasswordVisible(!passwordVisible)}
-                >
-                  <Image
-                    source={passwordVisible ? icons.eyeSlash : icons.eye}
-                    style={styles.eyeIcon}
-                  />
-                </TouchableOpacity>
-              </View>
-              {passwordError ? (
-                <Text style={{ color: colors.error, fontSize: 12 }}>
-                  {passwordError}
-                </Text>
-              ) : null}
+              <CustomTextField
+                value={password}
+                onChangeText={(text) => {
+                  setPassword(text);
+                }}
+                placeholder={"◉◉◉◉◉◉◉"}
+                error={passwordError}
+                inputStyle={{ fontSize: 16, letterSpacing: 3 }}
+                showPlaceholder={true}
+                iconLeft={icons.lock}
+                isPasswordField={true}
+              />
               {/* button set to disabled when either password or phone number not given, button height adjusted based on keyboardvisibility */}
               <Button
                 buttonText={t("phoneVerification.signUpButton")}
@@ -284,7 +220,7 @@ const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
                   passwordError !== "" ||
                   phoneError !== ""
                 }
-                buttonStyles={{ marginTop: isKeyboardVisible ? 40 : 320 }}
+                buttonStyles={{ marginTop: isKeyboardVisible ? 40 : 300 }}
               />
             </View>
           </View>
@@ -301,7 +237,6 @@ const createStyles = (colors: any) =>
       flex: 1,
       backgroundColor: colors.background,
     },
-
     title: {
       fontSize: 22,
       fontWeight: "bold",
@@ -315,7 +250,6 @@ const createStyles = (colors: any) =>
       marginBottom: 20,
     },
     label: {
-      marginTop: 5,
       fontSize: 14,
       fontWeight: "bold",
       color: colors.textPrimary,
@@ -324,9 +258,7 @@ const createStyles = (colors: any) =>
     phoneContainer: {
       flexDirection: "row",
       alignItems: "center",
-      borderColor: colors.border,
     },
-
     leftBox: {
       width: "25%",
       justifyContent: "center",
@@ -336,28 +268,11 @@ const createStyles = (colors: any) =>
       borderRadius: 8,
       height: 50,
       marginRight: "2%",
+      marginBottom: 20,
     },
     countryButton: {
       flexDirection: "row",
       alignItems: "center",
-    },
-
-    rightBox: {
-      width: "73%",
-      justifyContent: "center",
-      paddingHorizontal: 10,
-      borderRadius: 8,
-      height: 50,
-      borderWidth: 2,
-      borderColor: colors.border,
-    },
-
-    countryCode: {
-      flexDirection: "row",
-      alignItems: "center",
-      paddingRight: 10,
-      borderRightWidth: 1,
-      borderRightColor: colors.border,
     },
     flag: {
       width: 20,
@@ -366,113 +281,6 @@ const createStyles = (colors: any) =>
     },
     countryText: {
       fontSize: 18,
-      color: colors.textPrimary,
-    },
-    phoneInput: {
-      flex: 1,
-      fontSize: 18,
-      color: colors.textTertiary,
-      paddingLeft: 10,
-      letterSpacing: 2,
-    },
-    inputContainer: {
-      flex: 1,
-      position: "relative",
-    },
-    emailContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      borderWidth: 2,
-      borderColor: colors.border,
-      borderRadius: 8,
-      paddingHorizontal: 10,
-      height: 50,
-    },
-    envelopeIcon: {
-      width: 25,
-      height: 25,
-      marginRight: 10,
-      tintColor: colors.border,
-    },
-    emailInput: {
-      fontSize: 18,
-      color: colors.textTertiary,
-      width: "100%",
-    },
-    passwordContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      borderWidth: 2,
-      borderColor: colors.border,
-      borderRadius: 8,
-      paddingHorizontal: 10,
-      height: 50,
-    },
-    inputWrapper: {
-      flex: 1,
-      position: "relative",
-    },
-    placeholderText: {
-      position: "absolute",
-      left: 0,
-      top: "20%",
-      transform: [{ translateY: -9 }],
-      fontSize: 18,
-      color: colors.textDisabled,
-    },
-    placeholderTextMobile: {
-      position: "absolute",
-      top: "45%",
-      transform: [{ translateY: -9 }],
-      fontSize: 18,
-      color: colors.textDisabled,
-    },
-    passwordInput: {
-      fontSize: 18,
-      color: colors.textTertiary,
-      width: "100%",
-      letterSpacing: 5,
-    },
-    lockIcon: {
-      width: 25,
-      height: 25,
-      marginRight: 10,
-      tintColor: colors.border,
-    },
-    eyeIcon: {
-      width: 25,
-      height: 25,
-      tintColor: colors.border,
-    },
-    modalContainer: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: "rgba(0, 0, 0, 0.5)",
-    },
-    modalContent: {
-      width: "80%",
-      backgroundColor: colors.background,
-      borderRadius: 10,
-      borderWidth: 3,
-      borderColor: colors.border,
-      padding: 20,
-      maxHeight: 400,
-    },
-    modalItem: {
-      flexDirection: "row",
-      alignItems: "center",
-      paddingVertical: 10,
-      borderBottomWidth: 1,
-      borderBottomColor: colors.border,
-    },
-    modalFlag: {
-      width: 24,
-      height: 16,
-      marginRight: 10,
-    },
-    modalText: {
-      fontSize: 16,
       color: colors.textPrimary,
     },
   });

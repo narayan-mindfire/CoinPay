@@ -17,6 +17,7 @@ import ProfileIcon from "@/src/components/ProfileIcon";
 
 import { useTheme } from "@react-navigation/native";
 import ActionButton from "@/src/components/ActionButton";
+import SearchBar from "@/src/components/SearchBar";
 
 const HomeScreen = ({ navigation }) => {
   const { colors } = useTheme();
@@ -31,6 +32,15 @@ const HomeScreen = ({ navigation }) => {
       >
         <View style={styles.contentContainer}>
           <View style={styles.balanceSection}>
+            <View style={styles.searchBarRow}>
+              <Image source={icons.tropyhStar} tintColor={"#fff"} />
+              <SearchBar
+                value={'search "Payments"'}
+                onChangeText={() => {}}
+                width={240}
+              />
+              <Image source={icons.bell} tintColor={"#fff"} />
+            </View>
             <Text style={styles.currency}>US Dollar</Text>
             <Text style={styles.amount}>$20,000</Text>
             <TouchableOpacity style={styles.addButton}>
@@ -209,21 +219,28 @@ const { height: screenHeight } = Dimensions.get("window");
 const createStyles = (colors: any) =>
   StyleSheet.create({
     image: {
-      height: screenHeight * 0.3,
+      height: screenHeight * 0.37,
     },
     container: {
       backgroundColor: colors.background,
       flex: 1,
-      marginTop: 20,
+      marginTop: 5,
     },
     contentContainer: {
       padding: 16,
+    },
+    searchBarRow: {
+      width: "100%",
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
     },
     balanceSection: {
       alignItems: "center",
       marginBottom: 30,
     },
     currency: {
+      marginTop: 20,
       color: "white",
       fontSize: 16,
     },

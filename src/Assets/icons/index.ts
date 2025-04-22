@@ -27,7 +27,7 @@ const icons = {
   sack: require("./sack.png"),
   scanner: require("./scanner.png"),
   sendMoney: require("./sendMoney.png"),
-  tropyStar: require("./tropyStar.png"),
+  tropyhStar: require("./tropyStar.png"),
   unlock: require("./unlock.png"),
   user: require("./user.png"),
   bank: require("./bank.png"),
@@ -53,6 +53,8 @@ const icons = {
   edit: require("./edit.png"),
   briefCase: require("./briefCase.png"),
   share: require("./share.png"),
+  question: require("./question.png"),
+  atTheRate: require("./@.png"),
 };
 
 export default icons;

@@ -4,7 +4,6 @@ import {
   Text,
   Image,
   StyleSheet,
-  TextInput,
   Keyboard,
   TouchableOpacity,
   Modal,
@@ -24,6 +23,7 @@ import {
 import { useTheme } from "@react-navigation/native";
 import { Calendar } from "react-native-calendars";
 import { useTranslation } from "react-i18next";
+import CustomTextField from "@/src/components/CustomTextField";
 
 const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
   const { t } = useTranslation();
@@ -49,13 +49,7 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
   const fullNameError = validateFullName(fullName);
   const userNameError = validateUserName(userName);
 
-  const styles = createStyles(
-    colors,
-    fullNameError,
-    userNameError,
-    dob,
-    isKeyboardVisible
-  );
+  const styles = createStyles(colors, dob, isKeyboardVisible);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -119,45 +113,21 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
         <Text style={styles.subtitle}>{t("personalInfo.subtitle")}</Text>
 
         <Text style={styles.label}>{t("personalInfo.fullName")}</Text>
-        <View style={styles.nameContainer}>
-          <View style={styles.inputWrapper}>
-            {!fullName && (
-              <Text style={styles.placeholderText}>
-                {t("personalInfo.namePlaceholder")}
-              </Text>
-            )}
-            <TextInput
-              style={styles.emailInput}
-              placeholder=""
-              value={fullName}
-              onChangeText={(text) => setFullName(text)}
-            />
-          </View>
-        </View>
-        {fullNameError ? (
-          <Text style={styles.errorText}>{fullNameError}</Text>
-        ) : null}
+        <CustomTextField
+          value={fullName}
+          onChangeText={setFullName}
+          placeholder={t("personalInfo.namePlaceholder")}
+          error={fullNameError}
+        />
 
         <Text style={styles.label}>{t("personalInfo.username")}</Text>
-        <View style={styles.usernameContainer}>
-          <View style={styles.inputWrapper}>
-            <Text style={styles.usernamePrefix}>@</Text>
-            {!userName && (
-              <Text style={styles.usernamePlaceholder}>
-                {t("personalInfo.usernamePlaceholder")}
-              </Text>
-            )}
-            <TextInput
-              style={styles.usernameInput}
-              placeholder=""
-              value={userName}
-              onChangeText={(text) => setUserName(text)}
-            />
-          </View>
-        </View>
-        {userNameError ? (
-          <Text style={styles.errorText}>{userNameError}</Text>
-        ) : null}
+        <CustomTextField
+          value={userName}
+          onChangeText={setUserName}
+          placeholder={t("personalInfo.usernamePlaceholder")}
+          iconLeft={icons.atTheRate}
+          error={userNameError}
+        />
 
         <Text style={styles.label}>{t("personalInfo.dob")}</Text>
         <TouchableOpacity onPress={() => setShowCalendar(true)}>
@@ -187,13 +157,7 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
   );
 };
 
-const createStyles = (
-  colors: any,
-  fullNameError: string,
-  userNameError: string,
-  dob: string,
-  isKeyboardVisible: boolean
-) =>
+const createStyles = (colors: any, dob: string, isKeyboardVisible: boolean) =>
   StyleSheet.create({
     container: {
       flex: 1,
@@ -215,25 +179,7 @@ const createStyles = (
       fontSize: 16,
       fontWeight: "bold",
       color: colors.textPrimary,
-      marginVertical: 7,
-    },
-    nameContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      borderWidth: 2,
-      borderRadius: 8,
-      paddingHorizontal: 10,
-      height: 50,
-      borderColor: fullNameError ? colors.error : colors.primary,
-    },
-    usernameContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      borderWidth: 2,
-      borderRadius: 8,
-      paddingHorizontal: 10,
-      height: 50,
-      borderColor: userNameError ? colors.error : colors.primary,
+      marginBottom: 5,
     },
     dobContainer: {
       flexDirection: "row",
@@ -246,17 +192,6 @@ const createStyles = (
     },
     formContainer: {
       paddingHorizontal: 14,
-    },
-    inputWrapper: {
-      flex: 1,
-      position: "relative",
-    },
-    placeholderText: {
-      position: "absolute",
-      top: "20%",
-      transform: [{ translateY: -8 }],
-      fontSize: 18,
-      color: colors.textDisabled,
     },
     usernamePrefix: {
       position: "absolute",
@@ -284,16 +219,6 @@ const createStyles = (
       fontSize: 18,
       color: colors.textTertiary,
       width: "100%",
-    },
-    usernameInput: {
-      fontSize: 18,
-      color: colors.textTertiary,
-      width: "100%",
-      paddingLeft: 20,
-    },
-    errorText: {
-      color: colors.error,
-      fontSize: 12,
     },
     modalContainer: {
       flex: 1,
