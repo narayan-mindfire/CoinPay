@@ -69,7 +69,7 @@ const ChooseRecepient = ({ navigation }) => {
       />
       <CamButton
         navigation={navigation}
-        to="PurposeSelection"
+        to="ScanSend"
         icon="camera"
         text={"Scan to Pay"}
       />

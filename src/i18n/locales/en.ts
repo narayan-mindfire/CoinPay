@@ -172,6 +172,10 @@ const en = {
     deleteTitle: "Delete Card?",
     deleteConfirm: "Are you sure you want to delete this card?"
   },
+  scanSend: {
+    text: "Scan a QR to pay",
+    subtext: "Hold the code inside the frame it will be scanned automatically"
+  }
 };
 
 export default en;
