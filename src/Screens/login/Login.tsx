@@ -171,7 +171,6 @@ const createStyles = (colors: any, emailError: string) =>
       fontWeight: "bold",
       color: colors.textPrimary,
       marginBottom: 5,
-      marginTop: 7,
     },
     forgotLink: {
       fontSize: 16,

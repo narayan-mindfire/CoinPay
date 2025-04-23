@@ -2,6 +2,7 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import userFormReducer from './slices/userFormSlice';
 import themeReducer from './slices/themeSlice';
 import authReducer from './slices/authSlice';
+import cardReducer from './slices/cardSlice'
 import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
@@ -9,7 +10,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['auth', 'theme'], 
+  whitelist: ['auth', 'theme', 'card'], 
 };
 
 //combining all reducers
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   userForm: userFormReducer,
   auth: authReducer,
   theme: themeReducer,
+  card : cardReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

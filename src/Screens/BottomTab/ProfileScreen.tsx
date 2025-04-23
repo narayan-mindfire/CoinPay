@@ -18,12 +18,12 @@ import { RootState, useAppDispatch, useAppSelector } from "@/src/redux/store";
 import { logoutUser } from "@/src/redux/slices/authSlice";
 import { toggleTheme } from "@/src/redux/slices/themeSlice";
 
-import { useTheme } from "@react-navigation/native";
+import { TabActions, useTheme } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ProfileIcon from "@/src/components/ProfileIcon";
 import LoaderModal from "@/src/components/LoaderModal";
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }) => {
   const { colors } = useTheme();
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.auth.user);
@@ -54,30 +54,35 @@ const ProfileScreen = () => {
       label: "Personal Info",
       tintColor: "primary",
       bgColor: "backgroundAccent",
+      // to: "ProfileScreen",
     },
     {
       icon: icons.bank,
       label: "Bank & Cards",
       tintColor: "warning",
       bgColor: "backgroundWarning",
+      to: "CardList",
     },
     {
       icon: icons.transaction,
       label: "Transaction",
       tintColor: "error",
       bgColor: "backgroundError",
+      to: "StatisticsTab",
     },
     {
       icon: icons.settings,
       label: "Settings",
       tintColor: "primary",
       bgColor: "backgroundAccent",
+      to: "Settings",
     },
     {
       icon: icons.lock,
       label: "Data Privacy",
       tintColor: "success",
       bgColor: "backgroundSuccess",
+      to: "DataPrivacy",
     },
   ];
 
@@ -114,7 +119,12 @@ const ProfileScreen = () => {
 
           {profileOptions.map((item, index) => (
             <View key={index}>
-              <TouchableOpacity style={styles.settingRow}>
+              <TouchableOpacity
+                style={styles.settingRow}
+                onPress={() => {
+                  if (item.to) navigation.navigate(item.to);
+                }}
+              >
                 <View style={styles.settingLeft}>
                   <ProfileIcon
                     icon={item.icon}
@@ -151,6 +161,7 @@ const createStyles = (colors) =>
       alignItems: "center",
       position: "relative",
       marginBottom: 24,
+      paddingVertical: 5,
     },
     avatar: {
       height: 64,

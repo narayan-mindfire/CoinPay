@@ -5,6 +5,8 @@ const en = {
     error: 'Error',
     info: 'Information',
     warning: 'Warning',
+    delete: "Delete",
+    cancel: "Cancel"
   },
   onboarding: {
     slide1: "Trusted by millions of people, part of one part",
@@ -166,6 +168,9 @@ const en = {
     subtitle: "All the cards you have in the account",
     successMessage: "Your card was successfully added",
     button: "Continue",
+    addAnother: "add another card",
+    deleteTitle: "Delete Card?",
+    deleteConfirm: "Are you sure you want to delete this card?"
   },
 };
 
