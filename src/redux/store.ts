@@ -10,7 +10,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['auth', 'theme'], 
+  whitelist: ['auth', 'theme', 'card'], 
 };
 
 //combining all reducers

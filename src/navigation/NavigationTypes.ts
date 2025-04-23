@@ -56,6 +56,8 @@ export type PrimaryStackParamList = {
   ChooseSender: undefined;
   PurposeSelectionReceive: undefined;
   ReceiveQR: undefined;
+  DataPrivacy: undefined;
+  Settings: undefined;
 }
 
 export type AddCardScreenProps = NativeStackScreenProps<PrimaryStackParamList, "AddCard">;

@@ -14,28 +14,36 @@ import PurposeSelectionReceive from "../Screens/receive/PurposeSelectionReceive"
 import ReceiveQR from "../Screens/receive/ReceiveQR";
 import { HeaderPrimary } from "../components/HeaderPrimary";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAppSelector } from "../redux/store";
+import DataPrivacy from "../Screens/others/DataPrivacy";
+import Settings from "../Screens/others/Settings";
+
 const Stack = createNativeStackNavigator<PrimaryStackParamList>();
 
 const PrimaryStack: React.FC = () => {
-  const [cardsPresent, setCardsPresent] = React.useState(true);
+  const cardsPresent = useAppSelector((state) => state.card.cards);
+  const hasCards = cardsPresent.length > 0;
+  console.log("cards present:\n", hasCards);
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
       <HeaderPrimary />
-      <Stack.Navigator id={undefined} screenOptions={{ headerShown: false }}>
-        {cardsPresent && (
-          <>
-            <Stack.Screen name="AddCard" component={AddCard} />
-            <Stack.Screen name="CardForm" component={CardForm} />
-            <Stack.Screen name="VerifyCard" component={VerifyCard} />
-            <Stack.Screen name="CardList" component={cardList} />
-          </>
-        )}
+      <Stack.Navigator
+        initialRouteName={hasCards ? "BottomTab" : "AddCard"}
+        id={undefined}
+        screenOptions={{ headerShown: false }}
+      >
+        <Stack.Screen name="AddCard" component={AddCard} />
+        <Stack.Screen name="CardForm" component={CardForm} />
+        <Stack.Screen name="VerifyCard" component={VerifyCard} />
+        <Stack.Screen name="CardList" component={cardList} />
         <Stack.Screen name="BottomTab" component={BottomTab} />
         <Stack.Screen name="ChooseRecepient" component={ChooseRecepient} />
         <Stack.Screen name="PurposeSelection" component={PurposeSelection} />
         <Stack.Screen name="ReceiveQR" component={ReceiveQR} />
         <Stack.Screen name="SendSummary" component={SendSummary} />
         <Stack.Screen name="ChooseSender" component={ChooseSender} />
+        <Stack.Screen name="DataPrivacy" component={DataPrivacy} />
+        <Stack.Screen name="Settings" component={Settings} />
         <Stack.Screen
           name="PurposeSelectionReceive"
           component={PurposeSelectionReceive}
