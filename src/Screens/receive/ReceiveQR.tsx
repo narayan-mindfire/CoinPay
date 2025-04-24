@@ -15,7 +15,7 @@ const ReceiveQR = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.qrBox}>
         <QRCode
-          value={user.number}
+          value={user.uid}
           size={200}
           color={!dark ? colors.primary : "#fff"}
           backgroundColor="transparent"

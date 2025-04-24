@@ -1,14 +1,21 @@
-import { useRef } from "react";
-
 import { Button, StyleSheet, Text, View } from "react-native";
 
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@react-navigation/native";
+import { useAppDispatch, useAppSelector } from "@/src/redux/store";
+import {
+  setReceiverUID,
+  setSenderUID,
+} from "@/src/redux/slices/currentTransactionSlice";
 
 export default function ScanDoc({ navigation }) {
   const { t } = useTranslation();
   const { colors } = useTheme();
+  const dispatch = useAppDispatch();
+
+  const currentUser = useAppSelector((state) => state.auth.user);
+
   const [permission, requestPermission] = useCameraPermissions();
 
   const styles = createStyles(colors);
@@ -32,10 +39,11 @@ export default function ScanDoc({ navigation }) {
         facing="back"
         flash="off"
         onBarcodeScanned={({ data }) => {
-          setTimeout(() => {
-            console.log("data: ", data);
-            navigation.navigate("SendSummary");
-          }, 500);
+          console.log("data: ", data);
+          dispatch(setSenderUID(currentUser.uid));
+          console.log("data: ", data);
+          dispatch(setReceiverUID(data));
+          navigation.navigate("PurposeSelection");
         }}
       >
         {/* Overlay */}
@@ -119,10 +127,11 @@ const createStyles = (colors: any) =>
 
     text: {
       color: colors.white,
-      fontSize: 26,
+      fontSize: 32,
       textAlign: "center",
       marginBottom: 10,
       width: "60%",
+      fontWeight: "800",
     },
     subText: {
       color: colors.white,

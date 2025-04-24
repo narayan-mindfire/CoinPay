@@ -1,11 +1,21 @@
 import React, { useState } from "react";
+
 import { View, Text, StyleSheet, FlatList } from "react-native";
-import { useTheme } from "@react-navigation/native";
+
 import icons from "@/src/Assets/icons";
 import PurposeOption from "@/src/components/PurposeOption";
 import Button from "@/src/components/Button";
 import TransferCard from "@/src/components/TransferCard";
 import ChooseAccount from "@/src/components/ChooseAccount";
+
+import { useAppDispatch, useAppSelector } from "@/src/redux/store";
+import {
+  setPurpose,
+  setAmount as setAmountRedux,
+} from "@/src/redux/slices/currentTransactionSlice";
+import { createTransaction } from "@/src/redux/slices/transactionSlice";
+
+import { useTheme } from "@react-navigation/native";
 
 const purposes = [
   {
@@ -36,10 +46,16 @@ const purposes = [
 
 const PurposeSelection = ({ navigation }) => {
   const { colors } = useTheme();
+  const dispatch = useAppDispatch();
+
   const styles = createStyles(colors);
   const [selected, setSelected] = useState("1");
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [amount, setAmount] = useState("");
+
+  const currentTransaction = useAppSelector(
+    (state) => state.currentTransaction
+  );
 
   console.log("step", step);
 
@@ -62,7 +78,18 @@ const PurposeSelection = ({ navigation }) => {
               />
             )}
           />
-          <Button buttonText="Continue" handleButton={() => setStep(2)} />
+          <Button
+            buttonText="Continue"
+            handleButton={() => {
+              const selectedPurpose = purposes.find(
+                (p) => p.id === selected
+              )?.title;
+              if (selectedPurpose) {
+                dispatch(setPurpose(selectedPurpose));
+              }
+              setStep(2);
+            }}
+          />
         </>
       )}
 
@@ -76,6 +103,7 @@ const PurposeSelection = ({ navigation }) => {
           amount={amount}
           setAmount={setAmount}
           onContinue={() => {
+            dispatch(setAmountRedux(Number(amount)));
             setStep(3);
             console.log("Continue pressed");
           }}
@@ -89,7 +117,10 @@ const PurposeSelection = ({ navigation }) => {
             email: "helloyouthmind@gmail.com",
           }}
           amount={amount}
-          onContinue={() => {
+          onContinue={async () => {
+            console.log("clicked on pay button");
+            console.log("current transaction: ", currentTransaction);
+            await dispatch(createTransaction(currentTransaction));
             console.log("Pay confirmed");
             navigation.navigate("SendSummary");
           }}

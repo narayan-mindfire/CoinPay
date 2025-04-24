@@ -1,31 +1,102 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
-import { useTheme } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
+
 import images from "@/src/Assets/images";
 import CamButton from "@/src/components/CamButton";
 import UserTransaction from "@/src/components/UserTransaction";
 import SearchBar from "@/src/components/SearchBar";
 
-const recentRecipients = Array(5).fill({
-  name: "Mehedi Hasan",
-  email: "helloyouthmind@gmail.com",
-  amount: "-$100",
-  image: images.profile,
-});
+import { useAppDispatch, useAppSelector } from "@/src/redux/store";
+import { fetchUserTransactions } from "@/src/redux/slices/transactionSlice";
+import {
+  setReceiverUID,
+  setSenderUID,
+} from "@/src/redux/slices/currentTransactionSlice";
+
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/firebaseConfig";
+
+import { useTheme } from "@react-navigation/native";
+
+interface User {
+  uid: string;
+  name: string;
+  email: string;
+  image?: string;
+}
 
 const ChooseRecepient = ({ navigation }) => {
   const { colors } = useTheme();
-  const styles = createStyles(colors);
+  const dispatch = useAppDispatch();
 
+  const [users, setUsers] = useState<User[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredResults = recentRecipients.filter((item) =>
+  const currentUser = useAppSelector((state) => state.auth.user);
+
+  const { transactions, loading } = useAppSelector(
+    (state) => state.transaction
+  );
+
+  const styles = createStyles(colors);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const userSnap = await getDocs(collection(db, "users"));
+        const fetchedUsers: User[] = [];
+
+        userSnap.forEach((doc) => {
+          const data = doc.data();
+          if (data.uid !== currentUser?.uid) {
+            fetchedUsers.push({
+              uid: data.uid,
+              name: data.name || "Unnamed",
+              email: data.email,
+              image: data.image || images.profile,
+            });
+          }
+        });
+
+        setUsers(fetchedUsers);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    if (currentUser?.uid) {
+      dispatch(fetchUserTransactions(currentUser.uid));
+    }
+
+    fetchUsers();
+  }, [currentUser?.uid]);
+
+  const filteredResults = users.filter((item) =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const exactMatch = recentRecipients.find(
+  const exactMatch = users.find(
     (item) => item.email.toLowerCase() === searchQuery.toLowerCase()
   );
+
+  const handleRecipientClick = (recipient) => {
+    dispatch(setSenderUID(currentUser.uid));
+    dispatch(setReceiverUID(recipient.uid));
+    navigation.navigate("PurposeSelection");
+  };
+
+  const recentTransactions = transactions
+    .filter((tx) => tx.senderUID === currentUser?.uid)
+    .sort((a, b) => b.createdAt - a.createdAt)
+    .slice(0, 5);
 
   return (
     <View style={styles.container}>
@@ -43,30 +114,40 @@ const ChooseRecepient = ({ navigation }) => {
       {exactMatch && (
         <View style={styles.matchCard}>
           <Text style={styles.sectionTitle}>Send to</Text>
-          <UserTransaction
-            name={exactMatch.name}
-            email={exactMatch.email}
-            amount={exactMatch.amount}
-            image={exactMatch.image}
-          />
+          <TouchableOpacity onPress={() => handleRecipientClick(exactMatch)}>
+            <UserTransaction
+              name={exactMatch.name}
+              email={exactMatch.email}
+              amount=""
+              image={exactMatch.image}
+            />
+          </TouchableOpacity>
         </View>
       )}
 
-      <Text style={styles.sectionTitle}>Most Recent</Text>
+      <Text style={styles.sectionTitle}>Most Recent Transactions</Text>
+
+      {loading && <ActivityIndicator size="large" color={colors.primary} />}
 
       <FlatList
-        data={filteredResults}
+        data={recentTransactions}
         removeClippedSubviews={false}
-        keyExtractor={(_, index) => index.toString()}
-        renderItem={({ item }) => (
-          <UserTransaction
-            name={item.name}
-            email={item.email}
-            amount={item.amount}
-            image={item.image}
-          />
-        )}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => {
+          const receiver = users.find((u) => u.uid === item.receiverUID);
+          return (
+            <TouchableOpacity onPress={() => handleRecipientClick(receiver)}>
+              <UserTransaction
+                name={receiver?.name || "Unknown"}
+                email={receiver?.email || item.receiverUID}
+                amount={`₹${item.amount}`}
+                image={receiver?.image || images.profile}
+              />
+            </TouchableOpacity>
+          );
+        }}
       />
+
       <CamButton
         navigation={navigation}
         to="ScanSend"

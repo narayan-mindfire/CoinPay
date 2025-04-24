@@ -265,7 +265,7 @@ const createStyles = (colors: any) =>
     actions: {
       flexDirection: "row",
       justifyContent: "space-around",
-      marginVertical: 20,
+      marginVertical: 10,
       backgroundColor: colors.backgroundModal,
       borderRadius: 15,
     },
