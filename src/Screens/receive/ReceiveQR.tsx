@@ -1,10 +1,13 @@
 import React from "react";
+
 import { View, Text, StyleSheet } from "react-native";
-import { useTheme } from "@react-navigation/native";
+
 import QRCode from "react-native-qrcode-svg";
 import Button from "@/src/components/Button";
 import icons from "@/src/Assets/icons";
+
 import { useAppSelector } from "@/src/redux/store";
+import { useTheme } from "@react-navigation/native";
 
 const ReceiveQR = ({ navigation }) => {
   const { colors, dark } = useTheme();

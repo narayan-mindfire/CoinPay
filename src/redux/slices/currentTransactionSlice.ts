@@ -14,6 +14,7 @@ const initialState: CurrentTransactionState = {
   amount: 0
 };
 
+// slice that handles storing data while data is being received across multiple steps by user
 const currentTransactionSlice = createSlice({
   name: "currentTransaction",
   initialState,

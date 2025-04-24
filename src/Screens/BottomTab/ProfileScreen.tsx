@@ -18,7 +18,7 @@ import { RootState, useAppDispatch, useAppSelector } from "@/src/redux/store";
 import { logoutUser } from "@/src/redux/slices/authSlice";
 import { toggleTheme } from "@/src/redux/slices/themeSlice";
 
-import { TabActions, useTheme } from "@react-navigation/native";
+import { useTheme } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ProfileIcon from "@/src/components/ProfileIcon";
 import LoaderModal from "@/src/components/LoaderModal";
@@ -26,8 +26,8 @@ import LoaderModal from "@/src/components/LoaderModal";
 const ProfileScreen = ({ navigation }) => {
   const { colors } = useTheme();
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.auth.user);
-  const theme = useAppSelector((state) => state.theme.theme);
+  const user = useAppSelector((state: RootState) => state.auth.user);
+  const theme = useAppSelector((state: RootState) => state.theme.theme);
 
   const loading = useAppSelector((state: RootState) => state.auth.loading);
 

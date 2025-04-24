@@ -38,6 +38,7 @@ export default function ScanDoc({ navigation }) {
         style={styles.camera}
         facing="back"
         flash="off"
+        //on scanning of barcode the data (uid of recepient) we move ahead with normal procedure to create transaction
         onBarcodeScanned={({ data }) => {
           console.log("data: ", data);
           dispatch(setSenderUID(currentUser.uid));

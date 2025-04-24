@@ -1,12 +1,14 @@
 import React, { useState } from "react";
+
 import { View, Text, StyleSheet, FlatList } from "react-native";
-import { useTheme } from "@react-navigation/native";
+
 import icons from "@/src/Assets/icons";
 import PurposeOption from "@/src/components/PurposeOption";
 import Button from "@/src/components/Button";
 import TransferCard from "@/src/components/TransferCard";
-import ChooseAccount from "@/src/components/ChooseAccount";
 import RequestUser from "@/src/components/RequestUser";
+
+import { useTheme } from "@react-navigation/native";
 
 const purposes = [
   {

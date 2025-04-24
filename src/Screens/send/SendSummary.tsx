@@ -28,6 +28,7 @@ const SendSummary = ({ navigation }) => {
     minute: "2-digit",
   });
 
+  // fetching receiver's details to be displayed in screen
   useEffect(() => {
     const fetchReceiverData = async () => {
       const receiverQuery = query(

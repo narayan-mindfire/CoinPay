@@ -121,6 +121,8 @@ const PurposeSelection = ({ navigation }) => {
           onContinue={async () => {
             console.log("clicked on pay button");
             console.log("current transaction: ", currentTransaction);
+
+            // creating transactions and updating users to show change in account balance
             await dispatch(createTransaction(currentTransaction)).then(() => {
               dispatch(fetchUserProfile(currentTransaction.senderUID));
             });

@@ -48,6 +48,8 @@ const ChooseRecepient = ({ navigation }) => {
 
   const styles = createStyles(colors);
 
+  // fetching users from firebase to display in recent transactions
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -93,6 +95,7 @@ const ChooseRecepient = ({ navigation }) => {
     navigation.navigate("PurposeSelection");
   };
 
+  // data to display in recent transactions
   const recentTransactions = transactions
     .filter((tx) => tx.senderUID === currentUser?.uid)
     .sort((a, b) => b.createdAt - a.createdAt)
