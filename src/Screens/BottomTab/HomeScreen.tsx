@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   View,
@@ -19,14 +19,18 @@ import { useTheme } from "@react-navigation/native";
 import ActionButton from "@/src/components/ActionButton";
 import SearchBar from "@/src/components/SearchBar";
 import { useAppSelector } from "@/src/redux/store";
+import AddMoneyModal from "@/src/components/AddMoneyModal";
 
 const HomeScreen = ({ navigation }) => {
   const { colors } = useTheme();
   const styles = createStyles(colors);
   const accBalance = useAppSelector((state) => state.auth.user.accBalance);
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <ScrollView style={styles.container}>
+      <AddMoneyModal visible={showModal} onCancel={() => setShowModal(false)} />
+
       <ImageBackground
         source={images.bg}
         resizeMode="cover"
@@ -45,7 +49,10 @@ const HomeScreen = ({ navigation }) => {
             </View>
             <Text style={styles.currency}>US Dollar</Text>
             <Text style={styles.amount}>${accBalance}</Text>
-            <TouchableOpacity style={styles.addButton}>
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => setShowModal(true)}
+            >
               <Text style={styles.addText}>Add Money</Text>
             </TouchableOpacity>
           </View>

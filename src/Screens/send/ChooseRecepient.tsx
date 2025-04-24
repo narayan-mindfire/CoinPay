@@ -5,7 +5,6 @@ import {
   Text,
   StyleSheet,
   FlatList,
-  TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
 
@@ -25,6 +24,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 
 import { useTheme } from "@react-navigation/native";
+import LoaderModal from "@/src/components/LoaderModal";
 
 interface User {
   uid: string;
@@ -100,6 +100,8 @@ const ChooseRecepient = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      {/* loading screen when list of senders is loading  */}
+      <LoaderModal visible={loading} />
       <Text style={styles.title}>Choose Recipient</Text>
       <Text style={styles.subtitle}>
         Please select your recipient to send money.
@@ -114,18 +116,16 @@ const ChooseRecepient = ({ navigation }) => {
       {exactMatch && (
         <View style={styles.matchCard}>
           <Text style={styles.sectionTitle}>Send to</Text>
-          <TouchableOpacity onPress={() => handleRecipientClick(exactMatch)}>
-            <UserTransaction
-              name={exactMatch.name}
-              email={exactMatch.email}
-              amount=""
-              image={exactMatch.image}
-            />
-          </TouchableOpacity>
+          <UserTransaction
+            name={exactMatch.name}
+            email={exactMatch.email}
+            amount=""
+            image={exactMatch.image}
+          />
         </View>
       )}
 
-      <Text style={styles.sectionTitle}>Most Recent Transactions</Text>
+      <Text style={styles.sectionTitle}>Most Recent</Text>
 
       {loading && <ActivityIndicator size="large" color={colors.primary} />}
 
@@ -136,14 +136,14 @@ const ChooseRecepient = ({ navigation }) => {
         renderItem={({ item }) => {
           const receiver = users.find((u) => u.uid === item.receiverUID);
           return (
-            <TouchableOpacity onPress={() => handleRecipientClick(receiver)}>
-              <UserTransaction
-                name={receiver?.name || "Unknown"}
-                email={receiver?.email || item.receiverUID}
-                amount={`₹${item.amount}`}
-                image={receiver?.image || images.profile}
-              />
-            </TouchableOpacity>
+            <UserTransaction
+              name={receiver?.name || "Unknown"}
+              email={receiver?.email || item.receiverUID}
+              amount={`₹${item.amount}`}
+              image={images.profile}
+              direction={false}
+              handlePress={() => handleRecipientClick(receiver)}
+            />
           );
         }}
       />
