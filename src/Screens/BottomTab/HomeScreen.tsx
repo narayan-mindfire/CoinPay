@@ -18,10 +18,12 @@ import ProfileIcon from "@/src/components/ProfileIcon";
 import { useTheme } from "@react-navigation/native";
 import ActionButton from "@/src/components/ActionButton";
 import SearchBar from "@/src/components/SearchBar";
+import { useAppSelector } from "@/src/redux/store";
 
 const HomeScreen = ({ navigation }) => {
   const { colors } = useTheme();
   const styles = createStyles(colors);
+  const accBalance = useAppSelector((state) => state.auth.user.accBalance);
 
   return (
     <ScrollView style={styles.container}>
@@ -42,7 +44,7 @@ const HomeScreen = ({ navigation }) => {
               <Image source={icons.bell} tintColor={"#fff"} />
             </View>
             <Text style={styles.currency}>US Dollar</Text>
-            <Text style={styles.amount}>$20,000</Text>
+            <Text style={styles.amount}>${accBalance}</Text>
             <TouchableOpacity style={styles.addButton}>
               <Text style={styles.addText}>Add Money</Text>
             </TouchableOpacity>

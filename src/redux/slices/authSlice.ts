@@ -64,6 +64,22 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
+
+export const fetchUserProfile = createAsyncThunk(
+  "auth/fetchUserProfile",
+  async (uid: string, thunkAPI) => {
+    try {
+      const userDoc = await getDoc(doc(db, "users", uid));
+      if (userDoc.exists()) {
+        return userDoc.data(); 
+      } else {
+        return thunkAPI.rejectWithValue("User not found");
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue("Failed to fetch user profile");
+    }
+  }
+);
   
 export const logoutUser = createAsyncThunk('auth/logout', async () => {
   await signOut(auth);
@@ -85,7 +101,12 @@ const authSlice = createSlice({
         state.user = null;
         state.token = null;
       })
-
+      builder.addCase(fetchUserProfile.fulfilled, (state, action) => {
+        state.user = {
+          ...state.user,
+          ...action.payload,
+        };
+      })
       .addMatcher(
         isAnyOf(registerUser.pending, loginUser.pending),
         (state) => {

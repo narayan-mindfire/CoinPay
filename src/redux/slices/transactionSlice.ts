@@ -13,6 +13,10 @@ import {
     query,
     where,
     serverTimestamp,
+    setDoc,
+    doc,
+    updateDoc,
+    increment,
 } from "firebase/firestore";
 
 export interface Transaction {
@@ -88,6 +92,14 @@ import { db } from "@/firebaseConfig";
         createdAt: serverTimestamp(),
       };
       await addDoc(collection(db, "transactions"), newTx);
+      await updateDoc(doc(db, "users", transaction.receiverUID), {
+        accBalance: increment(transaction.amount) 
+      });
+      console.log("incremented balance")
+      await updateDoc(doc(db, "users", transaction.senderUID), {
+        accBalance: increment(-transaction.amount) 
+      });
+      console.log("decremented balance")
       console.log("document added")
       console.log(transaction)
     } catch (error) {
@@ -141,4 +153,3 @@ import { db } from "@/firebaseConfig";
   export const { clearTransactions } = transactionSlice.actions;
   
   export default transactionSlice.reducer;
-  

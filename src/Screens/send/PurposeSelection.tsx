@@ -16,6 +16,7 @@ import {
 import { createTransaction } from "@/src/redux/slices/transactionSlice";
 
 import { useTheme } from "@react-navigation/native";
+import { fetchUserProfile } from "@/src/redux/slices/authSlice";
 
 const purposes = [
   {
@@ -120,7 +121,9 @@ const PurposeSelection = ({ navigation }) => {
           onContinue={async () => {
             console.log("clicked on pay button");
             console.log("current transaction: ", currentTransaction);
-            await dispatch(createTransaction(currentTransaction));
+            await dispatch(createTransaction(currentTransaction)).then(() => {
+              dispatch(fetchUserProfile(currentTransaction.senderUID));
+            });
             console.log("Pay confirmed");
             navigation.navigate("SendSummary");
           }}
