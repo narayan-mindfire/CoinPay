@@ -18,16 +18,20 @@ import { RootState, useAppDispatch, useAppSelector } from "@/src/redux/store";
 import { logoutUser } from "@/src/redux/slices/authSlice";
 import { toggleTheme } from "@/src/redux/slices/themeSlice";
 
-import { TabActions, useTheme } from "@react-navigation/native";
+import { useTheme } from "@react-navigation/native";
+
 import { SafeAreaView } from "react-native-safe-area-context";
 import ProfileIcon from "@/src/components/ProfileIcon";
 import LoaderModal from "@/src/components/LoaderModal";
+import { useTranslation } from "react-i18next";
 
 const ProfileScreen = ({ navigation }) => {
   const { colors } = useTheme();
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.auth.user);
-  const theme = useAppSelector((state) => state.theme.theme);
+  const { t } = useTranslation();
+
+  const user = useAppSelector((state: RootState) => state.auth.user);
+  const theme = useAppSelector((state: RootState) => state.theme.theme);
 
   const loading = useAppSelector((state: RootState) => state.auth.loading);
 
@@ -51,35 +55,35 @@ const ProfileScreen = ({ navigation }) => {
   const profileOptions = [
     {
       icon: icons.user,
-      label: "Personal Info",
+      label: t("profile.personalInfo"),
       tintColor: "primary",
       bgColor: "backgroundAccent",
       // to: "ProfileScreen",
     },
     {
       icon: icons.bank,
-      label: "Bank & Cards",
+      label: t("profile.bankCards"),
       tintColor: "warning",
       bgColor: "backgroundWarning",
       to: "CardList",
     },
     {
       icon: icons.transaction,
-      label: "Transaction",
+      label: t("profile.transaction"),
       tintColor: "error",
       bgColor: "backgroundError",
       to: "StatisticsTab",
     },
     {
       icon: icons.settings,
-      label: "Settings",
+      label: t("profile.settings"),
       tintColor: "primary",
       bgColor: "backgroundAccent",
       to: "Settings",
     },
     {
       icon: icons.lock,
-      label: "Data Privacy",
+      label: t("profile.dataPrivacy"),
       tintColor: "success",
       bgColor: "backgroundSuccess",
       to: "DataPrivacy",
@@ -92,9 +96,15 @@ const ProfileScreen = ({ navigation }) => {
         <View style={styles.profileHeader}>
           <Image source={images.profile} style={styles.avatar} />
           <View style={styles.userInfo}>
-            <Text style={styles.name}>{user?.name || "Your Name"}</Text>
-            <Text style={styles.email}>{user?.email || "your@email.com"}</Text>
-            <Text style={styles.phone}>{user?.phone || "+91xxxxxxxxxx"}</Text>
+            <Text style={styles.name}>
+              {user?.name || t("profile.namePlaceholder")}
+            </Text>
+            <Text style={styles.email}>
+              {user?.email || t("profile.emailPlaceholder")}
+            </Text>
+            <Text style={styles.phone}>
+              {user?.phone || t("profile.phonePlaceholder")}
+            </Text>
           </View>
           <TouchableOpacity style={styles.editIcon}>
             <Image source={icons.edit} style={styles.iconSmall} />
@@ -107,7 +117,7 @@ const ProfileScreen = ({ navigation }) => {
               <View style={styles.moonContainer}>
                 <Image source={icons.moon} style={styles.iconMoon} />
               </View>
-              <Text style={styles.settingLabel}>Dark Mode</Text>
+              <Text style={styles.settingLabel}>{t("profile.darkMode")}</Text>
             </View>
             <Switch
               value={isDarkMode}
@@ -140,7 +150,10 @@ const ProfileScreen = ({ navigation }) => {
         </View>
 
         <View style={styles.logoutContainer}>
-          <Button handleButton={handleLogout} buttonText="Log Out" />
+          <Button
+            handleButton={handleLogout}
+            buttonText={t("profile.logout")}
+          />
         </View>
         <LoaderModal visible={loading} />
       </ScrollView>

@@ -168,7 +168,108 @@ no: "नहीं",
     subtitle: "आपके खाते में सभी कार्ड",
     successMessage: "आपका कार्ड सफलतापूर्वक जोड़ा गया",
     button: "जारी रखें",
+    addAnother: "एक और कार्ड जोड़ें",
+    deleteTitle: "कार्ड हटाएं?",
+    deleteConfirm: "क्या आप वाकई इस कार्ड को हटाना चाहते हैं?"
   },
+  scanSend: {
+    "text": "भेजने के लिए स्कैन करें",
+    "subtext": "स्कैन करने के लिए QR कोड को फ्रेम के अंदर रखें"
+  },
+  chooseRecipient: {
+    title: "प्राप्तकर्ता चुनें",
+    subtitle: "कृपया पैसे भेजने के लिए एक प्राप्तकर्ता चुनें।",
+    searchPlaceholder: "खोजें * प्राप्तकर्ता ईमेल *",
+    sendTo: "भेजें को",
+    mostRecent: "हाल ही में",
+    scanToPay: "स्कैन करके भुगतान करें"
+  },  
+  purposeSelection: {
+    purposeTitle: "उद्देश्य चुनें",
+    purposeSubtitle: "पैसे भेजने का तरीका चुनें",
+    continue: "जारी रखें",
+    personal: "निजी",
+    personalDesc: "अपने दोस्तों और परिवार को भुगतान करें।",
+    business: "व्यवसाय",
+    businessDesc: "अपने कर्मचारी को भुगतान करें",
+    payment: "भुगतान",
+    paymentDesc: "यूटिलिटी बिल का भुगतान करें।"
+  },
+    sendSummary: {
+      successMessage: "लेनदेन सफल हुआ! - {{date}} को {{time}} बजे",
+      coinpayID: "कॉइनपे लेन-देन आईडी: 12345",
+      account: "खाता",
+      backHome: "मुखपृष्ठ पर जाएं",
+      anotherPayment: "एक और भुगतान करें",
+      thankYou:
+        "हमारे ऐप का उपयोग करके पैसा भेजने के लिए धन्यवाद। यदि आपके कोई प्रश्न या चिंताएं हैं, तो कृपया ",
+      contactUs: "हमसे संपर्क करें।",
+    },
+    chooseSender: {
+      chooseSender: "भेजने वाला चुनें",
+  chooseSenderSub: "कृपया पैसे का अनुरोध करने के लिए भेजने वाले को चुनें।",
+  searchPlaceholder: "*भेजने वाले का ईमेल* खोजें",
+  sendTo: "को भेजें",
+  mostRecent: "सबसे हाल ही में",
+  scanToPay: "भुगतान के लिए स्कैन करें",
+    },
+    purposeSelectionReceive: {
+      selectPurpose: "एक उद्देश्य चुनें",
+  selectMethod: "पैसे भेजने की विधि चुनें",
+  continue: "जारी रखें",
+  enterAmount: "राशि दर्ज करें",
+  enterAmountSub: "कृपया भुगतान प्राप्त करने के लिए राशि दर्ज करें",
+  payConfirmed: "भुगतान की पुष्टि हो गई है",
+    },
+    receiveQR: {
+      scanToGetPaid: "भुगतान प्राप्त करने के लिए स्कैन करें",
+      holdToScan: "कोड को फ्रेम के अंदर रखें, यह स्वचालित रूप से स्कैन हो जाएगा",
+      requestForPayment: "भुगतान के लिए अनुरोध करें",
+      shareToReceiveMoney: "पैसे प्राप्त करने के लिए साझा करें",
+    },
+    support: {
+      title: "कॉइनपे समर्थन",
+      subtitle: "हमारी समर्पित टीम आपके किसी भी प्रश्न या समस्या में सहायता के लिए यहाँ है जो हमारे कॉइनपे मोबाइल ऐप से संबंधित हो।",
+      startChat: "चैट शुरू करें",
+      viewFAQ: "सामान्य प्रश्न देखें",
+    },
+    home: {
+      currency: "अमेरिकी डॉलर",
+      addMoney: "पैसे जोड़ें",
+      send: "भेजें",
+      request: "अनुरोध",
+      bank: "बैंक",
+      transaction: "लेन-देन",
+      spending: "खर्च",
+      income: "आय",
+      bills: "बिल",
+      savings: "बचत",
+      searchPlaceholder: '"Payments" खोजें',
+    },
+    profile: {
+      personalInfo: "व्यक्तिगत जानकारी",
+      bankCards: "बैंक और कार्ड्स",
+      transaction: "लेनदेन",
+      settings: "सेटिंग्स",
+      dataPrivacy: "डेटा गोपनीयता",
+      darkMode: "डार्क मोड",
+      logout: "लॉग आउट",
+      namePlaceholder: "आपका नाम",
+      emailPlaceholder: "your@email.com",
+      phonePlaceholder: "+९१xxxxxxxxxx",
+    },
+    chooseAccount: {
+      title: "खाता चुनें",
+      pay: "भुगतान करें",
+      account: "खाता",
+      maskedCard: "************३९९४",
+    },
+    sendRequest: {
+      title: "अनुरोध भेजें",
+      subtitle: "कृपया भुगतान प्राप्त करने के लिए एक राशि दर्ज करें",
+      buttonText: "${{amount}} अनुरोध करें",
+    },
+  
 };
 
 export default hi;

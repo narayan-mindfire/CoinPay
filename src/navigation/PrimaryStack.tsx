@@ -17,11 +17,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useAppSelector } from "../redux/store";
 import DataPrivacy from "../Screens/others/DataPrivacy";
 import Settings from "../Screens/others/Settings";
+import ScanSend from "../Screens/send/ScanSend";
 
 const Stack = createNativeStackNavigator<PrimaryStackParamList>();
 
 const PrimaryStack: React.FC = () => {
   const cardsPresent = useAppSelector((state) => state.card.cards);
+  console.log(cardsPresent);
   const hasCards = cardsPresent.length > 0;
   console.log("cards present:\n", hasCards);
   return (
@@ -48,6 +50,7 @@ const PrimaryStack: React.FC = () => {
           name="PurposeSelectionReceive"
           component={PurposeSelectionReceive}
         />
+        <Stack.Screen name="ScanSend" component={ScanSend} />
       </Stack.Navigator>
     </SafeAreaView>
   );

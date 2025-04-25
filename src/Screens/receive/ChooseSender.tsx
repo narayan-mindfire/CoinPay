@@ -1,77 +1,144 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
 import { View, Text, StyleSheet, FlatList } from "react-native";
-import { useTheme } from "@react-navigation/native";
+
 import images from "@/src/Assets/images";
 import CamButton from "@/src/components/CamButton";
 import UserTransaction from "@/src/components/UserTransaction";
 import SearchBar from "@/src/components/SearchBar";
+import LoaderModal from "@/src/components/LoaderModal";
 
-const recentRecipients = Array(5).fill({
-  name: "Mehedi Hasan",
-  email: "helloyouthmind@gmail.com",
-  amount: "-$100",
-  image: images.profile,
-});
+import { collection, getDocs } from "@firebase/firestore";
+import { db } from "@/firebaseConfig";
+
+import { fetchUserTransactions } from "@/src/redux/slices/transactionSlice";
+import { useAppDispatch, useAppSelector } from "@/src/redux/store";
+
+import { useTranslation } from "react-i18next";
+import { useTheme } from "@react-navigation/native";
+import {
+  setReceiverUID,
+  setSenderUID,
+} from "@/src/redux/slices/currentTransactionSlice";
 
 const ChooseSender = ({ navigation }) => {
   const { colors } = useTheme();
   const styles = createStyles(colors);
+  const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+
+  const { transactions, loading } = useAppSelector(
+    (state) => state.transaction
+  );
 
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredResults = recentRecipients.filter((item) =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  interface User {
+    uid: string;
+    name: string;
+    email: string;
+    image?: string;
+  }
+
+  const [users, setUsers] = useState<User[]>([]);
+
+  const exactMatch = users.find(
+    (user) => user.email.toLowerCase() === searchQuery.toLowerCase()
   );
 
-  const exactMatch = recentRecipients.find(
-    (item) => item.email.toLowerCase() === searchQuery.toLowerCase()
-  );
+  const currentUser = useAppSelector((state) => state.auth.user);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const userSnap = await getDocs(collection(db, "users"));
+        const fetchedUsers: User[] = [];
+
+        userSnap.forEach((doc) => {
+          const data = doc.data();
+          if (data.uid !== currentUser?.uid) {
+            fetchedUsers.push({
+              uid: data.uid,
+              name: data.name || "Unnamed",
+              email: data.email,
+              image: data.image || images.profile,
+            });
+          }
+        });
+
+        setUsers(fetchedUsers);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    if (currentUser?.uid) {
+      dispatch(fetchUserTransactions(currentUser.uid));
+    }
+
+    fetchUsers();
+  }, [currentUser?.uid]);
+
+  const recentTransactions = transactions
+    .filter((tx) => tx.receiverUID === currentUser?.uid)
+    .sort((a, b) => b.createdAt - a.createdAt)
+    .slice(0, 5);
+
+  const handleSenderClick = (recipient) => {
+    dispatch(setReceiverUID(currentUser.uid));
+    dispatch(setSenderUID(recipient.uid));
+    navigation.navigate("PurposeSelectionReceive");
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Choose Sender</Text>
-      <Text style={styles.subtitle}>
-        Please select your recipient to receive money.
-      </Text>
+      {/* loading screen when list of senders is loading  */}
+      <LoaderModal visible={loading} />
+      <Text style={styles.title}>{t("chooseSender.chooseSender")}</Text>
+      <Text style={styles.subtitle}>{t("chooseSender.chooseSenderSub")}</Text>
 
       <SearchBar
-        placeholder="Search * Recipient Email*"
+        placeholder={t("chooseSender.searchPlaceholder")}
         value={searchQuery}
         onChangeText={setSearchQuery}
       />
 
       {exactMatch && (
         <View style={styles.matchCard}>
-          <Text style={styles.sectionTitle}>Send to</Text>
+          <Text style={styles.sectionTitle}>{t("chooseSender.sendTo")}</Text>
           <UserTransaction
             name={exactMatch.name}
             email={exactMatch.email}
-            amount={exactMatch.amount}
             image={exactMatch.image}
           />
         </View>
       )}
 
-      <Text style={styles.sectionTitle}>Most Recent</Text>
+      <Text style={styles.sectionTitle}>{t("chooseSender.mostRecent")}</Text>
 
       <FlatList
-        data={filteredResults}
+        data={recentTransactions}
         removeClippedSubviews={false}
-        keyExtractor={(_, index) => index.toString()}
-        renderItem={({ item }) => (
-          <UserTransaction
-            name={item.name}
-            email={item.email}
-            amount={item.amount}
-            image={item.image}
-          />
-        )}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => {
+          const sender = users.find((u) => u.uid === item.senderUID);
+          return (
+            <UserTransaction
+              name={sender?.name || "Unknown"}
+              email={sender?.email || item.senderUID}
+              amount={`₹${item.amount}`}
+              image={sender?.image || images.profile}
+              direction={true}
+              handlePress={() => handleSenderClick(sender)}
+            />
+          );
+        }}
       />
       <CamButton
         navigation={navigation}
         to="PurposeSelectionReceive"
         icon="camera"
-        text={"Scan to Pay"}
+        text={t("chooseSender.scanToPay")}
       />
     </View>
   );

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useTheme } from "@react-navigation/native";
 
 const UserTransaction = ({
@@ -7,30 +7,36 @@ const UserTransaction = ({
   email,
   amount,
   image,
+  direction,
+  handlePress,
 }: {
   name: string;
   email: string;
-  amount: string;
+  amount?: string;
   image: any;
+  direction?: boolean;
+  handlePress?: any;
 }) => {
   const { colors } = useTheme();
-  const styles = createStyles(colors);
+  const styles = createStyles(colors, direction);
 
   return (
-    <View style={styles.container}>
-      <Image source={image} style={styles.avatar} />
-      <View style={styles.info}>
-        <Text style={styles.name}>{name}</Text>
-        <Text style={styles.email}>{email}</Text>
+    <TouchableOpacity onPress={handlePress}>
+      <View style={styles.container}>
+        <Image source={image} style={styles.avatar} />
+        <View style={styles.info}>
+          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.email}>{email}</Text>
+        </View>
+        {amount && <Text style={styles.amount}>{amount}</Text>}
       </View>
-      <Text style={styles.amount}>{amount}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
 export default UserTransaction;
 
-const createStyles = (colors: any) =>
+const createStyles = (colors: any, direction: boolean) =>
   StyleSheet.create({
     container: {
       flexDirection: "row",
@@ -58,6 +64,6 @@ const createStyles = (colors: any) =>
     amount: {
       fontSize: 15,
       fontWeight: "600",
-      color: colors.error,
+      color: direction ? colors.success : colors.error,
     },
   });

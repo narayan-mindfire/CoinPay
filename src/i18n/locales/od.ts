@@ -164,11 +164,111 @@ const od = {
     },
     cardList: {
       title: "କାର୍ଡ ତାଲିକା",
-      subtitle: "ଆପଣଙ୍କ ଖାତାରେ ଥିବା ସମସ୍ତ କାର୍ଡଗୁଡ଼ିକ",
-      successMessage: "ଆପଣଙ୍କ କାର୍ଡ ସଫଳତାର ସହିତ ଯୋଡ଼ାଗଲା",
-      button: "ଚାଲୁ ରଖନ୍ତୁ",
+      subtitle: "ଆପଣଙ୍କର ଖାତାରେ ସବୁ କାର୍ଡଗୁଡିକ",
+      successMessage: "ଆପଣଙ୍କର କାର୍ଡ ସଫଳତାର ସହିତ ଯୋଡାଯାଇଛି",
+      button: "ଜାରି ରଖନ୍ତୁ",
+      addAnother: "ଅନ୍ୟ ଏକ କାର୍ଡ ଯୋଡନ୍ତୁ",
+      deleteTitle: "କାର୍ଡ ମିଟାଇବେ?",
+      deleteConfirm: "କିମ୍ବା ଆପଣ ଏହି କାର୍ଡକୁ ମିଟାଇବାକୁ ଚାହାଁନ୍ତି?"
     },
+    scanSend: {
+    "text": "ପଠାଇବା ପାଇଁ ସ୍କାନ୍ କରନ୍ତୁ",
+    "subtext": "ସ୍କାନ କରିବାକୁ QR କୋଡ୍ କୁ ଫ୍ରେମ୍ ଭିତରେ ରଖନ୍ତୁ"
+  },
+    chooseRecipient: {
+      title: "ଗ୍ରାହକ ବାଛନ୍ତୁ",
+      subtitle: "ଦୟାକରି ଟଙ୍କା ପଠାଇବା ପାଇଁ ଗ୍ରାହକ ବାଛନ୍ତୁ।",
+      searchPlaceholder: "ସନ୍ଧାନ * ଗ୍ରାହକ ଇମେଲ୍ *",
+      sendTo: "କୁ ପଠାନ୍ତୁ",
+      mostRecent: "ସବୁଠାରୁ ନୂଆ",
+      scanToPay: "ସ୍କାନ୍ କରି ପେ କରନ୍ତୁ"
+    },
+    purposeSelection: {
+      purposeTitle: "ଉଦ୍ଦେଶ୍ୟ ଚୟନ କରନ୍ତୁ",
+      purposeSubtitle: "ଟଙ୍କା ପଠାଇବା ପାଇଁ ଏକ ପଦ୍ଧତି ଚୟନ କରନ୍ତୁ",
+      continue: "ଆଗକୁ ବଢ଼ନ୍ତୁ",
+      personal: "ବ୍ୟକ୍ତିଗତ",
+      personalDesc: "ଆପଣଙ୍କ ବନ୍ଧୁ ଓ ପରିବାରକୁ ଦେୟ ଦିଅନ୍ତୁ।",
+      business: "ବ୍ୟବସାୟ",
+      businessDesc: "ଆପଣଙ୍କ କର୍ମଚାରୀକୁ ଦେୟ ଦିଅନ୍ତୁ",
+      payment: "ପେମେଣ୍ଟ",
+      paymentDesc: "ଉପଯୋଗିତା ବିଲ ପାଇଁ ଦେୟ।"
+    },
+    sendSummary: {
+      successMessage: "ଲେନଦେନ ସଫଳ! - {{date}} ରେ {{time}} ବେଳେ",
+      coinpayID: "କୋଇନପେ ଟ୍ରାନ୍ଜାକସନ୍ ID: 12345",
+      account: "ଖାତା",
+      backHome: "ମୂଳ ପୃଷ୍ଠାକୁ ଯାଆନ୍ତୁ",
+      anotherPayment: "ଅନ୍ୟ ଗୋଟିଏ ପେମେଣ୍ଟ କରନ୍ତୁ",
+      thankYou:
+        "ଅମା ପ୍ରୟୋଗ ଦ୍ୱାରା ଟଙ୍କା ପଠାଇବା ପାଇଁ ଧନ୍ୟବାଦ। ଯଦି ଆପଣଙ୍କର କୌଣସି ପ୍ରଶ୍ନ କିମ୍ବା ଚିନ୍ତା ଅଛି, ଦୟାକରି ",
+      contactUs: "ଆମ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ।",
+    },
+    chooseSender: {
+      chooseSender: "ପ୍ରେଷକ ଚୟନ କରନ୍ତୁ",
+  chooseSenderSub: "ଦୟାକରି ଟଙ୍କା ଅନୁରୋଧ ପାଇଁ ପ୍ରେଷକ ଚୟନ କରନ୍ତୁ।",
+  searchPlaceholder: "*ପ୍ରେଷକ ଇମେଲ୍* ସନ୍ଧାନ କରନ୍ତୁ",
+  sendTo: "କୁ ପଠାନ୍ତୁ",
+  mostRecent: "ସর্বାଧିକ ସମ୍ପ୍ରତି",
+  scanToPay: "ପେମେଣ୍ଟ ପାଇଁ ସ୍କାନ୍ କରନ୍ତୁ",
+    },
+    purposeSelectionReceive: {
+      selectPurpose: "ଉଦ୍ଦେଶ୍ୟ ବାଛନ୍ତୁ",
+  selectMethod: "ଟଙ୍କା ପଠାଇବା ପାଇଁ ପଦ୍ଧତି ବାଛନ୍ତୁ",
+  continue: "ଚାଲୁରଖନ୍ତୁ",
+  enterAmount: "ଅମାଉଣ୍ଟ ପ୍ରବେଶ କରନ୍ତୁ",
+  enterAmountSub: "ଦୟାକରି ପ୍ରାପ୍ତ ହେବା ପାଇଁ ଅମାଉଣ୍ଟ ଦିଅନ୍ତୁ",
+  payConfirmed: "ପେମେଣ୍ଟ ନିଶ୍ଚିତ ହୋଇଛି",
+    },
+    receiveQR: {
+      scanToGetPaid: "ପଢାଇବା ପାଇଁ ସ୍କ୍ୟାନ୍ କରନ୍ତୁ",
+      holdToScan: "କୋଡ୍ କୁ ଫ୍ରେମ୍ ଭିତରେ ଧରନ୍ତୁ, ଏହା ସ୍କ୍ୟାନ୍ ହେବାକୁ ସ୍ୱୟଂଚାଳିତ ହେବ",
+      requestForPayment: "ପେମେଣ୍ଟ ପ୍ରାର୍ଥନା କରନ୍ତୁ",
+      shareToReceiveMoney: "ଟଙ୍କା ପ୍ରାପ୍ତି ପାଇଁ ସେୟାର୍ କରନ୍ତୁ",
+    },
+    support: {
+      title: "କଏନ୍ପେ ସହଯୋଗ",
+      subtitle: "ଆମର ସମର୍ପିତ ଟିମ୍ କୌଣସି ପ୍ରଶ୍ନ ବା ସମସ୍ୟା ପାଇଁ ଆପଣଙ୍କୁ ସାହାଯ୍ୟ କରିବା ପାଇଁ ତିଆରି ଅଛି |",
+      startChat: "ଚାଟ୍ ଆରମ୍ଭ କରନ୍ତୁ",
+      viewFAQ: "FAQ ଦେଖନ୍ତୁ",
+    },
+    home: {
+      currency: "ଅମେରିକୀୟ ଡଲାର",
+      addMoney: "ଟଙ୍କା ଯୋଗ କରନ୍ତୁ",
+      send: "ପଠାନ୍ତୁ",
+      request: "ଅନୁରୋଧ",
+      bank: "ବ୍ୟାଙ୍କ",
+      transaction: "ଲେନଦେନ",
+      spending: "ଖର୍ଚ୍ଚ",
+      income: "ଆୟ",
+      bills: "ବିଲ୍",
+      savings: "ସଞ୍ଚୟ",
+      searchPlaceholder: '"Payments" ସନ୍ଧାନ କରନ୍ତୁ',
+    },
+    profile: {
+      personalInfo: "ବ୍ୟକ୍ତିଗତ ସୂଚନା",
+      bankCards: "ବ୍ୟାଙ୍କ ଏବଂ କାର୍ଡଗୁଡ଼ିକ",
+      transaction: "ଲେନଦେନ",
+      settings: "ସେଟିଂସ୍",
+      dataPrivacy: "ଡାଟା ପ୍ରାଇଭେସି",
+      darkMode: "ଡାର୍କ ମୋଡ୍",
+      logout: "ଲଗ୍ ଆଉଟ୍",
+      namePlaceholder: "ଆପଣଙ୍କ ନାମ",
+      emailPlaceholder: "your@email.com",
+      phonePlaceholder: "+୯୧xxxxxxxxxx",
+    },
+    chooseAccount: {
+      title: "ଖାତା ବାଛନ୍ତୁ",
+      pay: "ପେ କରନ୍ତୁ",
+      account: "ଖାତା",
+      maskedCard: "************୩୯୩୪",
+    },
+    sendRequest: {
+      title: "ଅନୁରୋଧ ପଠାନ୍ତୁ",
+      subtitle: "ଦୟାକରି ଏକ ରାଶି ଦିଅନ୍ତୁ ଯାହାକୁ ପ୍ରତିଶ୍ରୁତି ମିଳିବ",
+      buttonText: "${{amount}} ଅନୁରୋଧ କରନ୍ତୁ",
+    },
+        
   };
   
   export default od;
-  

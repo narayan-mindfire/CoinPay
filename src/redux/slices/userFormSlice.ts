@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface UserFormState {
   email: string;
+  accBalance: number;
   password: string;
   username: string;
   name: string;
@@ -17,6 +18,7 @@ interface UserFormState {
 
 const initialState: UserFormState = {
   email: '',
+  accBalance: 30000,
   password: '',
   username: '',
   name: '',

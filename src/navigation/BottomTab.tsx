@@ -1,6 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { useTheme } from "@react-navigation/native";
+import { EventArg, useTheme } from "@react-navigation/native";
 import { Image, ImageSourcePropType, View, Pressable } from "react-native";
 import HomeScreen from "../Screens/BottomTab/HomeScreen";
 import ScanScreen from "../Screens/BottomTab/ScanScreen";
@@ -8,6 +8,7 @@ import ProfileScreen from "../Screens/BottomTab/ProfileScreen";
 import SupportScreen from "../Screens/BottomTab/SupportScreen";
 import icons from "../Assets/icons";
 import StatisticsTab from "./StatisticsTab";
+import PrimaryStack from "./PrimaryStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -102,7 +103,19 @@ export default function BottomTab() {
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="StatisticsTab" component={StatisticsTab} />
-      <Tab.Screen name="Scan" component={ScanScreen} />
+
+      <Tab.Screen
+        name="Scan"
+        component={View} //placeholder component
+        //will be navigated to QR code scanner
+        listeners={({ navigation }) => ({
+          tabPress: (e: EventArg<"tabPress", true, undefined>) => {
+            e.preventDefault();
+            console.log("Navigating to ScanSend");
+            navigation.getParent()?.navigate("ScanSend");
+          },
+        })}
+      />
       <Tab.Screen name="Support" component={SupportScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>

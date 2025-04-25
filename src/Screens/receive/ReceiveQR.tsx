@@ -1,39 +1,42 @@
 import React from "react";
+
 import { View, Text, StyleSheet } from "react-native";
-import { useTheme } from "@react-navigation/native";
+
 import QRCode from "react-native-qrcode-svg";
 import Button from "@/src/components/Button";
 import icons from "@/src/Assets/icons";
+
 import { useAppSelector } from "@/src/redux/store";
+import { useTheme } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 
 const ReceiveQR = ({ navigation }) => {
   const { colors, dark } = useTheme();
-  const styles = createStyles(colors);
+  const { t } = useTranslation();
   const user = useAppSelector((state) => state.auth.user);
+  const styles = createStyles(colors);
 
   return (
     <View style={styles.container}>
       <View style={styles.qrBox}>
         <QRCode
-          value={user.number}
+          value={user.uid}
           size={200}
           color={!dark ? colors.primary : "#fff"}
           backgroundColor="transparent"
           logoSize={40}
         />
-        <Text style={styles.title}>Scan to get Paid</Text>
-        <Text style={styles.subtitle}>
-          Hold the code inside the frame, it will be scanned automatically
-        </Text>
+        <Text style={styles.title}>{t("receiveQR.scanToGetPaid")}</Text>
+        <Text style={styles.subtitle}>{t("receiveQR.holdToScan")}</Text>
       </View>
 
       <View style={styles.buttons}>
         <Button
-          buttonText="Request for Payment"
+          buttonText={t("receiveQR.requestForPayment")}
           handleButton={() => navigation.navigate("ChooseSender")}
         />
         <Button
-          buttonText="Share to Receive Money"
+          buttonText={t("receiveQR.shareToReceiveMoney")}
           icon={icons.share}
           outlined
           handleButton={() => console.log("Share to Receive Money")}

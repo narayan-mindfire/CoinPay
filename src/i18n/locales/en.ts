@@ -172,6 +172,104 @@ const en = {
     deleteTitle: "Delete Card?",
     deleteConfirm: "Are you sure you want to delete this card?"
   },
+  scanSend: {
+    text: "Scan a QR to pay",
+    subtext: "Hold the code inside the frame it will be scanned automatically"
+  },
+  chooseRecipient: {
+    title: "Choose Recipient",
+    subtitle: "Please select your recipient to send money.",
+    searchPlaceholder: "Search * Recipient Email*",
+    sendTo: "Send to",
+    mostRecent: "Most Recent",
+    scanToPay: "Scan to Pay"
+  },
+  purposeSelection: {
+    purposeTitle: "Select a Purpose",
+    purposeSubtitle: "Select a Method for Sending Money",
+    continue: "Continue",
+    personal: "Personal",
+    personalDesc: "Pay your friends and family.",
+    business: "Business",
+    businessDesc: "Pay your employee",
+    payment: "Payment",
+    paymentDesc: "For payment utility bills."
+  },
+  sendSummary: {
+    successMessage: "Transaction Complete! - {{date}} at {{time}}",
+    coinpayID: "Coinpay Transaction ID: 12345",
+    account: "Account",
+    backHome: "Back to Homepage",
+    anotherPayment: "Make another Payment",
+    thankYou:
+      "Thank you for using our app to send money. If you have any questions or concerns, please don’t hesitate to ",
+    contactUs: "contact us.",
+  },
+  chooseSender: {
+    chooseSender: "Choose Sender",
+  chooseSenderSub: "Please select your send to request money.",
+  searchPlaceholder: "Search *sender Email*",
+  sendTo: "Send to",
+  mostRecent: "Most Recent",
+  scanToPay: "Scan to Pay",
+  },
+  purposeSelectionReceive: {
+    selectPurpose: "Select a Purpose",
+  selectMethod: "Select a Method for Sending Money",
+  continue: "Continue",
+  enterAmount: "Enter Amount",
+  enterAmountSub: "Please enter an amount to get Paid",
+  payConfirmed: "Pay confirmed",
+  },
+  receiveQR: {
+    scanToGetPaid: "Scan to get Paid",
+    holdToScan: "Hold the code inside the frame, it will be scanned automatically",
+    requestForPayment: "Request for Payment",
+    shareToReceiveMoney: "Share to Receive Money",
+  },
+  support: {
+    title: "Coinpay Support",
+    subtitle: "Our dedicated team is here to assist you with any questions or issues related to our coinpay mobile app",
+    startChat: "Start Chat",
+    viewFAQ: "View FAQ",
+  },
+  home: {
+    currency: "US Dollar",
+    addMoney: "Add Money",
+    send: "Send",
+    request: "Request",
+    bank: "Bank",
+    transaction: "Transaction",
+    spending: "Spending",
+    income: "Income",
+    bills: "Bills",
+    savings: "Savings",
+    searchPlaceholder: 'search "Payments"',
+  },
+    profile: {
+      personalInfo: "Personal Info",
+      bankCards: "Bank & Cards",
+      transaction: "Transaction",
+      settings: "Settings",
+      dataPrivacy: "Data Privacy",
+      darkMode: "Dark Mode",
+      logout: "Log Out",
+      namePlaceholder: "Your Name",
+      emailPlaceholder: "your@email.com",
+      phonePlaceholder: "+91xxxxxxxxxx",
+    },
+      chooseAccount: {
+        title: "Choose Account",
+        pay: "Pay",
+        account: "Account",
+        maskedCard: "************3994",
+      },
+      sendRequest: {
+        title: "Send Request",
+        subtitle: "Please enter an amount to get paid",
+        buttonText: "Request ${{amount}}",
+      },
+  
 };
 
 export default en;

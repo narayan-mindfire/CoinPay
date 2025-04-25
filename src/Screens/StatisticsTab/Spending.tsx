@@ -8,6 +8,7 @@ import icons from "@/src/Assets/icons";
 import TransactionItem from "@/src/components/TransactionItem";
 
 import { useTheme } from "@react-navigation/native";
+import { useAppSelector } from "@/src/redux/store";
 
 const spendingData = [
   {
@@ -40,6 +41,8 @@ const Spending = () => {
   const { colors } = useTheme();
   const styles = createStyles(colors);
 
+  const accBalance = useAppSelector((state) => state.auth.user.accBalance);
+
   return (
     <View style={styles.container}>
       <View style={styles.title}>
@@ -57,7 +60,7 @@ const Spending = () => {
           color={"black"}
           title={"available balance"}
           icon={"sendMoney"}
-          amount={"20,000"}
+          amount={accBalance.toString()}
           bgColor={"secondary"}
         />
       </View>

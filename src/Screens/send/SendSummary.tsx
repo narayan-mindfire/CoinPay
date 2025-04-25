@@ -1,58 +1,107 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
-import { useTheme } from "@react-navigation/native";
+
 import icons from "@/src/Assets/icons";
 import images from "@/src/Assets/images";
 import Button from "@/src/components/Button";
 import Message from "@/src/components/Message";
 
+import { useAppDispatch, useAppSelector } from "@/src/redux/store";
+import { useTheme } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
+
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "@/firebaseConfig";
+import { clearCurrentTransaction } from "@/src/redux/slices/currentTransactionSlice";
+
 const SendSummary = ({ navigation }) => {
   const { colors } = useTheme();
+  const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+
+  const transaction = useAppSelector((state) => state.currentTransaction);
+  const [receiver, setReceiver] = useState(null);
+
+  const transactionDateTime = new Date();
+  const formattedDate = transactionDateTime.toLocaleDateString(undefined, {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+  const formattedTime = transactionDateTime.toLocaleTimeString(undefined, {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  // fetching receiver's details to be displayed in screen
+  useEffect(() => {
+    const fetchReceiverData = async () => {
+      const receiverQuery = query(
+        collection(db, "users"),
+        where("uid", "==", transaction.receiverUID)
+      );
+      const querySnapshot = await getDocs(receiverQuery);
+      if (!querySnapshot.empty) {
+        const receiverData = querySnapshot.docs[0].data();
+        setReceiver(receiverData);
+      }
+    };
+
+    if (transaction.receiverUID) {
+      fetchReceiverData();
+    }
+  }, [transaction.receiverUID]);
+
   const styles = createStyles(colors);
 
   return (
     <View style={styles.container}>
-      {/* Top success message */}
       <Message
-        message="Transaction Complete! - 01 Jan 2023 at 5:00 pm"
+        message={t("sendSummary.successMessage", {
+          date: formattedDate,
+          time: formattedTime,
+        })}
         type="success"
       />
 
-      {/* Profile section */}
-      <View style={styles.profileBox}>
-        <Image source={images.profile} style={styles.avatar} />
-        <Text style={styles.name}>Mehedi Hasan</Text>
-        <Text style={styles.email}>helloyouthmind@gmail.com</Text>
-        <Text style={styles.linkText}>Coinpay Transaction ID: JD869KQ</Text>
-      </View>
+      {receiver && (
+        <View style={styles.profileBox}>
+          <Image source={images.profile} style={styles.avatar} />
+          <Text style={styles.name}>{receiver.name}</Text>
+          <Text style={styles.email}>{receiver.email}</Text>
+          <Text style={styles.linkText}>{t("sendSummary.coinpayID")}</Text>
+        </View>
+      )}
 
-      {/* Account info */}
-      <Text style={styles.label}>Account</Text>
+      <Text style={styles.label}>{t("sendSummary.account")}</Text>
       <View style={styles.cardBox}>
         <Image source={icons["mastercard"]} style={styles.cardIcon} />
-        <Text style={styles.cardLabel}>Account</Text>
+        <Text style={styles.cardLabel}>{t("sendSummary.account")}</Text>
         <Text style={styles.cardNumber}>************3994</Text>
         <View style={[styles.radioFill, { backgroundColor: colors.primary }]} />
       </View>
 
-      {/* Buttons */}
+      {/* transaction completion leads to clearnig of local transaction data  */}
       <Button
-        buttonText="Back to Homepage"
-        handleButton={() => navigation.navigate("BottomTab")}
+        buttonText={t("sendSummary.backHome")}
+        handleButton={() => {
+          navigation.navigate("BottomTab");
+          dispatch(clearCurrentTransaction());
+        }}
         outlined={false}
       />
       <Button
-        buttonText="Make another Payment"
-        handleButton={() => navigation.goBack()}
+        buttonText={t("sendSummary.anotherPayment")}
+        handleButton={() => {
+          navigation.navigate("ChooseRecepient");
+          dispatch(clearCurrentTransaction());
+        }}
         outlined={true}
-        // customStyle={{ marginTop: 10 }}
       />
 
-      {/* Footer */}
       <Text style={styles.footerText}>
-        Thank you for using our app to send money. If you have any questions or
-        concerns, please don’t hesitate to{" "}
-        <Text style={styles.contactUs}>contact us.</Text>
+        {t("sendSummary.thankYou")}
+        <Text style={styles.contactUs}>{t("sendSummary.contactUs")}</Text>
       </Text>
     </View>
   );

@@ -1,11 +1,17 @@
 import React from "react";
+
 import { View, Text, StyleSheet, Image, TextInput } from "react-native";
-import { useTheme } from "@react-navigation/native";
+
 import Button from "@/src/components/Button";
 import countryIcons from "../Assets/icons/country-icons";
 import images from "../Assets/images";
+
+import { useTheme } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
+
 const TransferCard = ({ user, amount, setAmount, onContinue }) => {
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   const styles = createStyles(colors);
 
@@ -26,7 +32,10 @@ const TransferCard = ({ user, amount, setAmount, onContinue }) => {
           placeholderTextColor={colors.textSecondary}
         />
       </View>
-      <Button buttonText="Continue" handleButton={onContinue} />
+      <Button
+        buttonText={t("purposeSelection.continue")}
+        handleButton={onContinue}
+      />
     </View>
   );
 };

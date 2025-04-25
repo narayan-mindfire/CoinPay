@@ -58,6 +58,7 @@ export type PrimaryStackParamList = {
   ReceiveQR: undefined;
   DataPrivacy: undefined;
   Settings: undefined;
+  ScanSend: undefined;
 }
 
 export type AddCardScreenProps = NativeStackScreenProps<PrimaryStackParamList, "AddCard">;
@@ -70,6 +71,8 @@ export type SendSummaryProps = NativeStackScreenProps<PrimaryStackParamList, "Se
 export type ChooseSenderProps = NativeStackScreenProps<PrimaryStackParamList, "ChooseSender">;
 export type PurposeSelectionReceiveProps = NativeStackScreenProps<PrimaryStackParamList, "PurposeSelectionReceive">;
 export type ReceiveQRProps = NativeStackScreenProps<PrimaryStackParamList, "ReceiveQR">;
+export type ScanSendProps = NativeStackScreenProps<PrimaryStackParamList, "ScanSend">;
+
 
 export type BottomTabParamList = {
   Home: undefined;
