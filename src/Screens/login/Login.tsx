@@ -38,7 +38,6 @@ const Login = () => {
   const dispatch = useAppDispatch();
   const loading = useAppSelector((state: RootState) => state.auth.loading);
 
-  const [passwordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);

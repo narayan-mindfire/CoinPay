@@ -42,7 +42,6 @@ const PhoneVerification = ({ navigation }: PhoneVerificationScreenProps) => {
   const { colors } = useTheme();
   const { t } = useTranslation();
 
-  const [passwordVisible, setPasswordVisible] = useState(false);
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [selectedCountry, setSelectedCountry] = useState({

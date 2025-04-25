@@ -6,14 +6,19 @@ import images from "@/src/Assets/images";
 import Button from "@/src/components/Button";
 import Message from "@/src/components/Message";
 
-import { useAppSelector } from "@/src/redux/store";
+import { useAppDispatch, useAppSelector } from "@/src/redux/store";
 import { useTheme } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
+import { clearCurrentTransaction } from "@/src/redux/slices/currentTransactionSlice";
 
 const SendSummary = ({ navigation }) => {
   const { colors } = useTheme();
+  const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+
   const transaction = useAppSelector((state) => state.currentTransaction);
   const [receiver, setReceiver] = useState(null);
 
@@ -52,7 +57,10 @@ const SendSummary = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Message
-        message={`Transaction Complete! - ${formattedDate} at ${formattedTime}`}
+        message={t("sendSummary.successMessage", {
+          date: formattedDate,
+          time: formattedTime,
+        })}
         type="success"
       />
 
@@ -61,33 +69,39 @@ const SendSummary = ({ navigation }) => {
           <Image source={images.profile} style={styles.avatar} />
           <Text style={styles.name}>{receiver.name}</Text>
           <Text style={styles.email}>{receiver.email}</Text>
-          <Text style={styles.linkText}>Coinpay Transaction ID: 12345</Text>
+          <Text style={styles.linkText}>{t("sendSummary.coinpayID")}</Text>
         </View>
       )}
 
-      <Text style={styles.label}>Account</Text>
+      <Text style={styles.label}>{t("sendSummary.account")}</Text>
       <View style={styles.cardBox}>
         <Image source={icons["mastercard"]} style={styles.cardIcon} />
-        <Text style={styles.cardLabel}>Account</Text>
+        <Text style={styles.cardLabel}>{t("sendSummary.account")}</Text>
         <Text style={styles.cardNumber}>************3994</Text>
         <View style={[styles.radioFill, { backgroundColor: colors.primary }]} />
       </View>
 
+      {/* transaction completion leads to clearnig of local transaction data  */}
       <Button
-        buttonText="Back to Homepage"
-        handleButton={() => navigation.navigate("BottomTab")}
+        buttonText={t("sendSummary.backHome")}
+        handleButton={() => {
+          navigation.navigate("BottomTab");
+          dispatch(clearCurrentTransaction());
+        }}
         outlined={false}
       />
       <Button
-        buttonText="Make another Payment"
-        handleButton={() => navigation.goBack()}
+        buttonText={t("sendSummary.anotherPayment")}
+        handleButton={() => {
+          navigation.navigate("ChooseRecepient");
+          dispatch(clearCurrentTransaction());
+        }}
         outlined={true}
       />
 
       <Text style={styles.footerText}>
-        Thank you for using our app to send money. If you have any questions or
-        concerns, please don’t hesitate to{" "}
-        <Text style={styles.contactUs}>contact us.</Text>
+        {t("sendSummary.thankYou")}
+        <Text style={styles.contactUs}>{t("sendSummary.contactUs")}</Text>
       </Text>
     </View>
   );

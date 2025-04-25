@@ -14,11 +14,17 @@ import { db } from "@/firebaseConfig";
 import { fetchUserTransactions } from "@/src/redux/slices/transactionSlice";
 import { useAppDispatch, useAppSelector } from "@/src/redux/store";
 
+import { useTranslation } from "react-i18next";
 import { useTheme } from "@react-navigation/native";
+import {
+  setReceiverUID,
+  setSenderUID,
+} from "@/src/redux/slices/currentTransactionSlice";
 
 const ChooseSender = ({ navigation }) => {
   const { colors } = useTheme();
   const styles = createStyles(colors);
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
   const { transactions, loading } = useAppSelector(
@@ -78,7 +84,9 @@ const ChooseSender = ({ navigation }) => {
     .sort((a, b) => b.createdAt - a.createdAt)
     .slice(0, 5);
 
-  const handleRecipientClick = (recipient) => {
+  const handleSenderClick = (recipient) => {
+    dispatch(setReceiverUID(currentUser.uid));
+    dispatch(setSenderUID(recipient.uid));
     navigation.navigate("PurposeSelectionReceive");
   };
 
@@ -86,20 +94,18 @@ const ChooseSender = ({ navigation }) => {
     <View style={styles.container}>
       {/* loading screen when list of senders is loading  */}
       <LoaderModal visible={loading} />
-      <Text style={styles.title}>Choose Sender</Text>
-      <Text style={styles.subtitle}>
-        Please select your send to request money.
-      </Text>
+      <Text style={styles.title}>{t("chooseSender.chooseSender")}</Text>
+      <Text style={styles.subtitle}>{t("chooseSender.chooseSenderSub")}</Text>
 
       <SearchBar
-        placeholder="Search *sender Email*"
+        placeholder={t("chooseSender.searchPlaceholder")}
         value={searchQuery}
         onChangeText={setSearchQuery}
       />
 
       {exactMatch && (
         <View style={styles.matchCard}>
-          <Text style={styles.sectionTitle}>Send to</Text>
+          <Text style={styles.sectionTitle}>{t("chooseSender.sendTo")}</Text>
           <UserTransaction
             name={exactMatch.name}
             email={exactMatch.email}
@@ -108,7 +114,7 @@ const ChooseSender = ({ navigation }) => {
         </View>
       )}
 
-      <Text style={styles.sectionTitle}>Most Recent</Text>
+      <Text style={styles.sectionTitle}>{t("chooseSender.mostRecent")}</Text>
 
       <FlatList
         data={recentTransactions}
@@ -123,7 +129,7 @@ const ChooseSender = ({ navigation }) => {
               amount={`₹${item.amount}`}
               image={sender?.image || images.profile}
               direction={true}
-              handlePress={() => handleRecipientClick(sender)}
+              handlePress={() => handleSenderClick(sender)}
             />
           );
         }}
@@ -132,7 +138,7 @@ const ChooseSender = ({ navigation }) => {
         navigation={navigation}
         to="PurposeSelectionReceive"
         icon="camera"
-        text={"Scan to Pay"}
+        text={t("chooseSender.scanToPay")}
       />
     </View>
   );

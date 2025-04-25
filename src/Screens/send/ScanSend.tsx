@@ -9,7 +9,7 @@ import {
   setSenderUID,
 } from "@/src/redux/slices/currentTransactionSlice";
 
-export default function ScanDoc({ navigation }) {
+export default function ScanSend({ navigation }) {
   const { t } = useTranslation();
   const { colors } = useTheme();
   const dispatch = useAppDispatch();

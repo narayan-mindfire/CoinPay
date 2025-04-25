@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Modal, View, ActivityIndicator, StyleSheet } from "react-native";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 
 type LoaderModalProps = {
   visible: boolean;
@@ -15,7 +16,7 @@ const LoaderModal: React.FC<LoaderModalProps> = ({ visible }) => {
       statusBarTranslucent
     >
       <View style={styles.overlay}>
-        <ActivityIndicator size="large" color="#ffffff" />
+        <ActivityIndicator size="large" color={Colors.white} />
       </View>
     </Modal>
   );

@@ -1,17 +1,22 @@
 import React from "react";
+
 import { View, Text, Image, StyleSheet } from "react-native";
+
 import Button from "./Button";
 import images from "@/src/Assets/images";
+
+import { useTranslation } from "react-i18next";
 import { useTheme } from "@react-navigation/native";
 
 const RequestUser = ({ user, amount, onContinue }) => {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const styles = createStyles(colors);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Send Request</Text>
-      <Text style={styles.subtitle}>Please enter an amount to get paid</Text>
+      <Text style={styles.title}>{t("sendRequest.title")}</Text>
+      <Text style={styles.subtitle}>{t("sendRequest.subtitle")}</Text>
 
       <View style={styles.profileCard}>
         <Image source={images[user.pic]} style={styles.avatar} />
@@ -19,7 +24,10 @@ const RequestUser = ({ user, amount, onContinue }) => {
         <Text style={styles.email}>{user.email}</Text>
       </View>
 
-      <Button buttonText={`Request $${amount}`} handleButton={onContinue} />
+      <Button
+        buttonText={t("sendRequest.buttonText", { amount: `${amount}` })}
+        handleButton={onContinue}
+      />
     </View>
   );
 };

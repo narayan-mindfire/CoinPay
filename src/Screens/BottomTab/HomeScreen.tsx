@@ -16,6 +16,7 @@ import images from "@/src/Assets/images";
 import ProfileIcon from "@/src/components/ProfileIcon";
 
 import { useTheme } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 import ActionButton from "@/src/components/ActionButton";
 import SearchBar from "@/src/components/SearchBar";
 import { useAppSelector } from "@/src/redux/store";
@@ -23,6 +24,8 @@ import AddMoneyModal from "@/src/components/AddMoneyModal";
 
 const HomeScreen = ({ navigation }) => {
   const { colors } = useTheme();
+  const { t } = useTranslation();
+
   const styles = createStyles(colors);
   const accBalance = useAppSelector((state) => state.auth.user.accBalance);
   const [showModal, setShowModal] = useState(false);
@@ -41,25 +44,25 @@ const HomeScreen = ({ navigation }) => {
             <View style={styles.searchBarRow}>
               <Image source={icons.tropyhStar} tintColor={"#fff"} />
               <SearchBar
-                value={'search "Payments"'}
+                value={t("home.searchPlaceholder")}
                 onChangeText={() => {}}
                 width={240}
               />
               <Image source={icons.bell} tintColor={"#fff"} />
             </View>
-            <Text style={styles.currency}>US Dollar</Text>
+            <Text style={styles.currency}>{t("home.currency")}</Text>
             <Text style={styles.amount}>${accBalance}</Text>
             <TouchableOpacity
               style={styles.addButton}
               onPress={() => setShowModal(true)}
             >
-              <Text style={styles.addText}>Add Money</Text>
+              <Text style={styles.addText}>{t("home.addMoney")}</Text>
             </TouchableOpacity>
           </View>
 
           <View style={styles.actions}>
             <ActionButton
-              label="Send"
+              label={t("home.send")}
               icon="sendMoney"
               colors={colors}
               tintColor="primary"
@@ -67,7 +70,7 @@ const HomeScreen = ({ navigation }) => {
               navigation={navigation}
             />
             <ActionButton
-              label="Request"
+              label={t("home.request")}
               icon="getMoney"
               colors={colors}
               tintColor="warning"
@@ -75,7 +78,7 @@ const HomeScreen = ({ navigation }) => {
               navigation={navigation}
             />
             <ActionButton
-              label="Bank"
+              label={t("home.bank")}
               icon="bank"
               colors={colors}
               tintColor="warning"
@@ -84,7 +87,7 @@ const HomeScreen = ({ navigation }) => {
             />
           </View>
           <View style={styles.transactionHeading}>
-            <Text style={styles.transactionTitle}>Transaction</Text>
+            <Text style={styles.transactionTitle}>{t("home.transaction")}</Text>
             <TouchableOpacity
               onPress={() => navigation.navigate("StatisticsTab")}
             >
@@ -98,7 +101,7 @@ const HomeScreen = ({ navigation }) => {
           <View style={styles.transactionCard}>
             <TransactionItem
               icon="creditCardMinus"
-              label="Spending"
+              label={t("home.spending")}
               amount="-500"
               color="primary"
               backgroundColor="backgroundAccent"
@@ -108,7 +111,7 @@ const HomeScreen = ({ navigation }) => {
             />
             <TransactionItem
               icon="coins"
-              label="Income"
+              label={t("home.income")}
               amount="3000"
               color="success"
               colors={colors}
@@ -118,7 +121,7 @@ const HomeScreen = ({ navigation }) => {
             />
             <TransactionItem
               icon="invoice"
-              label="Bills"
+              label={t("home.bills")}
               amount="-800"
               color="error"
               colors={colors}
@@ -128,7 +131,7 @@ const HomeScreen = ({ navigation }) => {
             />
             <TransactionItem
               icon="sack"
-              label="Savings"
+              label={t("home.savings")}
               amount="1000"
               color="warning"
               colors={colors}

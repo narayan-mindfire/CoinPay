@@ -21,25 +21,18 @@ const SupportScreen = ({ navigation }: WelcomeScreenProps) => {
         source={dark ? images.supportDark : images.support}
         style={styles.image}
       />
-      <Text style={styles.title}>Coinpay Support</Text>
-      <Text style={styles.subtitle}>
-        Our dedicated team is here to assist you with any questions or issues
-        related to our coinpay mobile app
-      </Text>
+      <Text style={styles.title}>{t("support.title")}</Text>
+      <Text style={styles.subtitle}>{t("support.subtitle")}</Text>
       <Button
-        buttonText={"Start Chat"}
+        buttonText={t("support.startChat")}
         icon={icons.chatFill}
-        handleButton={() => {
-          console.log("Start Chat");
-        }}
+        handleButton={() => console.log("Start Chat")}
         outlined={false}
       />
       <Button
-        buttonText={"View FAQ"}
+        buttonText={t("support.viewFAQ")}
         icon={icons.question}
-        handleButton={() => {
-          console.log("View FAQ");
-        }}
+        handleButton={() => console.log("View FAQ")}
         outlined={true}
       />
     </View>

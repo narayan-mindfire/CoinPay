@@ -4,9 +4,11 @@ import { useTheme } from "@react-navigation/native";
 import Button from "@/src/components/Button";
 import images from "../Assets/images";
 import icons from "../Assets/icons";
+import { useTranslation } from "react-i18next";
 
 const ChooseAccount = ({ user, amount, onContinue }) => {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const styles = createStyles(colors);
 
   return (
@@ -19,17 +21,17 @@ const ChooseAccount = ({ user, amount, onContinue }) => {
       </View>
 
       {/* Account Selection */}
-      <Text style={styles.label}>Choose Account</Text>
+      <Text style={styles.label}>{t("chooseAccount.title")}</Text>
       <TouchableOpacity style={styles.cardBox}>
         <Image source={icons["mastercard"]} style={styles.cardIcon} />
-        <Text style={styles.cardLabel}>Account</Text>
+        <Text style={styles.cardLabel}>{t("chooseAccount.account")}</Text>
         <Text style={styles.cardNumber}>************3994</Text>
         <View style={styles.radioCircle} />
       </TouchableOpacity>
 
       {/* Pay Button */}
       <Button
-        buttonText={`Pay $${amount}`}
+        buttonText={`${t("chooseAccount.pay")} $${amount}`}
         handleButton={onContinue}
         // customStyle={styles.payBtn}
       />

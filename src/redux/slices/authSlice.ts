@@ -65,6 +65,8 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+// fetching user's profile details 
+
 export const fetchUserProfile = createAsyncThunk(
   "auth/fetchUserProfile",
   async (uid: string, thunkAPI) => {
@@ -97,38 +99,38 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
     })
-      .addCase(logoutUser.fulfilled, (state) => {
-        state.user = null;
-        state.token = null;
-      })
-      builder.addCase(fetchUserProfile.fulfilled, (state, action) => {
-        state.user = {
-          ...state.user,
-          ...action.payload,
-        };
-      })
-      .addMatcher(
-        isAnyOf(registerUser.pending, loginUser.pending),
-        (state) => {
-          state.loading = true;
-          state.error = null;
-        }
-      )
-      //Matching all rejected states
-      .addMatcher(
-        isAnyOf(registerUser.rejected, loginUser.rejected),
-        (state, action) => {
-          state.loading = false;
-          state.error = action.payload as string;
-        }
-      )
-      //Matching all fulfilled states
-      .addMatcher(
-        isAnyOf(registerUser.fulfilled),
-        (state) => {
-          state.loading = false;
-        }
-      );
+    .addCase(logoutUser.fulfilled, (state) => {
+      state.user = null;
+      state.token = null;
+    })
+    builder.addCase(fetchUserProfile.fulfilled, (state, action) => {
+      state.user = {
+        ...state.user,
+        ...action.payload,
+      };
+    })
+    .addMatcher(
+      isAnyOf(registerUser.pending, loginUser.pending),
+      (state) => {
+        state.loading = true;
+        state.error = null;
+      }
+    )
+    //Matching all rejected states
+    .addMatcher(
+      isAnyOf(registerUser.rejected, loginUser.rejected),
+      (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      }
+    )
+    //Matching all fulfilled states
+    .addMatcher(
+      isAnyOf(registerUser.fulfilled),
+      (state) => {
+        state.loading = false;
+      }
+    );
   },
 });
 

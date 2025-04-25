@@ -12,6 +12,7 @@ import images from "@/src/Assets/images";
 import CamButton from "@/src/components/CamButton";
 import UserTransaction from "@/src/components/UserTransaction";
 import SearchBar from "@/src/components/SearchBar";
+import LoaderModal from "@/src/components/LoaderModal";
 
 import { useAppDispatch, useAppSelector } from "@/src/redux/store";
 import { fetchUserTransactions } from "@/src/redux/slices/transactionSlice";
@@ -23,8 +24,8 @@ import {
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 
+import { useTranslation } from "react-i18next";
 import { useTheme } from "@react-navigation/native";
-import LoaderModal from "@/src/components/LoaderModal";
 
 interface User {
   uid: string;
@@ -36,12 +37,12 @@ interface User {
 const ChooseRecepient = ({ navigation }) => {
   const { colors } = useTheme();
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   const [users, setUsers] = useState<User[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
 
   const currentUser = useAppSelector((state) => state.auth.user);
-
   const { transactions, loading } = useAppSelector(
     (state) => state.transaction
   );
@@ -105,20 +106,19 @@ const ChooseRecepient = ({ navigation }) => {
     <View style={styles.container}>
       {/* loading screen when list of senders is loading  */}
       <LoaderModal visible={loading} />
-      <Text style={styles.title}>Choose Recipient</Text>
-      <Text style={styles.subtitle}>
-        Please select your recipient to send money.
-      </Text>
+      <Text style={styles.title}>{t("chooseRecipient.title")}</Text>
+
+      <Text style={styles.subtitle}>{t("chooseRecipient.subtitle")}</Text>
 
       <SearchBar
-        placeholder="Search * Recipient Email*"
+        placeholder={t("chooseRecipient.searchPlaceholder")}
         value={searchQuery}
         onChangeText={setSearchQuery}
       />
 
       {exactMatch && (
         <View style={styles.matchCard}>
-          <Text style={styles.sectionTitle}>Send to</Text>
+          <Text style={styles.sectionTitle}>{t("chooseRecipient.sendTo")}</Text>
           <UserTransaction
             name={exactMatch.name}
             email={exactMatch.email}
@@ -128,10 +128,8 @@ const ChooseRecepient = ({ navigation }) => {
         </View>
       )}
 
-      <Text style={styles.sectionTitle}>Most Recent</Text>
-
-      {loading && <ActivityIndicator size="large" color={colors.primary} />}
-
+      <Text style={styles.sectionTitle}>{t("chooseRecipient.mostRecent")}</Text>
+      {loading && <LoaderModal visible={loading} />}
       <FlatList
         data={recentTransactions}
         removeClippedSubviews={false}
@@ -155,7 +153,7 @@ const ChooseRecepient = ({ navigation }) => {
         navigation={navigation}
         to="ScanSend"
         icon="camera"
-        text={"Scan to Pay"}
+        text={t("chooseRecipient.scanToPay")}
       />
     </View>
   );
