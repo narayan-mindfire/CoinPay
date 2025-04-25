@@ -257,6 +257,7 @@ no: "नहीं",
       namePlaceholder: "आपका नाम",
       emailPlaceholder: "your@email.com",
       phonePlaceholder: "+९१xxxxxxxxxx",
+      language: "भाषा",
     },
     chooseAccount: {
       title: "खाता चुनें",

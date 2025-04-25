@@ -257,6 +257,7 @@ const en = {
       namePlaceholder: "Your Name",
       emailPlaceholder: "your@email.com",
       phonePlaceholder: "+91xxxxxxxxxx",
+      language: "Language",
     },
       chooseAccount: {
         title: "Choose Account",

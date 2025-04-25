@@ -6,7 +6,7 @@ import authReducer from './slices/authSlice';
 import cardReducer from './slices/cardSlice'
 import currentTransactionReducer from "./slices/currentTransactionSlice";
 import transactionReducer from "./slices/transactionSlice";
-
+import languageReducer from "./slices/languageSlice"
 import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
@@ -14,7 +14,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['auth', 'theme', 'card', 'currentTransaction'],
+  whitelist: ['auth', 'theme', 'card', 'currentTransaction', 'language'],
 };
 
 //combining all reducers
@@ -25,6 +25,7 @@ const rootReducer = combineReducers({
   card : cardReducer,
   transaction : transactionReducer,
   currentTransaction: currentTransactionReducer,
+  language: languageReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

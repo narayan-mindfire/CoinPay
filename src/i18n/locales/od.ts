@@ -256,6 +256,7 @@ const od = {
       namePlaceholder: "ଆପଣଙ୍କ ନାମ",
       emailPlaceholder: "your@email.com",
       phonePlaceholder: "+୯୧xxxxxxxxxx",
+      language: "ଭାଷା",
     },
     chooseAccount: {
       title: "ଖାତା ବାଛନ୍ତୁ",
