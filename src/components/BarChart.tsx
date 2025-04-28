@@ -96,7 +96,7 @@ const createStyles = (colors: any) =>
     valueLabel: {
       fontSize: 10,
       color: colors.textSecondary,
-      marginBottom: 5,
+      marginBottom: 10,
       transform: [{ rotate: "-90deg" }],
     },
   });

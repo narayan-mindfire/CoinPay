@@ -1,5 +1,4 @@
-import React from "react";
-
+import React, { useEffect, useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import MoneyBox from "@/src/components/MoneyBox";
@@ -8,40 +7,110 @@ import icons from "@/src/Assets/icons";
 import TransactionItem from "@/src/components/TransactionItem";
 
 import { useTheme } from "@react-navigation/native";
-import { useAppSelector } from "@/src/redux/store";
+import { useAppDispatch, useAppSelector } from "@/src/redux/store";
+import { fetchUserTransactions } from "@/src/redux/slices/transactionSlice";
+import images from "@/src/Assets/images";
+import { collection, getDocs } from "@firebase/firestore";
+import { db } from "@/firebaseConfig";
+import { getMonthlyData } from "@/src/utils/getMonthlyData";
+import { handleUrlParams } from "expo-router/build/fork/getStateFromPath-forks";
 
-const spendingData = [
-  {
-    logo: "netflix",
-    title: "Netflix",
-    dateTime: "1st Jan at 7:20pm",
-    amount: "$15.99",
-  },
-  {
-    logo: "spotify",
-    title: "Spotify",
-    dateTime: "3rd Jan at 5:00pm",
-    amount: "$9.99",
-  },
-  {
-    logo: "twitch",
-    title: "Twitch",
-    dateTime: "9th Sept at 3:00pm",
-    amount: "$20.99",
-  },
-  {
-    logo: "ytMusic",
-    title: "YouTube Music",
-    dateTime: "1st Dec at 4:00am",
-    amount: "$11.99",
-  },
-];
+interface User {
+  uid: string;
+  name: string;
+  email: string;
+  image?: string;
+}
 
 const Spending = () => {
   const { colors } = useTheme();
   const styles = createStyles(colors);
+  const dispatch = useAppDispatch();
 
   const accBalance = useAppSelector((state) => state.auth.user.accBalance);
+  const currentUser = useAppSelector((state) => state.auth.user);
+  const { transactions } = useAppSelector((state) => state.transaction);
+  console.log(
+    transactions.filter((tx) => tx.senderUID === currentUser.uid)[0].createdAt
+  );
+
+  const [users, setUsers] = useState<User[]>([]);
+  const [totalSpend, setTotalSpend] = useState(0);
+  const [barChartData, setBarChartData] = useState<number[]>([0, 0, 0, 0, 0]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const userSnap = await getDocs(collection(db, "users"));
+        const fetchedUsers: User[] = [];
+
+        userSnap.forEach((doc) => {
+          const data = doc.data();
+          if (data.uid !== currentUser?.uid) {
+            fetchedUsers.push({
+              uid: data.uid,
+              name: data.name || "Unnamed",
+              email: data.email,
+              image: data.image || images.profile,
+            });
+          }
+        });
+
+        setUsers(fetchedUsers);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    if (currentUser?.uid) {
+      dispatch(fetchUserTransactions(currentUser.uid));
+    }
+
+    fetchUsers();
+  }, [currentUser?.uid]);
+
+  const [spendingData, setSpendingData] = useState([]);
+
+  useEffect(() => {
+    if (currentUser?.uid && users.length > 0) {
+      const recentTransactions = transactions
+        .filter((tx) => tx.senderUID === currentUser.uid)
+        .sort((a, b) => b.createdAt - a.createdAt)
+        .slice(0, 5)
+        .map((tx) => {
+          const receiver = users.find((u) => u.uid === tx.receiverUID);
+          const receiverEmail = receiver ? receiver.email : "Unknown";
+
+          return {
+            logo: "creditCardMinus",
+            title: `${receiverEmail} - \n${tx.purpose || "Transfer"}`,
+            dateTime: formatTimestamp(tx.createdAt),
+            amount: `₹${tx.amount}`,
+          };
+        });
+
+      setSpendingData(recentTransactions);
+    }
+    const helpr = getMonthlyData(transactions, currentUser.uid, "spending");
+    setBarChartData(helpr.periods);
+    setTotalSpend(helpr.total);
+  }, [currentUser?.uid, transactions, users]);
+
+  // Helper function to format timestamp
+  const formatTimestamp = (timestamp) => {
+    if (!timestamp || !timestamp.seconds) return "";
+
+    const date = new Date(timestamp.seconds * 1000);
+
+    const options: Intl.DateTimeFormatOptions = {
+      day: "numeric",
+      month: "short",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    };
+    return date.toLocaleString("en-US", options);
+  };
 
   return (
     <View style={styles.container}>
@@ -53,7 +122,7 @@ const Spending = () => {
           color={"white"}
           title={"total spend"}
           icon={"creditCardMinus"}
-          amount={"500"}
+          amount={totalSpend.toString()}
           bgColor={"primary"}
         />
         <MoneyBox
@@ -64,23 +133,31 @@ const Spending = () => {
           bgColor={"secondary"}
         />
       </View>
-      <BarChart data={[20, 20, 30, 40, 20]} screen="spending" />
+      <BarChart data={barChartData} screen="spending" />
       <View style={styles.heading}>
         <Text style={styles.listTitle}>Spending list</Text>
         <Image source={icons.filter} style={styles.filterIcon} />
       </View>
       <ScrollView style={styles.dataListContainer}>
-        {spendingData.map((item, index) => (
-          <TransactionItem
-            key={index}
-            logo={item.logo}
-            name={item.title}
-            time={item.dateTime}
-            amount={item.amount}
-            direction={false} // false represents outgoing
-            giveTint={false}
-          />
-        ))}
+        {spendingData.length > 0 ? (
+          spendingData.map((item, index) => (
+            <TransactionItem
+              key={index}
+              logo={item.logo}
+              name={item.title}
+              time={item.dateTime}
+              amount={item.amount}
+              direction={false}
+              giveTint={true}
+            />
+          ))
+        ) : (
+          <Text
+            style={{ textAlign: "center", marginTop: 20, color: colors.text }}
+          >
+            No recent transactions
+          </Text>
+        )}
       </ScrollView>
     </View>
   );

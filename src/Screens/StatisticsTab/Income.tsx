@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 
@@ -8,39 +8,107 @@ import TransactionItem from "@/src/components/TransactionItem";
 import icons from "@/src/Assets/icons";
 
 import { useTheme } from "@react-navigation/native";
-import { useAppSelector } from "@/src/redux/store";
+import { useAppDispatch, useAppSelector } from "@/src/redux/store";
+import { getMonthlyData } from "@/src/utils/getMonthlyData";
+import { collection, getDocs } from "@firebase/firestore";
+import { db } from "@/firebaseConfig";
+import images from "@/src/Assets/images";
+import { fetchUserTransactions } from "@/src/redux/slices/transactionSlice";
 
-const spendingData = [
-  {
-    logo: "sack",
-    title: "Salary",
-    dateTime: "1st Jan at 7:20pm",
-    amount: "$4000.00",
-  },
-  {
-    logo: "sack",
-    title: "Freelance Work",
-    dateTime: "3rd Jan at 5:00pm",
-    amount: "$9.99",
-  },
-  {
-    logo: "sack",
-    title: "Investment",
-    dateTime: "9th Sept at 3:00pm",
-    amount: "$200.34",
-  },
-  {
-    logo: "sack",
-    title: "Gift",
-    dateTime: "27th Dec at 4:00am",
-    amount: "$30.00",
-  },
-];
+interface User {
+  uid: string;
+  name: string;
+  email: string;
+  image?: string;
+}
 
 const Income = () => {
   const { colors } = useTheme();
+  const dispatch = useAppDispatch();
   const styles = createStyles(colors);
   const accBalance = useAppSelector((state) => state.auth.user.accBalance);
+  const currentUser = useAppSelector((state) => state.auth.user);
+  const { transactions } = useAppSelector((state) => state.transaction);
+  console.log(
+    transactions.filter((tx) => tx.senderUID === currentUser.uid)[0].createdAt
+  );
+
+  const [users, setUsers] = useState<User[]>([]);
+  const [barChartData, setBarChartData] = useState<number[]>([0, 0, 0, 0, 0]);
+  const [monthlyIncome, setMonthlyIncome] = useState(0);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const userSnap = await getDocs(collection(db, "users"));
+        const fetchedUsers: User[] = [];
+
+        userSnap.forEach((doc) => {
+          const data = doc.data();
+          if (data.uid !== currentUser?.uid) {
+            fetchedUsers.push({
+              uid: data.uid,
+              name: data.name || "Unnamed",
+              email: data.email,
+              image: data.image || images.profile,
+            });
+          }
+        });
+
+        setUsers(fetchedUsers);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    if (currentUser?.uid) {
+      dispatch(fetchUserTransactions(currentUser.uid));
+    }
+
+    fetchUsers();
+  }, [currentUser?.uid]);
+
+  const [spendingData, setSpendingData] = useState([]);
+
+  useEffect(() => {
+    if (currentUser?.uid && users.length > 0) {
+      const recentTransactions = transactions
+        .filter((tx) => tx.receiverUID === currentUser.uid)
+        .sort((a, b) => b.createdAt - a.createdAt)
+        .slice(0, 5)
+        .map((tx) => {
+          const sender = users.find((u) => u.uid === tx.senderUID);
+          const senderEmail = sender ? sender.email : "Unknown";
+
+          return {
+            logo: "creditCardPlus",
+            title: `${senderEmail} - \n${tx.purpose || "Transfer"}`,
+            dateTime: formatTimestamp(tx.createdAt),
+            amount: `₹${tx.amount}`,
+          };
+        });
+
+      setSpendingData(recentTransactions);
+    }
+    const helpr = getMonthlyData(transactions, currentUser.uid, "income");
+    setBarChartData(helpr.periods);
+    setMonthlyIncome(helpr.total);
+  }, [currentUser?.uid, transactions, users]);
+
+  // Helper function to format timestamp
+  const formatTimestamp = (timestamp) => {
+    if (!timestamp || !timestamp.seconds) return "";
+
+    const date = new Date(timestamp.seconds * 1000);
+    const options: Intl.DateTimeFormatOptions = {
+      day: "numeric",
+      month: "short",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    };
+    return date.toLocaleString("en-US", options);
+  };
 
   return (
     <View style={styles.container}>
@@ -52,7 +120,7 @@ const Income = () => {
           color={"white"}
           title={"total income"}
           icon={"coins"}
-          amount={"500"}
+          amount={monthlyIncome.toString()}
           bgColor={"success"}
         />
         <MoneyBox
@@ -63,7 +131,7 @@ const Income = () => {
           bgColor={"secondary"}
         />
       </View>
-      <BarChart data={[2000, 200, 230, 40, 20]} screen="income" />
+      <BarChart data={barChartData} screen="income" />
       <View style={styles.heading}>
         <Text style={styles.listTitle}>Income list</Text>
         <Image source={icons.filter} style={styles.filterIcon} />
