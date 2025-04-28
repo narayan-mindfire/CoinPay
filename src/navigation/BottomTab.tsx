@@ -3,12 +3,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { EventArg, useTheme } from "@react-navigation/native";
 import { Image, ImageSourcePropType, View, Pressable } from "react-native";
 import HomeScreen from "../Screens/BottomTab/HomeScreen";
-import ScanScreen from "../Screens/BottomTab/ScanScreen";
 import ProfileScreen from "../Screens/BottomTab/ProfileScreen";
 import SupportScreen from "../Screens/BottomTab/SupportScreen";
 import icons from "../Assets/icons";
 import StatisticsTab from "./StatisticsTab";
-import PrimaryStack from "./PrimaryStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -81,7 +79,7 @@ export default function BottomTab() {
                   height: 26,
                   tintColor:
                     route.name === "Scan"
-                      ? "#fff"
+                      ? colors.white
                       : focused
                       ? colors.primary
                       : colors.textPrimary,

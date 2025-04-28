@@ -79,6 +79,7 @@ const createStyles = (colors: any) =>
       borderRadius: 20,
       borderBottomColor: colors.primary,
       borderBottomWidth: 2,
+      height: 200,
     },
     barContainer: {
       alignItems: "center",

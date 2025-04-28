@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import MoneyBox from "@/src/components/MoneyBox";
 import BarChart from "@/src/components/BarChart";
@@ -14,6 +21,8 @@ import { collection, getDocs } from "@firebase/firestore";
 import { db } from "@/firebaseConfig";
 import images from "@/src/Assets/images";
 import { fetchUserTransactions } from "@/src/redux/slices/transactionSlice";
+import { getCurrentMonth } from "@/src/utils/getCurrentMonth";
+import MonthModal from "@/src/components/MonthModal";
 
 interface User {
   uid: string;
@@ -25,18 +34,35 @@ interface User {
 const Income = () => {
   const { colors } = useTheme();
   const dispatch = useAppDispatch();
-  const styles = createStyles(colors);
+  const { transactions } = useAppSelector((state) => state.transaction);
   const accBalance = useAppSelector((state) => state.auth.user.accBalance);
   const currentUser = useAppSelector((state) => state.auth.user);
-  const { transactions } = useAppSelector((state) => state.transaction);
-  console.log(
-    transactions.filter((tx) => tx.senderUID === currentUser.uid)[0].createdAt
-  );
+
+  const styles = createStyles(colors);
 
   const [users, setUsers] = useState<User[]>([]);
   const [barChartData, setBarChartData] = useState<number[]>([0, 0, 0, 0, 0]);
   const [monthlyIncome, setMonthlyIncome] = useState(0);
+  const [selectedMonth, setSelectedMonth] = useState(getCurrentMonth());
+  const [showMonthModal, setShowMonthModal] = useState(false);
+  const [spendingData, setSpendingData] = useState([]);
 
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  // getting users other than current user
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -68,8 +94,7 @@ const Income = () => {
     fetchUsers();
   }, [currentUser?.uid]);
 
-  const [spendingData, setSpendingData] = useState([]);
-
+  //getting transactions in which the receiver is the current user
   useEffect(() => {
     if (currentUser?.uid && users.length > 0) {
       const recentTransactions = transactions
@@ -78,7 +103,7 @@ const Income = () => {
         .slice(0, 5)
         .map((tx) => {
           const sender = users.find((u) => u.uid === tx.senderUID);
-          const senderEmail = sender ? sender.email : "Unknown";
+          const senderEmail = sender ? sender.name : "Unknown";
 
           return {
             logo: "creditCardPlus",
@@ -90,30 +115,40 @@ const Income = () => {
 
       setSpendingData(recentTransactions);
     }
-    const helpr = getMonthlyData(transactions, currentUser.uid, "income");
+    const helpr = getMonthlyData(
+      transactions,
+      currentUser.uid,
+      "income",
+      selectedMonth
+    );
     setBarChartData(helpr.periods);
     setMonthlyIncome(helpr.total);
-  }, [currentUser?.uid, transactions, users]);
+  }, [currentUser?.uid, transactions, users, selectedMonth]);
 
   // Helper function to format timestamp
   const formatTimestamp = (timestamp) => {
     if (!timestamp || !timestamp.seconds) return "";
 
     const date = new Date(timestamp.seconds * 1000);
-    const options: Intl.DateTimeFormatOptions = {
-      day: "numeric",
-      month: "short",
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true,
-    };
-    return date.toLocaleString("en-US", options);
+    return date.toLocaleString("en-US");
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.title}>
-        <Text style={styles.titleLabel}>Income</Text>
+        <View style={{ flex: 1, alignItems: "flex-start" }}>
+          <TouchableOpacity
+            style={styles.monthPicker}
+            onPress={() => setShowMonthModal(true)}
+          >
+            <Text style={styles.selectedMonthText}>{selectedMonth}</Text>
+            <Image source={icons.angleDown} style={styles.dropdownIcon} />
+          </TouchableOpacity>
+        </View>
+        <View style={{ flex: 1, alignItems: "center" }}>
+          <Text style={styles.titleLabel}>Income</Text>
+        </View>
+        <View style={{ flex: 1, alignItems: "flex-end" }} />
       </View>
       <View style={styles.data}>
         <MoneyBox
@@ -149,6 +184,13 @@ const Income = () => {
           />
         ))}
       </ScrollView>
+      <MonthModal
+        visible={showMonthModal}
+        months={months}
+        onSelectMonth={(month) => setSelectedMonth(month)}
+        onClose={() => setShowMonthModal(false)}
+        colors={colors}
+      />
     </View>
   );
 };
@@ -167,14 +209,39 @@ const createStyles = (colors: any) =>
       justifyContent: "space-between",
     },
     title: {
-      justifyContent: "center",
+      flexDirection: "row",
       alignItems: "center",
-      marginBottom: 40,
+      marginBottom: 20,
+      paddingTop: 5,
+      paddingLeft: 15,
+      paddingRight: 15,
+      justifyContent: "space-between",
     },
     titleLabel: {
       fontSize: 28,
-      fontWeight: 500,
+      fontWeight: "500",
       color: colors.textPrimary,
+      textAlign: "center",
+    },
+    monthPicker: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-evenly",
+      backgroundColor: colors.backgroundModal,
+      width: 120,
+      padding: 10,
+      borderRadius: 15,
+    },
+    selectedMonthText: {
+      fontSize: 20,
+      fontWeight: "500",
+      color: colors.textPrimary,
+      marginRight: 5,
+    },
+    dropdownIcon: {
+      width: 20,
+      height: 20,
+      tintColor: colors.textPrimary,
     },
     text: {
       color: colors.text,

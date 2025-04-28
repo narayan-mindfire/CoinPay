@@ -1,6 +1,13 @@
 import React from "react";
 
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import MoneyBox from "@/src/components/MoneyBox";
 import BarChart from "@/src/components/BarChart";
@@ -9,6 +16,7 @@ import icons from "@/src/Assets/icons";
 
 import { useTheme } from "@react-navigation/native";
 import { useAppSelector } from "@/src/redux/store";
+import { getCurrentMonth } from "@/src/utils/getCurrentMonth";
 
 const spendingData = [
   {
@@ -45,7 +53,16 @@ const Savings = () => {
   return (
     <View style={styles.container}>
       <View style={styles.title}>
-        <Text style={styles.titleLabel}>Savings</Text>
+        <View style={{ flex: 1, alignItems: "flex-start" }}>
+          <TouchableOpacity style={styles.monthPicker}>
+            <Text style={styles.selectedMonthText}>{getCurrentMonth()}</Text>
+            <Image source={icons.angleDown} style={styles.dropdownIcon} />
+          </TouchableOpacity>
+        </View>
+        <View style={{ flex: 1, alignItems: "center" }}>
+          <Text style={styles.titleLabel}>Savings</Text>
+        </View>
+        <View style={{ flex: 1, alignItems: "flex-end" }} />
       </View>
       <View style={styles.data}>
         <MoneyBox
@@ -99,14 +116,39 @@ const createStyles = (colors: any) =>
       justifyContent: "space-between",
     },
     title: {
-      justifyContent: "center",
+      flexDirection: "row",
       alignItems: "center",
-      marginBottom: 40,
+      marginBottom: 20,
+      paddingTop: 5,
+      paddingLeft: 15,
+      paddingRight: 15,
+      justifyContent: "space-between",
     },
     titleLabel: {
       fontSize: 28,
-      fontWeight: 500,
+      fontWeight: "500",
       color: colors.textPrimary,
+      textAlign: "center",
+    },
+    monthPicker: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-evenly",
+      backgroundColor: colors.backgroundModal,
+      width: 120,
+      padding: 10,
+      borderRadius: 15,
+    },
+    dropdownIcon: {
+      width: 20,
+      height: 20,
+      tintColor: colors.textPrimary,
+    },
+    selectedMonthText: {
+      fontSize: 20,
+      fontWeight: "500",
+      color: colors.textPrimary,
+      marginRight: 5,
     },
     text: {
       color: colors.text,

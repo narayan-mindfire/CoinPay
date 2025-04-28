@@ -42,7 +42,7 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.contentContainer}>
           <View style={styles.balanceSection}>
             <View style={styles.searchBarRow}>
-              <Image source={icons.tropyhStar} tintColor={"#fff"} />
+              <Image source={icons.tropyhStar} tintColor={colors.white} />
               <SearchBar
                 value={t("home.searchPlaceholder")}
                 onChangeText={() => {}}
@@ -51,7 +51,7 @@ const HomeScreen = ({ navigation }) => {
               <Image source={icons.bell} tintColor={"#fff"} />
             </View>
             <Text style={styles.currency}>{t("home.currency")}</Text>
-            <Text style={styles.amount}>${accBalance}</Text>
+            <Text style={styles.amount}>₹{accBalance}</Text>
             <TouchableOpacity
               style={styles.addButton}
               onPress={() => setShowModal(true)}

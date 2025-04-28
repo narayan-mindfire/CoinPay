@@ -11,7 +11,7 @@ export const HeaderPrimary = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const styles = createStyles(colors);
-  console.log(route.name);
+  console.log("route: ", route.name);
   if (route.name === "HomeScreen") {
     return null;
   }
