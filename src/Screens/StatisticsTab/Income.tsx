@@ -23,6 +23,7 @@ import images from "@/src/Assets/images";
 import { fetchUserTransactions } from "@/src/redux/slices/transactionSlice";
 import { getCurrentMonth } from "@/src/utils/getCurrentMonth";
 import MonthModal from "@/src/components/MonthModal";
+import ScreenHeader from "@/src/components/ScreenHeader";
 
 interface User {
   uid: string;
@@ -135,6 +136,7 @@ const Income = () => {
 
   return (
     <View style={styles.container}>
+      <ScreenHeader title="Income" />
       <View style={styles.title}>
         <View style={{ flex: 1, alignItems: "flex-start" }}>
           <TouchableOpacity
@@ -145,10 +147,6 @@ const Income = () => {
             <Image source={icons.angleDown} style={styles.dropdownIcon} />
           </TouchableOpacity>
         </View>
-        <View style={{ flex: 1, alignItems: "center" }}>
-          <Text style={styles.titleLabel}>Income</Text>
-        </View>
-        <View style={{ flex: 1, alignItems: "flex-end" }} />
       </View>
       <View style={styles.data}>
         <MoneyBox

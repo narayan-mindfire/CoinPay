@@ -19,6 +19,7 @@ import Animated, {
 } from "react-native-reanimated";
 
 import icons from "../Assets/icons";
+import { goBack } from "../navigation/navigationRef";
 
 const numberOfSteps = 12;
 
@@ -78,10 +79,7 @@ export const Progress = () => {
 
   return (
     <View style={styles.wrapper}>
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        style={styles.backButton}
-      >
+      <TouchableOpacity onPress={() => goBack()} style={styles.backButton}>
         <Image
           source={icons.angleLeft}
           style={{ tintColor: colors.textPrimary }}

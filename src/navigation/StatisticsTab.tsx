@@ -115,7 +115,7 @@ const createStyles = (colors: any) =>
       shadowRadius: 8,
       shadowOffset: { width: 0, height: 2 },
       elevation: 3,
-      top: "48%",
+      top: "52%",
     },
     tabWrapper: {
       alignItems: "center",

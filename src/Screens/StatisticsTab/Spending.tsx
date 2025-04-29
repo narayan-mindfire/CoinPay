@@ -22,6 +22,7 @@ import { collection, getDocs } from "@firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { getMonthlyData } from "@/src/utils/getMonthlyData";
 import { getCurrentMonth } from "@/src/utils/getCurrentMonth";
+import ScreenHeader from "@/src/components/ScreenHeader";
 
 interface User {
   uid: string;
@@ -130,6 +131,7 @@ const Spending = () => {
 
   return (
     <View style={styles.container}>
+      <ScreenHeader title="Spending" />
       <View style={styles.title}>
         <View style={{ flex: 1, alignItems: "flex-start" }}>
           <TouchableOpacity
@@ -140,10 +142,6 @@ const Spending = () => {
             <Image source={icons.angleDown} style={styles.dropdownIcon} />
           </TouchableOpacity>
         </View>
-        <View style={{ flex: 1, alignItems: "center" }}>
-          <Text style={styles.titleLabel}>Spending</Text>
-        </View>
-        <View style={{ flex: 1, alignItems: "flex-end" }} />
       </View>
 
       <View style={styles.data}>
@@ -219,12 +217,6 @@ const createStyles = (colors: any) =>
       paddingLeft: 15,
       paddingRight: 15,
       justifyContent: "space-between",
-    },
-    titleLabel: {
-      fontSize: 28,
-      fontWeight: "500",
-      color: colors.textPrimary,
-      textAlign: "center",
     },
     monthPicker: {
       flexDirection: "row",

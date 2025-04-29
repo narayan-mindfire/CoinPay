@@ -3,20 +3,22 @@ import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 
 import Button from "@/src/components/Button";
-import { WelcomeScreenProps } from "@/src/navigation/NavigationTypes";
-import { useTheme } from "@react-navigation/native";
-import { useTranslation } from "react-i18next";
 import images from "@/src/Assets/images";
 import icons from "@/src/Assets/icons";
+import ScreenHeader from "@/src/components/ScreenHeader";
+
+import { useTranslation } from "react-i18next";
+import { useTheme } from "@react-navigation/native";
 
 // SupportScreen for application support
-const SupportScreen = ({ navigation }: WelcomeScreenProps) => {
+const SupportScreen = () => {
   const { colors, dark } = useTheme();
   const { t } = useTranslation();
 
   const styles = createStyles(colors);
   return (
     <View style={styles.container}>
+      <ScreenHeader title="Support" />
       <Image
         source={dark ? images.supportDark : images.support}
         style={styles.image}

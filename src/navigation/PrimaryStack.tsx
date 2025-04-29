@@ -28,11 +28,12 @@ const PrimaryStack: React.FC = () => {
   console.log("cards present:\n", hasCards);
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
-      <HeaderPrimary />
       <Stack.Navigator
         initialRouteName={hasCards ? "BottomTab" : "AddCard"}
         id={undefined}
-        screenOptions={{ headerShown: false }}
+        screenOptions={{
+          header: () => <HeaderPrimary />,
+        }}
       >
         <Stack.Screen name="AddCard" component={AddCard} />
         <Stack.Screen name="CardForm" component={CardForm} />

@@ -17,6 +17,7 @@ import icons from "@/src/Assets/icons";
 import { useTheme } from "@react-navigation/native";
 import { useAppSelector } from "@/src/redux/store";
 import { getCurrentMonth } from "@/src/utils/getCurrentMonth";
+import ScreenHeader from "@/src/components/ScreenHeader";
 
 const spendingData = [
   {
@@ -52,6 +53,7 @@ const Bills = () => {
 
   return (
     <View style={styles.container}>
+      <ScreenHeader title="Bills" />
       <View style={styles.title}>
         <View style={{ flex: 1, alignItems: "flex-start" }}>
           <TouchableOpacity style={styles.monthPicker}>
@@ -59,10 +61,6 @@ const Bills = () => {
             <Image source={icons.angleDown} style={styles.dropdownIcon} />
           </TouchableOpacity>
         </View>
-        <View style={{ flex: 1, alignItems: "center" }}>
-          <Text style={styles.titleLabel}>Bills</Text>
-        </View>
-        <View style={{ flex: 1, alignItems: "flex-end" }} />
       </View>
       <View style={styles.data}>
         <MoneyBox

@@ -8,11 +8,11 @@ import icons from "../Assets/icons";
 
 export const HeaderPrimary = () => {
   const { colors } = useTheme();
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const route = useRoute();
   const styles = createStyles(colors);
-  console.log("route: ", route.name);
-  if (route.name === "HomeScreen") {
+
+  if (route.name === "BottomTab") {
     return null;
   }
 

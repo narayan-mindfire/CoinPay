@@ -24,6 +24,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import ProfileIcon from "@/src/components/ProfileIcon";
 import LoaderModal from "@/src/components/LoaderModal";
 import { useTranslation } from "react-i18next";
+import ScreenHeader from "@/src/components/ScreenHeader";
 
 const ProfileScreen = ({ navigation }) => {
   const { colors } = useTheme();
@@ -58,7 +59,6 @@ const ProfileScreen = ({ navigation }) => {
       label: t("profile.personalInfo"),
       tintColor: "primary",
       bgColor: "backgroundAccent",
-      // to: "ProfileScreen",
     },
     {
       icon: icons.bank,
@@ -91,90 +91,86 @@ const ProfileScreen = ({ navigation }) => {
   ];
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.profileHeader}>
-          <Image source={images.profile} style={styles.avatar} />
-          <View style={styles.userInfo}>
-            <Text style={styles.name}>
-              {user?.name || t("profile.namePlaceholder")}
-            </Text>
-            <Text style={styles.email}>
-              {user?.email || t("profile.emailPlaceholder")}
-            </Text>
-            <Text style={styles.phone}>
-              {user?.phone || t("profile.phonePlaceholder")}
-            </Text>
-          </View>
-          <TouchableOpacity style={styles.editIcon}>
-            <Image source={icons.edit} style={styles.iconSmall} />
-          </TouchableOpacity>
+    <ScrollView contentContainerStyle={styles.container}>
+      <ScreenHeader title="My Profile" />
+      <View style={styles.profileHeader}>
+        <Image source={images.profile} style={styles.avatar} />
+        <View style={styles.userInfo}>
+          <Text style={styles.name}>
+            {user?.name || t("profile.namePlaceholder")}
+          </Text>
+          <Text style={styles.email}>
+            {user?.email || t("profile.emailPlaceholder")}
+          </Text>
+          <Text style={styles.phone}>
+            {user?.phone || t("profile.phonePlaceholder")}
+          </Text>
         </View>
+        <TouchableOpacity style={styles.editIcon}>
+          <Image source={icons.edit} style={styles.iconSmall} />
+        </TouchableOpacity>
+      </View>
 
-        <View style={styles.profileItems}>
-          <View style={styles.settingRow}>
-            <View style={styles.settingLeft}>
-              <View style={styles.moonContainer}>
-                <Image source={icons.moon} style={styles.iconMoon} />
-              </View>
-              <Text style={styles.settingLabel}>{t("profile.darkMode")}</Text>
+      <View style={styles.profileItems}>
+        <View style={styles.settingRow}>
+          <View style={styles.settingLeft}>
+            <View style={styles.moonContainer}>
+              <Image source={icons.moon} style={styles.iconMoon} />
             </View>
-            <Switch
-              value={isDarkMode}
-              onValueChange={toggleDarkMode}
-              trackColor={{ false: colors.border, true: colors.primary }}
-              thumbColor={isDarkMode ? colors.primary : colors.textPrimary}
-            />
+            <Text style={styles.settingLabel}>{t("profile.darkMode")}</Text>
           </View>
-
-          {profileOptions.map((item, index) => (
-            <View key={index}>
-              <TouchableOpacity
-                style={styles.settingRow}
-                onPress={() => {
-                  if (item.to) navigation.navigate(item.to);
-                }}
-              >
-                <View style={styles.settingLeft}>
-                  <ProfileIcon
-                    icon={item.icon}
-                    tintColor={colors[item.tintColor]}
-                    bgColor={colors[item.bgColor]}
-                  />
-                  <Text style={styles.settingLabel}>{item.label}</Text>
-                </View>
-                <Image source={icons.angleRight} style={styles.iconSmall} />
-              </TouchableOpacity>
-            </View>
-          ))}
-        </View>
-
-        <View style={styles.logoutContainer}>
-          <Button
-            handleButton={handleLogout}
-            buttonText={t("profile.logout")}
+          <Switch
+            value={isDarkMode}
+            onValueChange={toggleDarkMode}
+            trackColor={{ false: colors.border, true: colors.primary }}
+            thumbColor={isDarkMode ? colors.primary : colors.textPrimary}
           />
         </View>
-        <LoaderModal visible={loading} />
-      </ScrollView>
-    </SafeAreaView>
+
+        {profileOptions.map((item, index) => (
+          <View key={index}>
+            <TouchableOpacity
+              style={styles.settingRow}
+              onPress={() => {
+                if (item.to) navigation.navigate(item.to);
+              }}
+            >
+              <View style={styles.settingLeft}>
+                <ProfileIcon
+                  icon={item.icon}
+                  tintColor={colors[item.tintColor]}
+                  bgColor={colors[item.bgColor]}
+                />
+                <Text style={styles.settingLabel}>{item.label}</Text>
+              </View>
+              <Image source={icons.angleRight} style={styles.iconSmall} />
+            </TouchableOpacity>
+          </View>
+        ))}
+      </View>
+
+      <View style={styles.logoutContainer}>
+        <Button handleButton={handleLogout} buttonText={t("profile.logout")} />
+      </View>
+      <LoaderModal visible={loading} />
+    </ScrollView>
   );
 };
 
 const createStyles = (colors) =>
   StyleSheet.create({
     container: {
-      paddingHorizontal: 16,
       backgroundColor: colors.background,
       flexGrow: 1,
     },
     profileHeader: {
+      marginHorizontal: 16,
       backgroundColor: colors.backgroundModal,
       borderRadius: 12,
       alignItems: "center",
       position: "relative",
       marginBottom: 24,
-      paddingVertical: 5,
+      paddingVertical: 15,
     },
     avatar: {
       height: 64,
@@ -221,12 +217,14 @@ const createStyles = (colors) =>
     },
     profileItems: {
       backgroundColor: colors.backgroundModal,
-      padding: 8,
+      paddingHorizontal: 20,
       borderRadius: 12,
       marginBottom: 14,
+      marginHorizontal: 16,
     },
     settingRow: {
       paddingVertical: 18,
+      paddingHorizontal: 16,
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",

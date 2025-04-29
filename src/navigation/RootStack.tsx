@@ -11,6 +11,7 @@ import { RootStackParamList } from "./NavigationTypes";
 import PrimaryStack from "./PrimaryStack";
 
 import { RootState, useAppSelector } from "../redux/store";
+import { navigationRef } from "./navigationRef";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const RootStack: React.FC = () => {
@@ -28,6 +29,7 @@ const RootStack: React.FC = () => {
         translucent
       />
       <NavigationContainer
+        ref={navigationRef}
         theme={theme === "dark" ? DarkThemeCustom : LightThemeCustom}
       >
         <Stack.Navigator id={undefined} screenOptions={{ headerShown: false }}>
