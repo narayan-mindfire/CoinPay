@@ -31,6 +31,7 @@ const HomeScreen = ({ navigation }) => {
   const accBalance = useAppSelector((state) => state.auth.user.accBalance);
 
   const [showModal, setShowModal] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
   const styles = createStyles(colors);
 
@@ -48,8 +49,11 @@ const HomeScreen = ({ navigation }) => {
             <View style={styles.searchBarRow}>
               <Image source={icons.tropyhStar} tintColor={colors.white} />
               <SearchBar
-                value={t("home.searchPlaceholder")}
-                onChangeText={() => {}}
+                placeholder={t("home.searchPlaceholder")}
+                value={searchText}
+                onChangeText={(text) => {
+                  setSearchText(text);
+                }}
                 width={240}
               />
               <Image source={icons.bell} tintColor={colors.white} />

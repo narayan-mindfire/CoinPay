@@ -10,6 +10,7 @@ import languageReducer from "./slices/languageSlice"
 import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { logoutMiddleware } from './logoutMiddleware';
 
 const persistConfig = {
   key: 'root',
@@ -35,7 +36,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }),
+    }).concat(logoutMiddleware)
 });
 
 export const persistor = persistStore(store);

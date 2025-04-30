@@ -125,26 +125,32 @@ const ProfileScreen = ({ navigation }) => {
           />
         </View>
 
-        {profileOptions.map((item, index) => (
-          <View key={index}>
-            <TouchableOpacity
-              style={styles.settingRow}
-              onPress={() => {
-                if (item.to) navigation.navigate(item.to);
-              }}
-            >
-              <View style={styles.settingLeft}>
-                <ProfileIcon
-                  icon={item.icon}
-                  tintColor={colors[item.tintColor]}
-                  bgColor={colors[item.bgColor]}
-                />
-                <Text style={styles.settingLabel}>{item.label}</Text>
-              </View>
-              <Image source={icons.angleRight} style={styles.iconSmall} />
-            </TouchableOpacity>
-          </View>
-        ))}
+        {profileOptions.map((item, index) => {
+          const isLastItem = index === profileOptions.length - 1;
+          return (
+            <View key={index}>
+              <TouchableOpacity
+                style={[
+                  styles.settingRow,
+                  { borderBottomWidth: isLastItem ? 0 : 1 },
+                ]}
+                onPress={() => {
+                  if (item.to) navigation.navigate(item.to);
+                }}
+              >
+                <View style={styles.settingLeft}>
+                  <ProfileIcon
+                    icon={item.icon}
+                    tintColor={colors[item.tintColor]}
+                    bgColor={colors[item.bgColor]}
+                  />
+                  <Text style={styles.settingLabel}>{item.label}</Text>
+                </View>
+                <Image source={icons.angleRight} style={styles.iconSmall} />
+              </TouchableOpacity>
+            </View>
+          );
+        })}
       </View>
 
       <View style={styles.logoutContainer}>

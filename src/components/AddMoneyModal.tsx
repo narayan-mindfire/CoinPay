@@ -53,6 +53,7 @@ const AddMoneyModal: React.FC<AddMoneyModalProps> = ({ visible, onCancel }) => {
             onChangeText={setAmount}
             placeholder={t("purposeSelectionReceive.enterAmount")}
             keyboardType="numeric"
+            error=""
           />
 
           <Button

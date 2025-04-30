@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import ProfileIcon from "./ProfileIcon";
 import icons from "../Assets/icons";
+import { useTranslation } from "react-i18next";
 
 export const TransactionEle = ({
   icon,
@@ -21,13 +22,14 @@ export const TransactionEle = ({
   navigation: any;
   screen: any;
 }) => {
+  const { t } = useTranslation();
   const styles = createTransactionStyles(colors, color);
   return (
     <View
       style={[
         styles.transactionItem,
         {
-          borderBottomWidth: label === "Savings" ? 0 : 1,
+          borderBottomWidth: label === t("home.savings") ? 0 : 1,
           paddingVertical: 15,
         },
       ]}
