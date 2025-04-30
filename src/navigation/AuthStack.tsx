@@ -21,6 +21,7 @@ import OnboardingScreen from "../Screens/OnBoarding/OnBoarding";
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
 
+//auth stack lists all screens of the authentication flow
 const AuthStack: React.FC = () => {
   return (
     <>

@@ -14,6 +14,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { clearCurrentTransaction } from "@/src/redux/slices/currentTransactionSlice";
 
+// shows the summary of the current transaction
 const SendSummary = ({ navigation }) => {
   const { colors } = useTheme();
   const { t } = useTranslation();

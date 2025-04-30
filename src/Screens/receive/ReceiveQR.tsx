@@ -10,6 +10,8 @@ import { useAppSelector } from "@/src/redux/store";
 import { useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
+// shows the user's qr code others can scan it to send money
+
 const ReceiveQR = ({ navigation }) => {
   const { colors, dark } = useTheme();
   const { t } = useTranslation();
@@ -19,10 +21,11 @@ const ReceiveQR = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.qrBox}>
+        {/* qr code shows user's uid  */}
         <QRCode
           value={user.uid}
           size={200}
-          color={!dark ? colors.primary : "#fff"}
+          color={!dark ? colors.primary : colors.white}
           backgroundColor="transparent"
           logoSize={40}
         />

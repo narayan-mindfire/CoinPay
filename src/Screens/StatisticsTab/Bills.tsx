@@ -18,6 +18,7 @@ import { useTheme } from "@react-navigation/native";
 import { useAppSelector } from "@/src/redux/store";
 import { getCurrentMonth } from "@/src/utils/getCurrentMonth";
 import ScreenHeader from "@/src/components/ScreenHeader";
+import { useTranslation } from "react-i18next";
 
 const spendingData = [
   {
@@ -46,14 +47,16 @@ const spendingData = [
   },
 ];
 
+// shows user's bills -> currently static
 const Bills = () => {
   const { colors } = useTheme();
   const styles = createStyles(colors);
   const accBalance = useAppSelector((state) => state.auth.user.accBalance);
+  const { t } = useTranslation();
 
   return (
     <View style={styles.container}>
-      <ScreenHeader title="Bills" />
+      <ScreenHeader title={t("billsScreen.bills")} />
       <View style={styles.title}>
         <View style={{ flex: 1, alignItems: "flex-start" }}>
           <TouchableOpacity style={styles.monthPicker}>
@@ -65,14 +68,14 @@ const Bills = () => {
       <View style={styles.data}>
         <MoneyBox
           color={"white"}
-          title={"total bills"}
+          title={t("billsScreen.totalBills")}
           icon={"creditCardMinus"}
           amount={"500"}
           bgColor={"error"}
         />
         <MoneyBox
           color={"black"}
-          title={"available balance"}
+          title={t("billsScreen.availableBalance")}
           icon={"sendMoney"}
           amount={accBalance.toString()}
           bgColor={"secondary"}
@@ -80,7 +83,7 @@ const Bills = () => {
       </View>
       <BarChart data={[220, 120, 300, 400, 210]} screen="bills" />
       <View style={styles.heading}>
-        <Text style={styles.listTitle}>Bills list</Text>
+        <Text style={styles.listTitle}>{t("billsScreen.billsList")} </Text>
         <Image source={icons.filter} style={styles.filterIcon} />
       </View>
       <ScrollView style={styles.dataListContainer}>

@@ -25,6 +25,7 @@ const SetupPin = ({ navigation }: SetupPinScreenProps) => {
 
   const styles = createStyles(colors);
 
+  // adding data to redux store
   const addData = () => {
     dispatch(
       updateUserForm({

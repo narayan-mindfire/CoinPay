@@ -8,6 +8,7 @@ import {
   Image,
   Switch,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 
 import icons from "@/src/Assets/icons";
@@ -20,7 +21,6 @@ import { toggleTheme } from "@/src/redux/slices/themeSlice";
 
 import { useTheme } from "@react-navigation/native";
 
-import { SafeAreaView } from "react-native-safe-area-context";
 import ProfileIcon from "@/src/components/ProfileIcon";
 import LoaderModal from "@/src/components/LoaderModal";
 import { useTranslation } from "react-i18next";
@@ -33,7 +33,6 @@ const ProfileScreen = ({ navigation }) => {
 
   const user = useAppSelector((state: RootState) => state.auth.user);
   const theme = useAppSelector((state: RootState) => state.theme.theme);
-
   const loading = useAppSelector((state: RootState) => state.auth.loading);
 
   const isDarkMode = theme === "dark";
@@ -46,10 +45,9 @@ const ProfileScreen = ({ navigation }) => {
 
   function handleLogout() {
     try {
-      console.log("logging out user");
       dispatch(logoutUser());
     } catch (error) {
-      console.log("error logging out: ", error);
+      Alert.alert(`error logging out: ${error}`);
     }
   }
 
@@ -217,7 +215,7 @@ const createStyles = (colors) =>
     },
     profileItems: {
       backgroundColor: colors.backgroundModal,
-      paddingHorizontal: 20,
+      paddingHorizontal: 10,
       borderRadius: 12,
       marginBottom: 14,
       marginHorizontal: 16,

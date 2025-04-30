@@ -7,6 +7,7 @@ type LoaderModalProps = {
   visible: boolean;
 };
 
+// represents buffering throught the app when needed
 const LoaderModal: React.FC<LoaderModalProps> = ({ visible }) => {
   return (
     <Modal

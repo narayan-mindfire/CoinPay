@@ -32,6 +32,11 @@ const HomeAddress = ({ navigation }: HomeAddressScreenProps) => {
   const cityError = validateCity(city);
   const postCodeError = validatePostCode(postCode);
 
+  const addData = () => {
+    dispatch(updateUserForm({ addressLine: address, city, postCode }));
+  };
+
+  // used to keep track of keyboard visibility
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
@@ -50,10 +55,6 @@ const HomeAddress = ({ navigation }: HomeAddressScreenProps) => {
       keyboardDidHideListener.remove();
     };
   }, []);
-
-  const addData = () => {
-    dispatch(updateUserForm({ addressLine: address, city, postCode }));
-  };
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>

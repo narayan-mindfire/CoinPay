@@ -21,11 +21,13 @@ import {
   setSenderUID,
 } from "@/src/redux/slices/currentTransactionSlice";
 
+// to choose the sender to receive money from
 const ChooseSender = ({ navigation }) => {
   const { colors } = useTheme();
-  const styles = createStyles(colors);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+
+  const styles = createStyles(colors);
 
   const { transactions, loading } = useAppSelector(
     (state) => state.transaction

@@ -186,8 +186,9 @@ const createStyles = (colors: any) =>
     paginationContainer: {
       padding: 50,
       flexDirection: "row",
+      marginTop: 30,
       position: "absolute",
-      bottom: 300,
+      bottom: "35%",
     },
     dot: {
       height: 8,

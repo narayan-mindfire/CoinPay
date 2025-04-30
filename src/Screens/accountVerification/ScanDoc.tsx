@@ -1,11 +1,12 @@
 import { Button, StyleSheet, Text, View } from "react-native";
 
-import { CameraView, useCameraPermissions } from "expo-camera";
+import CamButton from "@/src/components/CamButton";
 
 import { useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
-import CamButton from "@/src/components/CamButton";
+import { CameraView, useCameraPermissions } from "expo-camera";
 
+// scan doc is the ui to take image of user documentation
 export default function ScanDoc({ navigation }) {
   const { colors } = useTheme();
   const { t } = useTranslation();

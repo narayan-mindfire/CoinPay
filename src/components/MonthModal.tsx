@@ -3,15 +3,28 @@ import { Modal, TouchableOpacity, View, Text, StyleSheet } from "react-native";
 
 interface MonthModalProps {
   visible: boolean;
-  months: string[];
   onClose: () => void;
   onSelectMonth: (month: string) => void;
   colors: any;
 }
 
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
 const MonthModal: React.FC<MonthModalProps> = ({
   visible,
-  months,
   onClose,
   onSelectMonth,
   colors,

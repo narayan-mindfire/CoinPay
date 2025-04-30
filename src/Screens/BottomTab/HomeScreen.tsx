@@ -13,22 +13,26 @@ import {
 import { Dimensions } from "react-native";
 import icons from "@/src/Assets/icons";
 import images from "@/src/Assets/images";
-import ProfileIcon from "@/src/components/ProfileIcon";
+import AddMoneyModal from "@/src/components/AddMoneyModal";
+import SearchBar from "@/src/components/SearchBar";
+import ActionButton from "@/src/components/ActionButton";
 
 import { useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
-import ActionButton from "@/src/components/ActionButton";
-import SearchBar from "@/src/components/SearchBar";
 import { useAppSelector } from "@/src/redux/store";
-import AddMoneyModal from "@/src/components/AddMoneyModal";
+import { TransactionEle } from "@/src/components/TransactionEle";
 
+const { height: screenHeight } = Dimensions.get("window");
+
+// this is the main landing page of app after user is authenticated
 const HomeScreen = ({ navigation }) => {
   const { colors } = useTheme();
   const { t } = useTranslation();
+  const accBalance = useAppSelector((state) => state.auth.user.accBalance);
+
+  const [showModal, setShowModal] = useState(false);
 
   const styles = createStyles(colors);
-  const accBalance = useAppSelector((state) => state.auth.user.accBalance);
-  const [showModal, setShowModal] = useState(false);
 
   return (
     <ScrollView style={styles.container}>
@@ -48,7 +52,7 @@ const HomeScreen = ({ navigation }) => {
                 onChangeText={() => {}}
                 width={240}
               />
-              <Image source={icons.bell} tintColor={"#fff"} />
+              <Image source={icons.bell} tintColor={colors.white} />
             </View>
             <Text style={styles.currency}>{t("home.currency")}</Text>
             <Text style={styles.amount}>₹{accBalance}</Text>
@@ -99,7 +103,7 @@ const HomeScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           <View style={styles.transactionCard}>
-            <TransactionItem
+            <TransactionEle
               icon="creditCardMinus"
               label={t("home.spending")}
               amount="-500"
@@ -109,7 +113,7 @@ const HomeScreen = ({ navigation }) => {
               navigation={navigation}
               screen="Spending"
             />
-            <TransactionItem
+            <TransactionEle
               icon="coins"
               label={t("home.income")}
               amount="3000"
@@ -119,7 +123,7 @@ const HomeScreen = ({ navigation }) => {
               navigation={navigation}
               screen="Income"
             />
-            <TransactionItem
+            <TransactionEle
               icon="invoice"
               label={t("home.bills")}
               amount="-800"
@@ -129,7 +133,7 @@ const HomeScreen = ({ navigation }) => {
               navigation={navigation}
               screen="Bills"
             />
-            <TransactionItem
+            <TransactionEle
               icon="sack"
               label={t("home.savings")}
               amount="1000"
@@ -145,88 +149,6 @@ const HomeScreen = ({ navigation }) => {
     </ScrollView>
   );
 };
-
-const TransactionItem = ({
-  icon,
-  label,
-  amount,
-  color,
-  colors,
-  backgroundColor,
-  navigation,
-  screen,
-}: {
-  icon: string;
-  label: string;
-  amount: string | number;
-  color: string;
-  colors: any;
-  backgroundColor: string;
-  navigation: any;
-  screen: any;
-}) => {
-  const styles = createTransactionStyles(colors, color);
-  return (
-    <View
-      style={[
-        styles.transactionItem,
-        {
-          borderBottomWidth: label === "Savings" ? 0 : 1,
-          paddingVertical: 15,
-        },
-      ]}
-    >
-      <ProfileIcon
-        icon={icons[icon]}
-        tintColor={colors[color]}
-        bgColor={colors[backgroundColor]}
-        size={40}
-      />
-
-      <Text style={styles.transactionLabel}>{label}</Text>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("StatisticsTab", { screen })}
-      >
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text style={styles.amountStyles}>
-            {amount.toString().startsWith("-") ? amount : `+${amount}`}
-          </Text>
-          <Image
-            source={icons.angleRight}
-            tintColor={colors.textPrimary}
-            style={styles.angleIcon}
-          />
-        </View>
-      </TouchableOpacity>
-    </View>
-  );
-};
-
-const createTransactionStyles = (colors: any, color: string) =>
-  StyleSheet.create({
-    transactionItem: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      borderBottomColor: colors.border,
-    },
-    transactionLabel: {
-      color: colors.textSecondary,
-      flex: 1,
-      marginLeft: 10,
-      fontSize: 18,
-    },
-    angleIcon: {
-      marginLeft: 5,
-      height: 20,
-      width: 20,
-    },
-    amountStyles: {
-      color: colors[color],
-    },
-  });
-
-const { height: screenHeight } = Dimensions.get("window");
 
 const createStyles = (colors: any) =>
   StyleSheet.create({

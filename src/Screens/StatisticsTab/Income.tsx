@@ -25,6 +25,8 @@ import { getCurrentMonth } from "@/src/utils/getCurrentMonth";
 import MonthModal from "@/src/components/MonthModal";
 import ScreenHeader from "@/src/components/ScreenHeader";
 
+import { useTranslation } from "react-i18next";
+
 interface User {
   uid: string;
   name: string;
@@ -32,12 +34,15 @@ interface User {
   image?: string;
 }
 
+// shows incoming money from other users and analytics chart
 const Income = () => {
   const { colors } = useTheme();
   const dispatch = useAppDispatch();
   const { transactions } = useAppSelector((state) => state.transaction);
   const accBalance = useAppSelector((state) => state.auth.user.accBalance);
   const currentUser = useAppSelector((state) => state.auth.user);
+
+  const { t } = useTranslation();
 
   const styles = createStyles(colors);
 
@@ -47,21 +52,6 @@ const Income = () => {
   const [selectedMonth, setSelectedMonth] = useState(getCurrentMonth());
   const [showMonthModal, setShowMonthModal] = useState(false);
   const [spendingData, setSpendingData] = useState([]);
-
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
 
   // getting users other than current user
   useEffect(() => {
@@ -136,7 +126,7 @@ const Income = () => {
 
   return (
     <View style={styles.container}>
-      <ScreenHeader title="Income" />
+      <ScreenHeader title={t("incomeScreen.title")} />
       <View style={styles.title}>
         <View style={{ flex: 1, alignItems: "flex-start" }}>
           <TouchableOpacity
@@ -151,14 +141,14 @@ const Income = () => {
       <View style={styles.data}>
         <MoneyBox
           color={"white"}
-          title={"total income"}
+          title={t("incomeScreen.title")}
           icon={"coins"}
           amount={monthlyIncome.toString()}
           bgColor={"success"}
         />
         <MoneyBox
           color={"black"}
-          title={"available balance"}
+          title={t("incomeScreen.availableBalance")}
           icon={"sendMoney"}
           amount={accBalance.toString()}
           bgColor={"secondary"}
@@ -166,7 +156,7 @@ const Income = () => {
       </View>
       <BarChart data={barChartData} screen="income" />
       <View style={styles.heading}>
-        <Text style={styles.listTitle}>Income list</Text>
+        <Text style={styles.listTitle}>{t("incomeScreen.incomeList")}</Text>
         <Image source={icons.filter} style={styles.filterIcon} />
       </View>
       <ScrollView style={styles.dataListContainer}>
@@ -184,7 +174,6 @@ const Income = () => {
       </ScrollView>
       <MonthModal
         visible={showMonthModal}
-        months={months}
         onSelectMonth={(month) => setSelectedMonth(month)}
         onClose={() => setShowMonthModal(false)}
         colors={colors}

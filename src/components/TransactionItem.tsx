@@ -15,6 +15,7 @@ type SpendingItemProps = {
   giveTint: boolean;
 };
 
+// this component is to displayed in spending, savings, income and bills screens
 const TransactionItem = ({
   logo,
   name,

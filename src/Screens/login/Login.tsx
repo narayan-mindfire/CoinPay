@@ -14,6 +14,7 @@ import {
 
 import Button from "@/src/components/Button";
 import LoaderModal from "@/src/components/LoaderModal";
+import CustomTextField from "@/src/components/CustomTextField";
 import icons from "@/src/Assets/icons";
 
 import {
@@ -25,7 +26,6 @@ import { RootState, useAppDispatch, useAppSelector } from "@/src/redux/store";
 
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@react-navigation/native";
-import CustomTextField from "@/src/components/CustomTextField";
 
 /**
  * Login Screen Component
@@ -42,12 +42,11 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
+  // Function to validate email input
   const emailError = validateEmail(email);
   const passwordError = validatePassword(password);
 
   const styles = createStyles(colors, emailError);
-
-  // Function to validate email input
 
   const handleLogin = () => {
     console.log("logging in user");

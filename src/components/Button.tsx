@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   Dimensions,
   StyleSheet,
@@ -24,6 +25,7 @@ interface ButtonProps {
   buttonStyles?: object;
 }
 
+// custom button component with diverse options for different cases
 const Button = ({
   buttonText,
   handleButton,

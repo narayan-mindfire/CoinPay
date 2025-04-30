@@ -270,6 +270,35 @@ no: "नहीं",
       subtitle: "कृपया भुगतान प्राप्त करने के लिए एक राशि दर्ज करें",
       buttonText: "${{amount}} अनुरोध करें",
     },
+    incomeScreen: {
+      title: "आय",
+      totalIncome: "कुल आय",
+      availableBalance: "उपलब्ध शेष",
+      incomeList: "आय सूची",
+      pay: "भुगतान करें",
+      account: "खाता",
+      month: "महीना",
+      chooseMonth: "महीना चुनें",
+    },
+    spendingScreen: {
+      title: "खर्च",
+      totalSpend: "कुल खर्च",
+      availableBalance: "उपलब्ध शेष राशि",
+      spendingList: "खर्च सूची",
+      noRecentTransactions: "हाल ही में कोई लेनदेन नहीं",
+    },
+    billsScreen: {
+      bills: "बिल",
+      totalBills: "कुल बिल",
+      availableBalance: "उपलब्ध शेष राशि",
+      billsList: "बिल सूची",
+    },
+    savingsScreen: {
+      savings: "बचत",
+      totalSavings: "कुल बचत",
+      availableBalance: "उपलब्ध शेष राशि",
+      savingsList: "बचत सूची",
+    },    
   
 };
 

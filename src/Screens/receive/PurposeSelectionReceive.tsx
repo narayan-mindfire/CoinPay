@@ -19,6 +19,7 @@ import {
   setAmount as setAmountRedux,
 } from "@/src/redux/slices/currentTransactionSlice";
 
+// this screen has multiple views - selecting purpose, entering amount to request, and requesting view
 const PurposeSelectionReceive = ({ navigation }) => {
   const { colors } = useTheme();
   const dispatch = useAppDispatch();
@@ -27,9 +28,6 @@ const PurposeSelectionReceive = ({ navigation }) => {
 
   const senderUID = useAppSelector(
     (state) => state.currentTransaction.senderUID
-  );
-  const currentTransaction = useAppSelector(
-    (state) => state.currentTransaction
   );
 
   const [selected, setSelected] = useState("1");

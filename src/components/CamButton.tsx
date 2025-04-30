@@ -14,6 +14,7 @@ interface camButtonProps {
   text: string;
 }
 
+// cam button is another rounded button used frequently in app
 const CamButton = ({ navigation, to, icon, text }: camButtonProps) => {
   const { t } = useTranslation();
   const { colors } = useTheme();

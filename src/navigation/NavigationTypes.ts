@@ -1,3 +1,4 @@
+// types for naivgation of all navigators of the app are defined here
 
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { NativeStackScreenProps } from "@react-navigation/native-stack"

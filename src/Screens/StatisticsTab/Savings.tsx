@@ -18,8 +18,9 @@ import { useTheme } from "@react-navigation/native";
 import { useAppSelector } from "@/src/redux/store";
 import { getCurrentMonth } from "@/src/utils/getCurrentMonth";
 import ScreenHeader from "@/src/components/ScreenHeader";
+import { useTranslation } from "react-i18next";
 
-const spendingData = [
+const savingData = [
   {
     logo: "creditCardPlus",
     title: "anonymous savings",
@@ -46,14 +47,17 @@ const spendingData = [
   },
 ];
 
+// savings shows user savings, this is static currently
 const Savings = () => {
   const { colors } = useTheme();
+  const { t } = useTranslation();
+
   const styles = createStyles(colors);
   const accBalance = useAppSelector((state) => state.auth.user.accBalance);
 
   return (
     <View style={styles.container}>
-      <ScreenHeader title="Savings" />
+      <ScreenHeader title={t("savingsScreen.savings")} />
       <View style={styles.title}>
         <View style={{ flex: 1, alignItems: "flex-start" }}>
           <TouchableOpacity style={styles.monthPicker}>
@@ -65,14 +69,14 @@ const Savings = () => {
       <View style={styles.data}>
         <MoneyBox
           color={"white"}
-          title={"total savings"}
+          title={t("savingsScreen.totalSavings")}
           icon={"sack"}
           amount={"500"}
           bgColor={"warning"}
         />
         <MoneyBox
           color={"black"}
-          title={"available balance"}
+          title={t("savingsScreen.availableBalance")}
           icon={"sendMoney"}
           amount={accBalance.toString()}
           bgColor={"secondary"}
@@ -80,11 +84,11 @@ const Savings = () => {
       </View>
       <BarChart data={[20, 20, 30, 40, 20]} screen="savings" />
       <View style={styles.heading}>
-        <Text style={styles.listTitle}>Savings list</Text>
+        <Text style={styles.listTitle}>{t("savingsScreen.savingsList")}</Text>
         <Image source={icons.filter} style={styles.filterIcon} />
       </View>
       <ScrollView style={styles.dataListContainer}>
-        {spendingData.map((item, index) => (
+        {savingData.map((item, index) => (
           <TransactionItem
             key={index}
             logo={item.logo}

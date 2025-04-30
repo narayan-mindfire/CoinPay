@@ -3,12 +3,12 @@ import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 
 import images from "@/src/Assets/images";
+import CamButton from "@/src/components/CamButton";
 
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@react-navigation/native";
 
 import { TakeSelfieScreenProps } from "@/src/navigation/NavigationTypes";
-import CamButton from "@/src/components/CamButton";
 
 // take selfie screen that lets the user take selfie as verification and user profile image
 const TakeSelfie = ({ navigation }: TakeSelfieScreenProps) => {

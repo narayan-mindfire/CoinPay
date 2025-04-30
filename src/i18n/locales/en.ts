@@ -270,6 +270,36 @@ const en = {
         subtitle: "Please enter an amount to get paid",
         buttonText: "Request ${{amount}}",
       },
+      incomeScreen: {
+        title: "Income",
+        totalIncome: "total income",
+        availableBalance: "available balance",
+        incomeList: "Income list",
+        pay: "Pay",
+        account: "Account",
+        month: "Month",
+        chooseMonth: "Choose Month",
+      },
+      spendingScreen: {
+        title: "Spending",
+        totalSpend: "total spend",
+        availableBalance: "available balance",
+        spendingList: "Spending list",
+        noRecentTransactions: "No recent transactions",
+      },
+      billsScreen: {
+        bills: "Bills",
+        totalBills: "total bills",
+        availableBalance: "available balance",
+        billsList: "Bills list",
+      },
+      savingsScreen: {
+        savings: "savings",
+        totalSavings: "total savings",
+        availableBalance: "available balance",
+        savingsList: "savings list",
+      },
+      
   
 };
 

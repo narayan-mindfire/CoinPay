@@ -10,7 +10,7 @@ import ScreenHeader from "@/src/components/ScreenHeader";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@react-navigation/native";
 
-// SupportScreen for application support
+// SupportScreen for application support - currently static
 const SupportScreen = () => {
   const { colors, dark } = useTheme();
   const { t } = useTranslation();
@@ -44,7 +44,6 @@ const SupportScreen = () => {
 export default SupportScreen;
 
 // handled styles to dynamically take color values from theme to remove the need to write inline style
-
 const createStyles = (colors: any) =>
   StyleSheet.create({
     container: {

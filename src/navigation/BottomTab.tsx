@@ -1,20 +1,23 @@
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { EventArg, useTheme } from "@react-navigation/native";
+
 import {
   Image,
   ImageSourcePropType,
   View,
-  Pressable,
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
+
 import HomeScreen from "../Screens/BottomTab/HomeScreen";
 import ProfileScreen from "../Screens/BottomTab/ProfileScreen";
 import SupportScreen from "../Screens/BottomTab/SupportScreen";
 import icons from "../Assets/icons";
 import StatisticsTab from "./StatisticsTab";
 
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { EventArg, useTheme } from "@react-navigation/native";
+
+// bottom tab navigator for app home
 const Tab = createBottomTabNavigator();
 
 export default function BottomTab() {
@@ -32,7 +35,6 @@ export default function BottomTab() {
         headerShown: false,
         tabBarShowLabel: false,
         animation: "shift",
-        headerpressopacity: "0",
         tabBarStyle: styles.tabBarStyle,
         tabBarIcon: ({ focused }) => {
           let iconSource: ImageSourcePropType;

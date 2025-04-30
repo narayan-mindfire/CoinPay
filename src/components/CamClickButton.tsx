@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 
+// a custom button component that is used as a button to capture images
 const CamClickButton = ({ navigation }) => {
   return (
     <TouchableOpacity onPress={() => navigation.push("SetupPin")}>

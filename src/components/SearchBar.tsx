@@ -10,6 +10,7 @@ interface SearchBarProps {
   width?: string | number;
 }
 
+// this is a search bar that is used in multiple places throught the app
 const SearchBar = ({
   placeholder,
   value,

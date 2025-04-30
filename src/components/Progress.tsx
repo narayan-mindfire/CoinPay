@@ -8,11 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import {
-  useTheme,
-  useNavigation,
-  useNavigationState,
-} from "@react-navigation/native";
+import { useTheme, useNavigationState } from "@react-navigation/native";
 import Animated, {
   useAnimatedStyle,
   withTiming,
@@ -23,6 +19,7 @@ import { goBack } from "../navigation/navigationRef";
 
 const numberOfSteps = 12;
 
+// checking for current screen then mapping it to a number representing progress
 function useInStepScreen() {
   return useNavigationState((state) => {
     const current = state?.routes[state.index];
@@ -63,10 +60,10 @@ function useInStepScreen() {
   });
 }
 
+// this is the header component for authentication
 export const Progress = () => {
   const { colors } = useTheme();
   const { width } = useWindowDimensions();
-  const navigation = useNavigation();
 
   const step = useInStepScreen();
   const styles = createStyles(colors);

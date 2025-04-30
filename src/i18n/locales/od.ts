@@ -269,7 +269,35 @@ const od = {
       subtitle: "ଦୟାକରି ଏକ ରାଶି ଦିଅନ୍ତୁ ଯାହାକୁ ପ୍ରତିଶ୍ରୁତି ମିଳିବ",
       buttonText: "${{amount}} ଅନୁରୋଧ କରନ୍ତୁ",
     },
-        
+    incomeScreen: {
+      title: "ଆୟ",
+      totalIncome: "ମୋଟ ଆୟ",
+      availableBalance: "ଉପଲବ୍ଧ ବ୍ୟାଲାନ୍ସ",
+      incomeList: "ଆୟ ତାଲିକା",
+      pay: "ପେ",
+      account: "ଖାତା",
+      month: "ମାସ",
+      chooseMonth: "ମାସ ବାଛନ୍ତୁ",
+    },    
+    spendingScreen: {
+      title: "ଖର୍ଚ୍ଚ",
+      totalSpend: "ମୋଟ ଖର୍ଚ୍ଚ",
+      availableBalance: "ଉପଲବ୍ଧ ବ୍ୟାଲାନ୍ସ",
+      spendingList: "ଖର୍ଚ୍ଚ ତାଲିକା",
+      noRecentTransactions: "ନିକଟତମ ଟ୍ରାଞ୍ଜାକ୍ସନ ନାହିଁ",
+    },
+    billsScreen: {
+      bills: "ବିଲ୍‌",
+      totalBills: "ମୋଟ ବିଲ୍‌",
+      availableBalance: "ଉପଲବ୍ଧ ବ୍ୟାଲାନ୍ସ",
+      billsList: "ବିଲ୍ ତାଲିକା",
+    },
+    savingsScreen: {
+      savings: "ସଞ୍ଚୟ",
+      totalSavings: "ମୋଟ ସଞ୍ଚୟ",
+      availableBalance: "ଉପଲବ୍ଧ ବ୍ୟାଲାନ୍ସ",
+      savingsList: "ସଞ୍ଚୟ ତାଲିକା",
+    },      
   };
   
   export default od;

@@ -23,6 +23,7 @@ import { db } from "@/firebaseConfig";
 import { getMonthlyData } from "@/src/utils/getMonthlyData";
 import { getCurrentMonth } from "@/src/utils/getCurrentMonth";
 import ScreenHeader from "@/src/components/ScreenHeader";
+import { useTranslation } from "react-i18next";
 
 interface User {
   uid: string;
@@ -31,10 +32,13 @@ interface User {
   image?: string;
 }
 
+// shows outgoing money from other users and analytics chart
+
 const Spending = () => {
   const { colors } = useTheme();
   const styles = createStyles(colors);
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   const accBalance = useAppSelector((state) => state.auth.user.accBalance);
   const currentUser = useAppSelector((state) => state.auth.user);
@@ -47,21 +51,7 @@ const Spending = () => {
   const [showMonthModal, setShowMonthModal] = useState(false);
   const [spendingData, setSpendingData] = useState([]);
 
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
+  // fetching users and setting them
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -92,6 +82,7 @@ const Spending = () => {
     }
   }, [currentUser?.uid]);
 
+  // fetching and setting spending data
   useEffect(() => {
     if (currentUser?.uid && users.length > 0) {
       const recentTransactions = transactions
@@ -123,6 +114,7 @@ const Spending = () => {
     setTotalSpend(helpr.total);
   }, [currentUser?.uid, transactions, users, selectedMonth]);
 
+  // formatting timestamp
   const formatTimestamp = (timestamp) => {
     if (!timestamp || !timestamp.seconds) return "";
     const date = new Date(timestamp.seconds * 1000);
@@ -147,14 +139,14 @@ const Spending = () => {
       <View style={styles.data}>
         <MoneyBox
           color={"white"}
-          title={"total spend"}
+          title={t("spendingScreen.totalSpend")}
           icon={"creditCardMinus"}
           amount={totalSpend.toString()}
           bgColor={"primary"}
         />
         <MoneyBox
           color={"black"}
-          title={"available balance"}
+          title={t("incomeScreen.availableBalance")}
           icon={"sendMoney"}
           amount={accBalance.toString()}
           bgColor={"secondary"}
@@ -164,7 +156,7 @@ const Spending = () => {
       <BarChart data={barChartData} screen="spending" />
 
       <View style={styles.heading}>
-        <Text style={styles.listTitle}>Spending list</Text>
+        <Text style={styles.listTitle}>{t("spendingScreen.spendingList")}</Text>
         <Image source={icons.filter} style={styles.filterIcon} />
       </View>
 
@@ -185,14 +177,13 @@ const Spending = () => {
           <Text
             style={{ textAlign: "center", marginTop: 20, color: colors.text }}
           >
-            No recent transactions
+            {t("spendingScreen.noRecentTransactions")}
           </Text>
         )}
       </ScrollView>
 
       <MonthModal
         visible={showMonthModal}
-        months={months}
         onSelectMonth={(month) => setSelectedMonth(month)}
         onClose={() => setShowMonthModal(false)}
         colors={colors}

@@ -2,15 +2,16 @@ import React, { useState } from "react";
 
 import { View, Modal, StyleSheet } from "react-native";
 import Button from "@/src/components/Button";
+import LoaderModal from "./LoaderModal";
+import CustomTextField from "./CustomTextField";
+
+import { db } from "@/firebaseConfig";
+import { doc, increment, updateDoc } from "@firebase/firestore";
+import { useAppDispatch, useAppSelector } from "../redux/store";
+import { fetchUserProfile } from "../redux/slices/authSlice";
 
 import { useTheme } from "@react-navigation/native";
 import { t } from "i18next";
-import { doc, increment, updateDoc } from "@firebase/firestore";
-import { db } from "@/firebaseConfig";
-import { useAppDispatch, useAppSelector } from "../redux/store";
-import CustomTextField from "./CustomTextField";
-import { fetchUserProfile } from "../redux/slices/authSlice";
-import LoaderModal from "./LoaderModal";
 
 interface AddMoneyModalProps {
   visible: boolean;

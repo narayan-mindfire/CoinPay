@@ -3,7 +3,7 @@ import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 
 import Button from "@/src/components/Button";
-import registrationImages from "@/src/Assets/registration";
+import images from "@/src/Assets/images";
 
 import { useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
@@ -17,13 +17,10 @@ const Registration = ({ navigation }: RegistrationScreenProps) => {
 
   const styles = createStyles(colors);
 
-  const registrationDark = registrationImages.registrationDark;
-  const registration = registrationImages.registration;
-
   return (
     <View style={styles.container}>
       <Image
-        source={dark ? registrationDark : registration}
+        source={dark ? images.registrationDark : images.registration}
         style={styles.image}
       />
       <Text style={styles.title}>{t("registration.title")}</Text>

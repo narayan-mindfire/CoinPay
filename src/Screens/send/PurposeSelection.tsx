@@ -23,6 +23,7 @@ import { fetchUserProfile } from "@/src/redux/slices/authSlice";
 
 import { useTranslation } from "react-i18next";
 
+// this screen has multiple views - selecting purpose, entering amount to request, and requesting view
 const PurposeSelection = ({ navigation }) => {
   const { colors } = useTheme();
   const dispatch = useAppDispatch();
