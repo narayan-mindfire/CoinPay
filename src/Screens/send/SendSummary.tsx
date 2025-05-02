@@ -161,7 +161,7 @@ const createStyles = (colors: any) =>
     name: {
       fontSize: 16,
       fontWeight: "600",
-      color: colors.text,
+      color: colors.textPrimary,
     },
     email: {
       fontSize: 13,
@@ -176,7 +176,7 @@ const createStyles = (colors: any) =>
       alignSelf: "flex-start",
       fontSize: 14,
       fontWeight: "500",
-      color: colors.text,
+      color: colors.textPrimary,
       marginBottom: 12,
     },
     cardBox: {
@@ -197,11 +197,11 @@ const createStyles = (colors: any) =>
       flex: 1,
       marginLeft: 10,
       fontSize: 14,
-      color: colors.text,
+      color: colors.textPrimary,
     },
     cardNumber: {
       fontSize: 14,
-      color: colors.textSecondary || colors.text,
+      color: colors.textSecondary,
       marginRight: 12,
     },
     radioFill: {
@@ -213,7 +213,7 @@ const createStyles = (colors: any) =>
       fontSize: 12,
       textAlign: "center",
       marginTop: 30,
-      color: colors.textSecondary || colors.text,
+      color: colors.textSecondary,
     },
     contactUs: {
       color: colors.link || colors.primary,
