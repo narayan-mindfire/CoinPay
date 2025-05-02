@@ -27,6 +27,8 @@ function useInStepScreen() {
     const nestedState = current?.state;
     const nestedRoute = nestedState?.routes[nestedState.index];
     const name = nestedRoute?.name;
+    // Returning 0 if screen name is not yet defined (initial load)
+    if (!name) return 0;
     switch (name) {
       case "OnBoarding":
         return 0;
@@ -66,6 +68,7 @@ export const Progress = () => {
   const { width } = useWindowDimensions();
 
   const step = useInStepScreen();
+  console.log(step);
 
   const styles = createStyles(colors);
 
