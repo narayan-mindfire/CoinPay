@@ -55,7 +55,7 @@ function useInStepScreen() {
       case "Welcome":
         return 12;
       default:
-        return 0;
+        return -1;
     }
   });
 }
@@ -66,6 +66,7 @@ export const Progress = () => {
   const { width } = useWindowDimensions();
 
   const step = useInStepScreen();
+
   const styles = createStyles(colors);
 
   const style = useAnimatedStyle(() => {
@@ -73,6 +74,9 @@ export const Progress = () => {
       width: withTiming((step * width) / numberOfSteps, { duration: 500 }),
     };
   }, [step, width]);
+
+  // dont need back button for onboarding screen
+  if (step === 0) return null;
 
   return (
     <View style={styles.wrapper}>

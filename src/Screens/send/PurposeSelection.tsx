@@ -169,6 +169,7 @@ const PurposeSelection = ({ navigation }) => {
             setLoading(false);
             navigation.navigate("SendSummary");
           }}
+          navigation={navigation}
         />
       )}
     </View>

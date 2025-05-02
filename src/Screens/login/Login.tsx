@@ -105,6 +105,7 @@ const Login = () => {
               placeholder={t("addEmail.placeholder")}
               iconLeft={icons.envelope}
               error={emailError}
+              keyboardType="email-address"
             />
             <Text style={styles.label}>{t("login.passwordLabel")}</Text>
             <CustomTextField

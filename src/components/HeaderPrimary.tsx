@@ -12,7 +12,7 @@ export const HeaderPrimary = () => {
   const route = useRoute();
   const styles = createStyles(colors, route);
 
-  if (route.name === "BottomTab") {
+  if (route.name === "BottomTab" || route.name === "AddCard") {
     return null;
   }
 

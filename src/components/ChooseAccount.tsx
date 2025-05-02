@@ -18,7 +18,7 @@ import { getCardsFromFirebase } from "@/src/redux/slices/cardSlice";
 import { getCardType } from "@/src/utils/cardTypes";
 import { setSelectedCard } from "../redux/slices/currentTransactionSlice";
 
-const ChooseAccount = ({ user, amount, onContinue }) => {
+const ChooseAccount = ({ user, amount, onContinue, navigation }) => {
   const { colors } = useTheme();
   const { t } = useTranslation();
   const styles = createStyles(colors);
@@ -48,29 +48,41 @@ const ChooseAccount = ({ user, amount, onContinue }) => {
       <Text style={styles.label}>{t("chooseAccount.title")}</Text>
 
       <ScrollView>
-        {cards.map((card) => (
-          <TouchableOpacity
-            key={card.id}
-            style={styles.cardBox}
-            onPress={() => handleCardSelect(card.id)}
-          >
-            <Image
-              source={icons[getCardType(card.card)]}
-              style={styles.cardIcon}
+        {cards.length > 0 ? (
+          cards.map((card) => (
+            <TouchableOpacity
+              key={card.id}
+              style={styles.cardBox}
+              onPress={() => handleCardSelect(card.id)}
+            >
+              <Image
+                source={icons[getCardType(card.card)]}
+                style={styles.cardIcon}
+              />
+              <Text style={styles.cardLabel}>{t("chooseAccount.account")}</Text>
+              <Text style={styles.cardNumber}>**** {card.card.slice(-4)}</Text>
+              <View
+                style={[
+                  styles.radioCircle,
+                  selectedCardId === card.id && {
+                    borderColor: colors.primary,
+                    backgroundColor: colors.primary,
+                  },
+                ]}
+              />
+            </TouchableOpacity>
+          ))
+        ) : (
+          <View style={styles.emptyState}>
+            <Text style={styles.emptyText}>
+              {t("chooseAccount.noCards", "No cards found. Add one.")}
+            </Text>
+            <Button
+              buttonText={t("chooseAccount.addCard", "Add Card")}
+              handleButton={() => navigation.navigate("AddCard")}
             />
-            <Text style={styles.cardLabel}>{t("chooseAccount.account")}</Text>
-            <Text style={styles.cardNumber}>**** {card.card.slice(-4)}</Text>
-            <View
-              style={[
-                styles.radioCircle,
-                selectedCardId === card.id && {
-                  borderColor: colors.primary,
-                  backgroundColor: colors.primary,
-                },
-              ]}
-            />
-          </TouchableOpacity>
-        ))}
+          </View>
+        )}
       </ScrollView>
 
       {/* Pay Button */}
@@ -154,5 +166,15 @@ const createStyles = (colors) =>
       borderWidth: 2,
       borderColor: colors.border,
       backgroundColor: "transparent",
+    },
+    emptyState: {
+      alignItems: "center",
+      marginVertical: 30,
+    },
+    emptyText: {
+      fontSize: 15,
+      color: colors.textSecondary,
+      marginBottom: 12,
+      textAlign: "center",
     },
   });
