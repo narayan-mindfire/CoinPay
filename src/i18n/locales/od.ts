@@ -196,6 +196,7 @@ const od = {
     },
     sendSummary: {
       successMessage: "ଲେନଦେନ ସଫଳ! - {{date}} ରେ {{time}} ବେଳେ",
+      requestMessage: "ଅନୁରୋଧ ସଫଳତାର ସହିତ ପଠାଯାଇଛି",
       coinpayID: "କୋଇନପେ ଟ୍ରାନ୍ଜାକସନ୍ ID: 12345",
       account: "ଖାତା",
       backHome: "ମୂଳ ପୃଷ୍ଠାକୁ ଯାଆନ୍ତୁ",

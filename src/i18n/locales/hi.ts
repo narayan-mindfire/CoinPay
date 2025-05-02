@@ -197,6 +197,7 @@ no: "नहीं",
   },
     sendSummary: {
       successMessage: "लेनदेन सफल हुआ! - {{date}} को {{time}} बजे",
+      requestMessage: "अनुरोध सफलतापूर्वक भेजा गया",
       coinpayID: "कॉइनपे लेन-देन आईडी: 12345",
       account: "खाता",
       backHome: "मुखपृष्ठ पर जाएं",

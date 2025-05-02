@@ -197,6 +197,7 @@ const en = {
   },
   sendSummary: {
     successMessage: "Transaction Complete! - {{date}} at {{time}}",
+    requestMessage: "Request sent successfully",
     coinpayID: "Coinpay Transaction ID: 12345",
     account: "Account",
     backHome: "Back to Homepage",

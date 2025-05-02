@@ -156,7 +156,15 @@ const PurposeSelectionReceive = ({ navigation }) => {
           }}
           amount={amount}
           onContinue={() => {
-            navigation.navigate("SendSummary");
+            navigation.navigate("SendSummary", {
+              isRequest: true,
+              user: {
+                pic: sender.image,
+                name: sender.name,
+                email: sender.email,
+                uid: sender.uid,
+              },
+            });
           }}
         />
       )}
