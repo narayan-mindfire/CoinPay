@@ -9,6 +9,7 @@ import images from "../Assets/images";
 import { useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
+// this components shown while making a transaction
 const TransferCard = ({ user, amount, setAmount, onContinue }) => {
   const { colors } = useTheme();
   const { t } = useTranslation();

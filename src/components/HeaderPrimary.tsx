@@ -8,11 +8,11 @@ import icons from "../Assets/icons";
 
 export const HeaderPrimary = () => {
   const { colors } = useTheme();
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const route = useRoute();
-  const styles = createStyles(colors);
-  console.log(route.name);
-  if (route.name === "HomeScreen") {
+  const styles = createStyles(colors, route);
+
+  if (route.name === "BottomTab" || route.name === "AddCard") {
     return null;
   }
 
@@ -31,10 +31,11 @@ export const HeaderPrimary = () => {
   );
 };
 
-const createStyles = (colors: any) =>
+const createStyles = (colors: any, route: any) =>
   StyleSheet.create({
     wrapper: {
-      backgroundColor: colors.background,
+      backgroundColor:
+        route.name === "ScanSend" ? colors.primary : colors.background,
       height: 25,
     },
     backButton: {

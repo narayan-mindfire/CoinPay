@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, StyleSheet, FlatList } from "react-native";
 
 import images from "@/src/Assets/images";
 import CamButton from "@/src/components/CamButton";
@@ -26,6 +20,7 @@ import { db } from "@/firebaseConfig";
 
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@react-navigation/native";
+import UserSearchModal from "@/src/components/UserSearchModal";
 
 interface User {
   uid: string;
@@ -41,6 +36,7 @@ const ChooseRecepient = ({ navigation }) => {
 
   const [users, setUsers] = useState<User[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   const currentUser = useAppSelector((state) => state.auth.user);
   const { transactions, loading } = useAppSelector(
@@ -83,11 +79,7 @@ const ChooseRecepient = ({ navigation }) => {
   }, [currentUser?.uid]);
 
   const filteredResults = users.filter((item) =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const exactMatch = users.find(
-    (item) => item.email.toLowerCase() === searchQuery.toLowerCase()
+    item.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleRecipientClick = (recipient) => {
@@ -113,20 +105,11 @@ const ChooseRecepient = ({ navigation }) => {
       <SearchBar
         placeholder={t("chooseRecipient.searchPlaceholder")}
         value={searchQuery}
-        onChangeText={setSearchQuery}
+        onChangeText={(text) => {
+          setSearchQuery(text);
+          setShowModal(text.length > 0);
+        }}
       />
-
-      {exactMatch && (
-        <View style={styles.matchCard}>
-          <Text style={styles.sectionTitle}>{t("chooseRecipient.sendTo")}</Text>
-          <UserTransaction
-            name={exactMatch.name}
-            email={exactMatch.email}
-            amount=""
-            image={exactMatch.image}
-          />
-        </View>
-      )}
 
       <Text style={styles.sectionTitle}>{t("chooseRecipient.mostRecent")}</Text>
       {loading && <LoaderModal visible={loading} />}
@@ -155,6 +138,16 @@ const ChooseRecepient = ({ navigation }) => {
         icon="camera"
         text={t("chooseRecipient.scanToPay")}
       />
+
+      {/* showing the list of matching users when any search is done  */}
+      {showModal && (
+        <UserSearchModal
+          handleRecipientClick={handleRecipientClick}
+          setShowModal={setShowModal}
+          setSearchQuery={setSearchQuery}
+          filteredResults={filteredResults}
+        />
+      )}
     </View>
   );
 };

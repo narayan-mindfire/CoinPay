@@ -13,39 +13,42 @@ import TabIconButton from "../components/TabIconButton";
 
 import { useTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useTranslation } from "react-i18next";
 
 const Tab = createBottomTabNavigator();
 
-const tabItems = [
-  {
-    name: "Spending",
-    icon: "creditCardMinus",
-    color: "primary",
-    bg: "backgroundAccent",
-  },
-  {
-    name: "Income",
-    icon: "coins",
-    color: "success",
-    bg: "backgroundSuccess",
-  },
-  {
-    name: "Bills",
-    icon: "invoice",
-    color: "error",
-    bg: "backgroundError",
-  },
-  {
-    name: "Savings",
-    icon: "sack",
-    color: "warning",
-    bg: "backgroundWarning",
-  },
-];
-
+// the custom tab bar is used for navigating between spending, income, bills and savings screen in transactions
 const CustomTabBar = ({ state, navigation }: any) => {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const styles = createStyles(colors);
+
+  const tabItems = [
+    {
+      name: t("spendingScreen.title"),
+      icon: "creditCardMinus",
+      color: "primary",
+      bg: "backgroundAccent",
+    },
+    {
+      name: t("incomeScreen.title"),
+      icon: "coins",
+      color: "success",
+      bg: "backgroundSuccess",
+    },
+    {
+      name: t("billsScreen.bills"),
+      icon: "invoice",
+      color: "error",
+      bg: "backgroundError",
+    },
+    {
+      name: t("savingsScreen.savings"),
+      icon: "sack",
+      color: "warning",
+      bg: "backgroundWarning",
+    },
+  ];
 
   return (
     <View style={styles.tabBar}>
@@ -77,6 +80,7 @@ const CustomTabBar = ({ state, navigation }: any) => {
   );
 };
 
+// this is the tab bar for the screens of spending, income, bills and savings in transactions
 const StatisticsTab = () => {
   return (
     <Tab.Navigator
@@ -115,7 +119,7 @@ const createStyles = (colors: any) =>
       shadowRadius: 8,
       shadowOffset: { width: 0, height: 2 },
       elevation: 3,
-      top: "48%",
+      top: "52%",
     },
     tabWrapper: {
       alignItems: "center",

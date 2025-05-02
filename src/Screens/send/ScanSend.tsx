@@ -9,6 +9,7 @@ import {
   setSenderUID,
 } from "@/src/redux/slices/currentTransactionSlice";
 
+// this is the scanner that users will use to scan and send money to other users using their assigned qr code
 export default function ScanSend({ navigation }) {
   const { t } = useTranslation();
   const { colors } = useTheme();
@@ -40,9 +41,7 @@ export default function ScanSend({ navigation }) {
         flash="off"
         //on scanning of barcode the data (uid of recepient) we move ahead with normal procedure to create transaction
         onBarcodeScanned={({ data }) => {
-          console.log("data: ", data);
           dispatch(setSenderUID(currentUser.uid));
-          console.log("data: ", data);
           dispatch(setReceiverUID(data));
           navigation.navigate("PurposeSelection");
         }}

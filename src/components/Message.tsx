@@ -13,6 +13,7 @@ interface messageProps {
   type: "success" | "danger" | "warning" | "primary";
 }
 
+// custom component to display messages to users
 const Message = ({ message, type }: messageProps) => {
   const { colors } = useTheme();
   const styles = createStyles(colors);

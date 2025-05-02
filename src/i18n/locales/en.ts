@@ -66,15 +66,15 @@ const en = {
   },
   homeAddress: {
     title: "Home address",
-  subtitle: "This info needs to be accurate with your ID document",
-  addressLabel: "Address Line",
-  addressPlaceholder: "Mr. John Doe",
-  cityLabel: "City",
-  cityPlaceholder: "City, State",
-  postCodeLabel: "Postcode",
-  postCodePlaceholder: "Ex: 00000",
-  continue: "Continue",
-  },
+    subtitle: "This info needs to be accurate with your ID document",
+    addressLabel: "Address Line",
+    addressPlaceholder: "Mr. John Doe",
+    cityLabel: "City",
+    cityPlaceholder: "City, State",
+    postCodeLabel: "Postcode",
+    postCodePlaceholder: "Ex: 00000",
+    continue: "Continue",
+    },
   personalInfo: {
     title: "Add your personal info",
     subtitle: "this info needs to be accurate with your ID document",
@@ -168,7 +168,7 @@ const en = {
     subtitle: "All the cards you have in the account",
     successMessage: "Your card was successfully added",
     button: "Continue",
-    addAnother: "add another card",
+    addAnother: "Add another card",
     deleteTitle: "Delete Card?",
     deleteConfirm: "Are you sure you want to delete this card?"
   },
@@ -197,6 +197,7 @@ const en = {
   },
   sendSummary: {
     successMessage: "Transaction Complete! - {{date}} at {{time}}",
+    requestMessage: "Request sent successfully",
     coinpayID: "Coinpay Transaction ID: 12345",
     account: "Account",
     backHome: "Back to Homepage",
@@ -226,6 +227,7 @@ const en = {
     holdToScan: "Hold the code inside the frame, it will be scanned automatically",
     requestForPayment: "Request for Payment",
     shareToReceiveMoney: "Share to Receive Money",
+    share: "Send money to me using Coinpay"
   },
   support: {
     title: "Coinpay Support",
@@ -234,7 +236,7 @@ const en = {
     viewFAQ: "View FAQ",
   },
   home: {
-    currency: "US Dollar",
+    currency: "IND Rupees",
     addMoney: "Add Money",
     send: "Send",
     request: "Request",
@@ -257,6 +259,7 @@ const en = {
       namePlaceholder: "Your Name",
       emailPlaceholder: "your@email.com",
       phonePlaceholder: "+91xxxxxxxxxx",
+      language: "Language",
     },
       chooseAccount: {
         title: "Choose Account",
@@ -269,6 +272,36 @@ const en = {
         subtitle: "Please enter an amount to get paid",
         buttonText: "Request ${{amount}}",
       },
+      incomeScreen: {
+        title: "Income",
+        totalIncome: "total income",
+        availableBalance: "available balance",
+        incomeList: "Income list",
+        pay: "Pay",
+        account: "Account",
+        month: "Month",
+        chooseMonth: "Choose Month",
+      },
+      spendingScreen: {
+        title: "Spending",
+        totalSpend: "total spend",
+        availableBalance: "available balance",
+        spendingList: "Spending list",
+        noRecentTransactions: "No recent transactions",
+      },
+      billsScreen: {
+        bills: "Bills",
+        totalBills: "total bills",
+        availableBalance: "available balance",
+        billsList: "Bills list",
+      },
+      savingsScreen: {
+        savings: "savings",
+        totalSavings: "total savings",
+        availableBalance: "available balance",
+        savingsList: "savings list",
+      },
+      
   
 };
 

@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, StyleSheet, Animated, Easing } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Animated,
+  Easing,
+  Alert,
+} from "react-native";
 
 import icons from "@/src/Assets/icons";
 import images from "@/src/Assets/images";
@@ -108,6 +116,7 @@ const FinishSetup = ({ navigation }: FinishSetupScreenProps) => {
       const userData = {
         DOB: userForm.DOB,
         addressLine: userForm.addressLine,
+        accBalance: userForm.accBalance,
         city: userForm.city,
         country: userForm.country,
         email: userForm.email,
@@ -132,15 +141,16 @@ const FinishSetup = ({ navigation }: FinishSetupScreenProps) => {
             uid,
             email: userForm.email,
           });
-          console.log("User data saved successfully in Firestore with UID");
           navigation.push("Welcome");
         } else {
-          console.error("Error registering user: ", result.payload);
+          Alert.alert("Error registering user: ", result.payload);
+          navigation.push("OnBoarding");
         }
       } catch (error) {
-        console.error("Error creating user / saving user data:", error);
+        Alert.alert("Error creating user / saving user data:", error);
+        navigation.push("OnBoarding");
       }
-      navigation.push("Welcome");
+      // navigation.push("Welcome");
     }, 7000);
 
     return () => clearTimeout(timer);

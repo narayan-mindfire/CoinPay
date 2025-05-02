@@ -17,10 +17,11 @@ import SetupPin from "../Screens/pinSetup/SetupPin";
 import Welcome from "../Screens/welcome/Welcome";
 import Login from "../Screens/login/Login";
 import { Progress } from "../components/Progress";
-import OnboardingScreen from "../Screens/OnBoarding/OnBoarding";
+import OnboardingScreen from "../Screens/OnBoarding/onBoarding";
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
 
+//auth stack lists all screens of the authentication flow
 const AuthStack: React.FC = () => {
   return (
     <>

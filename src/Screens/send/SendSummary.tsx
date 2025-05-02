@@ -13,13 +13,21 @@ import { useTranslation } from "react-i18next";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { clearCurrentTransaction } from "@/src/redux/slices/currentTransactionSlice";
+import { getCardType } from "@/src/utils/cardTypes";
 
-const SendSummary = ({ navigation }) => {
+// shows the summary of the current transaction
+
+const SendSummary = ({ navigation, route }: any) => {
   const { colors } = useTheme();
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
+  const isRequest = route?.params?.isRequest || false;
+  const requestUser = route?.params?.user || null;
+
   const transaction = useAppSelector((state) => state.currentTransaction);
+  const selectedCard = transaction.selectedCard;
+  console.log("selected card: ", selectedCard);
   const [receiver, setReceiver] = useState(null);
 
   const transactionDateTime = new Date();
@@ -57,31 +65,47 @@ const SendSummary = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Message
-        message={t("sendSummary.successMessage", {
-          date: formattedDate,
-          time: formattedTime,
-        })}
+        message={
+          isRequest
+            ? t("sendSummary.requestMessage")
+            : t("sendSummary.successMessage", {
+                date: formattedDate,
+                time: formattedTime,
+              })
+        }
         type="success"
       />
 
-      {receiver && (
+      {/* showing the receiver's details for send screen else the one whom it is requested */}
+      {(receiver || requestUser) && (
         <View style={styles.profileBox}>
           <Image source={images.profile} style={styles.avatar} />
-          <Text style={styles.name}>{receiver.name}</Text>
-          <Text style={styles.email}>{receiver.email}</Text>
+          <Text style={styles.name}>
+            {isRequest ? requestUser?.name : receiver?.name}
+          </Text>
+          <Text style={styles.email}>
+            {isRequest ? requestUser?.email : receiver?.email}
+          </Text>
           <Text style={styles.linkText}>{t("sendSummary.coinpayID")}</Text>
         </View>
       )}
 
-      <Text style={styles.label}>{t("sendSummary.account")}</Text>
-      <View style={styles.cardBox}>
-        <Image source={icons["mastercard"]} style={styles.cardIcon} />
-        <Text style={styles.cardLabel}>{t("sendSummary.account")}</Text>
-        <Text style={styles.cardNumber}>************3994</Text>
-        <View style={[styles.radioFill, { backgroundColor: colors.primary }]} />
-      </View>
+      {!isRequest && (
+        <Text style={styles.label}>{t("sendSummary.account")}</Text>
+      )}
+      {!isRequest && selectedCard && (
+        <View style={styles.cardBox}>
+          <Image
+            source={icons[getCardType(selectedCard.card)]}
+            style={styles.cardIcon}
+          />
+          <Text style={styles.cardLabel}>{t("sendSummary.account")}</Text>
+          <Text style={styles.cardNumber}>
+            **** {selectedCard.card.slice(-4)}
+          </Text>
+        </View>
+      )}
 
-      {/* transaction completion leads to clearnig of local transaction data  */}
       <Button
         buttonText={t("sendSummary.backHome")}
         handleButton={() => {
@@ -90,14 +114,17 @@ const SendSummary = ({ navigation }) => {
         }}
         outlined={false}
       />
-      <Button
-        buttonText={t("sendSummary.anotherPayment")}
-        handleButton={() => {
-          navigation.navigate("ChooseRecepient");
-          dispatch(clearCurrentTransaction());
-        }}
-        outlined={true}
-      />
+
+      {!isRequest && (
+        <Button
+          buttonText={t("sendSummary.anotherPayment")}
+          handleButton={() => {
+            navigation.navigate("ChooseRecepient");
+            dispatch(clearCurrentTransaction());
+          }}
+          outlined={true}
+        />
+      )}
 
       <Text style={styles.footerText}>
         {t("sendSummary.thankYou")}
@@ -134,7 +161,7 @@ const createStyles = (colors: any) =>
     name: {
       fontSize: 16,
       fontWeight: "600",
-      color: colors.text,
+      color: colors.textPrimary,
     },
     email: {
       fontSize: 13,
@@ -149,7 +176,7 @@ const createStyles = (colors: any) =>
       alignSelf: "flex-start",
       fontSize: 14,
       fontWeight: "500",
-      color: colors.text,
+      color: colors.textPrimary,
       marginBottom: 12,
     },
     cardBox: {
@@ -170,11 +197,11 @@ const createStyles = (colors: any) =>
       flex: 1,
       marginLeft: 10,
       fontSize: 14,
-      color: colors.text,
+      color: colors.textPrimary,
     },
     cardNumber: {
       fontSize: 14,
-      color: colors.textSecondary || colors.text,
+      color: colors.textSecondary,
       marginRight: 12,
     },
     radioFill: {
@@ -186,7 +213,7 @@ const createStyles = (colors: any) =>
       fontSize: 12,
       textAlign: "center",
       marginTop: 30,
-      color: colors.textSecondary || colors.text,
+      color: colors.textSecondary,
     },
     contactUs: {
       color: colors.link || colors.primary,

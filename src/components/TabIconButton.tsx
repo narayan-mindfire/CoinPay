@@ -12,6 +12,7 @@ type Props = {
   colors: any;
 };
 
+// custom component for tab bar icons
 const TabIconButton = ({
   name,
   icon,

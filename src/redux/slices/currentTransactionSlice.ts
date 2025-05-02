@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface CurrentTransactionState {
   senderUID: string;
   receiverUID: string;
+  selectedCard: any,
   purpose: string;
   amount: number;
 }
@@ -10,6 +11,7 @@ interface CurrentTransactionState {
 const initialState: CurrentTransactionState = {
   senderUID: "",
   receiverUID: "",
+  selectedCard: null,
   purpose: "Personal",
   amount: 0
 };
@@ -27,6 +29,9 @@ const currentTransactionSlice = createSlice({
         state.receiverUID = action.payload;
         console.log("added receiver uid and this is state ",state)
     },
+    setSelectedCard: (state, action) => {
+      state.selectedCard = action.payload;
+    },
     setPurpose(state, action: PayloadAction<string>) {
       state.purpose = action.payload;
       console.log("added purpose and this is state ",state)
@@ -38,6 +43,7 @@ const currentTransactionSlice = createSlice({
     clearCurrentTransaction(state) {
       state.senderUID = "";
       state.receiverUID = "";
+      state.selectedCard = null;
       state.purpose = undefined;
       state.amount = undefined;
     },
@@ -50,6 +56,7 @@ export const {
   setPurpose,
   setAmount,
   clearCurrentTransaction,
+  setSelectedCard,
 } = currentTransactionSlice.actions;
 
 export default currentTransactionSlice.reducer;

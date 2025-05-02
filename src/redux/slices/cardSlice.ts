@@ -134,6 +134,9 @@ const cardSlice = createSlice({
       state.success = false;
       state.error = null;
     },
+    clearCards: (state) => {
+      state.cards = [];
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -172,5 +175,5 @@ const cardSlice = createSlice({
   },
 });
 
-export const { resetCardState } = cardSlice.actions;
+export const { resetCardState, clearCards } = cardSlice.actions;
 export default cardSlice.reducer;

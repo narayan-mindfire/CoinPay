@@ -8,20 +8,18 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import {
-  useTheme,
-  useNavigation,
-  useNavigationState,
-} from "@react-navigation/native";
+import { useTheme, useNavigationState } from "@react-navigation/native";
 import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
 
 import icons from "../Assets/icons";
+import { goBack } from "../navigation/navigationRef";
 
 const numberOfSteps = 12;
 
+// checking for current screen then mapping it to a number representing progress
 function useInStepScreen() {
   return useNavigationState((state) => {
     const current = state?.routes[state.index];
@@ -29,6 +27,8 @@ function useInStepScreen() {
     const nestedState = current?.state;
     const nestedRoute = nestedState?.routes[nestedState.index];
     const name = nestedRoute?.name;
+    // Returning 0 if screen name is not yet defined (initial load)
+    if (!name) return 0;
     switch (name) {
       case "OnBoarding":
         return 0;
@@ -57,17 +57,19 @@ function useInStepScreen() {
       case "Welcome":
         return 12;
       default:
-        return 0;
+        return -1;
     }
   });
 }
 
+// this is the header component for authentication
 export const Progress = () => {
   const { colors } = useTheme();
   const { width } = useWindowDimensions();
-  const navigation = useNavigation();
 
   const step = useInStepScreen();
+  console.log(step);
+
   const styles = createStyles(colors);
 
   const style = useAnimatedStyle(() => {
@@ -76,12 +78,12 @@ export const Progress = () => {
     };
   }, [step, width]);
 
+  // dont need back button for onboarding screen
+  if (step === 0) return null;
+
   return (
     <View style={styles.wrapper}>
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        style={styles.backButton}
-      >
+      <TouchableOpacity onPress={() => goBack()} style={styles.backButton}>
         <Image
           source={icons.angleLeft}
           style={{ tintColor: colors.textPrimary }}

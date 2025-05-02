@@ -15,7 +15,7 @@
       "googleServicesFile": "./google-services.json",
       "package": "com.mindfire.CoinPay",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       }
     },
@@ -40,10 +40,10 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-screen.png",
-          "imageWidth": "100%",
-          "resizeMode": "cover",
-          "backgroundColor": "#ffffff"
+          "image": "./assets/images/splashScreen.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#0000FF",
+          "imageWidth": 800
         }
       ]
     ],

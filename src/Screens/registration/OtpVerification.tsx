@@ -20,6 +20,7 @@ interface PhoneVerificationProps extends RegistrationScreenProps {
   countryCode?: string;
 }
 
+// screen to verifying otp
 const PhoneVerification = ({ navigation, route }: PhoneVerificationProps) => {
   const { colors } = useTheme();
   const { t } = useTranslation();

@@ -1,15 +1,39 @@
-import React from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { useTheme } from "@react-navigation/native";
 import Button from "@/src/components/Button";
 import images from "../Assets/images";
 import icons from "../Assets/icons";
 import { useTranslation } from "react-i18next";
 
-const ChooseAccount = ({ user, amount, onContinue }) => {
+import { useAppDispatch, useAppSelector } from "@/src/redux/store";
+import { getCardsFromFirebase } from "@/src/redux/slices/cardSlice";
+import { getCardType } from "@/src/utils/cardTypes";
+import { setSelectedCard } from "../redux/slices/currentTransactionSlice";
+
+const ChooseAccount = ({ user, amount, onContinue, navigation }) => {
   const { colors } = useTheme();
   const { t } = useTranslation();
   const styles = createStyles(colors);
+
+  const dispatch = useAppDispatch();
+  const { cards } = useAppSelector((state) => state.card);
+  const [selectedCardId, setSelectedCardId] = useState(null);
+
+  useEffect(() => {
+    dispatch(getCardsFromFirebase());
+  }, [dispatch]);
+
+  const handleCardSelect = (id) => {
+    setSelectedCardId(id);
+  };
 
   return (
     <View style={styles.container}>
@@ -22,18 +46,54 @@ const ChooseAccount = ({ user, amount, onContinue }) => {
 
       {/* Account Selection */}
       <Text style={styles.label}>{t("chooseAccount.title")}</Text>
-      <TouchableOpacity style={styles.cardBox}>
-        <Image source={icons["mastercard"]} style={styles.cardIcon} />
-        <Text style={styles.cardLabel}>{t("chooseAccount.account")}</Text>
-        <Text style={styles.cardNumber}>************3994</Text>
-        <View style={styles.radioCircle} />
-      </TouchableOpacity>
+
+      <ScrollView>
+        {cards.length > 0 ? (
+          cards.map((card) => (
+            <TouchableOpacity
+              key={card.id}
+              style={styles.cardBox}
+              onPress={() => handleCardSelect(card.id)}
+            >
+              <Image
+                source={icons[getCardType(card.card)]}
+                style={styles.cardIcon}
+              />
+              <Text style={styles.cardLabel}>{t("chooseAccount.account")}</Text>
+              <Text style={styles.cardNumber}>**** {card.card.slice(-4)}</Text>
+              <View
+                style={[
+                  styles.radioCircle,
+                  selectedCardId === card.id && {
+                    borderColor: colors.primary,
+                    backgroundColor: colors.primary,
+                  },
+                ]}
+              />
+            </TouchableOpacity>
+          ))
+        ) : (
+          <View style={styles.emptyState}>
+            <Text style={styles.emptyText}>
+              {t("chooseAccount.noCards", "No cards found. Add one.")}
+            </Text>
+            <Button
+              buttonText={t("chooseAccount.addCard", "Add Card")}
+              handleButton={() => navigation.navigate("AddCard")}
+            />
+          </View>
+        )}
+      </ScrollView>
 
       {/* Pay Button */}
       <Button
-        buttonText={`${t("chooseAccount.pay")} $${amount}`}
-        handleButton={onContinue}
-        // customStyle={styles.payBtn}
+        buttonText={`${t("chooseAccount.pay")} ₹${amount}`}
+        handleButton={() => {
+          const selectedCard = cards.find((c) => c.id === selectedCardId);
+          dispatch(setSelectedCard(selectedCard));
+          onContinue(selectedCardId);
+        }}
+        disabled={!selectedCardId}
       />
     </View>
   );
@@ -44,7 +104,6 @@ export default ChooseAccount;
 const createStyles = (colors) =>
   StyleSheet.create({
     container: {
-      padding: 20,
       backgroundColor: colors.background,
       borderRadius: 12,
     },
@@ -83,7 +142,7 @@ const createStyles = (colors) =>
       padding: 16,
       borderRadius: 14,
       justifyContent: "space-between",
-      marginBottom: 24,
+      marginBottom: 14,
     },
     cardIcon: {
       width: 28,
@@ -105,10 +164,17 @@ const createStyles = (colors) =>
       height: 20,
       borderRadius: 10,
       borderWidth: 2,
-      borderColor: "#ccc",
+      borderColor: colors.border,
+      backgroundColor: "transparent",
     },
-    payBtn: {
-      backgroundColor: "#3A00FF",
-      borderRadius: 50,
+    emptyState: {
+      alignItems: "center",
+      marginVertical: 30,
+    },
+    emptyText: {
+      fontSize: 15,
+      color: colors.textSecondary,
+      marginBottom: 12,
+      textAlign: "center",
     },
   });

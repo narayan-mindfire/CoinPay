@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useTheme } from "@react-navigation/native";
 
+// this component displays transactions
 const UserTransaction = ({
   name,
   email,

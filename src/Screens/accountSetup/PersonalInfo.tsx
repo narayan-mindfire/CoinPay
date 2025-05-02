@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import {
   View,
   Text,
@@ -10,6 +11,7 @@ import {
 } from "react-native";
 
 import Button from "@/src/components/Button";
+import CustomTextField from "@/src/components/CustomTextField";
 import icons from "@/src/Assets/icons";
 
 import { updateUserForm } from "@/src/redux/slices/userFormSlice";
@@ -23,7 +25,6 @@ import {
 import { useTheme } from "@react-navigation/native";
 import { Calendar } from "react-native-calendars";
 import { useTranslation } from "react-i18next";
-import CustomTextField from "@/src/components/CustomTextField";
 
 const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
   const { t } = useTranslation();
@@ -36,6 +37,18 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
+  // function handles adding user data to redux store
+  const addData = () => {
+    dispatch(
+      updateUserForm({
+        name: fullName,
+        username: userName,
+        DOB: dob,
+      })
+    );
+  };
+
+  // formatting date received from calendar
   const formatDate = (dateString: string) => {
     const [year, month, day] = dateString.split("-");
     return `${month}/${day}/${year}`;
@@ -66,16 +79,6 @@ const PersonalInfo = ({ navigation }: HomeAddressScreenProps) => {
       keyboardDidHideListener.remove();
     };
   }, []);
-
-  const addData = () => {
-    dispatch(
-      updateUserForm({
-        name: fullName,
-        username: userName,
-        DOB: dob,
-      })
-    );
-  };
 
   return (
     <View style={styles.container}>

@@ -3,20 +3,22 @@ import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 
 import Button from "@/src/components/Button";
-import { WelcomeScreenProps } from "@/src/navigation/NavigationTypes";
-import { useTheme } from "@react-navigation/native";
-import { useTranslation } from "react-i18next";
 import images from "@/src/Assets/images";
 import icons from "@/src/Assets/icons";
+import ScreenHeader from "@/src/components/ScreenHeader";
 
-// SupportScreen for application support
-const SupportScreen = ({ navigation }: WelcomeScreenProps) => {
+import { useTranslation } from "react-i18next";
+import { useTheme } from "@react-navigation/native";
+
+// SupportScreen for application support - currently static
+const SupportScreen = () => {
   const { colors, dark } = useTheme();
   const { t } = useTranslation();
 
   const styles = createStyles(colors);
   return (
     <View style={styles.container}>
+      <ScreenHeader title="Support" />
       <Image
         source={dark ? images.supportDark : images.support}
         style={styles.image}
@@ -42,7 +44,6 @@ const SupportScreen = ({ navigation }: WelcomeScreenProps) => {
 export default SupportScreen;
 
 // handled styles to dynamically take color values from theme to remove the need to write inline style
-
 const createStyles = (colors: any) =>
   StyleSheet.create({
     container: {

@@ -8,9 +8,11 @@ import images from "@/src/Assets/images";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@react-navigation/native";
 
+// request user components to request amount from users
 const RequestUser = ({ user, amount, onContinue }) => {
   const { colors } = useTheme();
   const { t } = useTranslation();
+
   const styles = createStyles(colors);
 
   return (

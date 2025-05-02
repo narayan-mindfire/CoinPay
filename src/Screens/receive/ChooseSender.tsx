@@ -20,18 +20,22 @@ import {
   setReceiverUID,
   setSenderUID,
 } from "@/src/redux/slices/currentTransactionSlice";
+import UserSearchModal from "@/src/components/UserSearchModal";
 
+// to choose the sender to receive money from
 const ChooseSender = ({ navigation }) => {
   const { colors } = useTheme();
-  const styles = createStyles(colors);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+
+  const styles = createStyles(colors);
 
   const { transactions, loading } = useAppSelector(
     (state) => state.transaction
   );
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   interface User {
     uid: string;
@@ -42,8 +46,8 @@ const ChooseSender = ({ navigation }) => {
 
   const [users, setUsers] = useState<User[]>([]);
 
-  const exactMatch = users.find(
-    (user) => user.email.toLowerCase() === searchQuery.toLowerCase()
+  const filteredResults = users.filter((item) =>
+    item.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const currentUser = useAppSelector((state) => state.auth.user);
@@ -100,19 +104,11 @@ const ChooseSender = ({ navigation }) => {
       <SearchBar
         placeholder={t("chooseSender.searchPlaceholder")}
         value={searchQuery}
-        onChangeText={setSearchQuery}
+        onChangeText={(text) => {
+          setSearchQuery(text);
+          setShowModal(text.length > 0);
+        }}
       />
-
-      {exactMatch && (
-        <View style={styles.matchCard}>
-          <Text style={styles.sectionTitle}>{t("chooseSender.sendTo")}</Text>
-          <UserTransaction
-            name={exactMatch.name}
-            email={exactMatch.email}
-            image={exactMatch.image}
-          />
-        </View>
-      )}
 
       <Text style={styles.sectionTitle}>{t("chooseSender.mostRecent")}</Text>
 
@@ -140,6 +136,16 @@ const ChooseSender = ({ navigation }) => {
         icon="camera"
         text={t("chooseSender.scanToPay")}
       />
+
+      {/* showing the list of matching users when any search is done  */}
+      {showModal && (
+        <UserSearchModal
+          handleRecipientClick={handleSenderClick}
+          setShowModal={setShowModal}
+          setSearchQuery={setSearchQuery}
+          filteredResults={filteredResults}
+        />
+      )}
     </View>
   );
 };

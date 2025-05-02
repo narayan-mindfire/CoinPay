@@ -14,7 +14,6 @@ interface MoneyBoxProps {
 }
 
 const MoneyBox = ({ color, title, icon, amount, bgColor }: MoneyBoxProps) => {
-  
   const { colors } = useTheme();
   const styles = createStyles(colors[bgColor], color);
 
@@ -24,7 +23,7 @@ const MoneyBox = ({ color, title, icon, amount, bgColor }: MoneyBoxProps) => {
         <Image source={icons[icon]} style={styles.icon} resizeMode="contain" />
         <Text style={styles.title}>{title}</Text>
       </View>
-      <Text style={styles.amount}>${amount}.00</Text>
+      <Text style={styles.amount}>₹{amount}.00</Text>
     </View>
   );
 };

@@ -25,6 +25,8 @@ const images = {
     profile: require("./profile.png"),
     support: require("./support.png"),
     supportDark: require("./supportDark.png"),
+    registration: require("./registration.png"),
+    registrationDark: require("./registrationDark.png")
   };
   
   export default images;

@@ -5,6 +5,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useTheme } from "@react-navigation/native";
 import ProfileIcon from "@/src/components/ProfileIcon";
 
+// component showing the purposes to select from before making a transaction
 const PurposeOption = ({ item, isSelected, onSelect }) => {
   const { colors } = useTheme();
   const styles = createStyles(colors);

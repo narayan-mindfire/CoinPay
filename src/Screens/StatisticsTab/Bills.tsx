@@ -1,6 +1,13 @@
 import React from "react";
 
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import MoneyBox from "@/src/components/MoneyBox";
 import BarChart from "@/src/components/BarChart";
@@ -9,6 +16,9 @@ import icons from "@/src/Assets/icons";
 
 import { useTheme } from "@react-navigation/native";
 import { useAppSelector } from "@/src/redux/store";
+import { getCurrentMonth } from "@/src/utils/getCurrentMonth";
+import ScreenHeader from "@/src/components/ScreenHeader";
+import { useTranslation } from "react-i18next";
 
 const spendingData = [
   {
@@ -37,27 +47,35 @@ const spendingData = [
   },
 ];
 
+// shows user's bills -> currently static
 const Bills = () => {
   const { colors } = useTheme();
   const styles = createStyles(colors);
   const accBalance = useAppSelector((state) => state.auth.user.accBalance);
+  const { t } = useTranslation();
 
   return (
     <View style={styles.container}>
+      <ScreenHeader title={t("billsScreen.bills")} />
       <View style={styles.title}>
-        <Text style={styles.titleLabel}>Bills</Text>
+        <View style={{ flex: 1, alignItems: "flex-start" }}>
+          <TouchableOpacity style={styles.monthPicker}>
+            <Text style={styles.selectedMonthText}>{getCurrentMonth()}</Text>
+            <Image source={icons.angleDown} style={styles.dropdownIcon} />
+          </TouchableOpacity>
+        </View>
       </View>
       <View style={styles.data}>
         <MoneyBox
           color={"white"}
-          title={"total bills"}
+          title={t("billsScreen.totalBills")}
           icon={"creditCardMinus"}
           amount={"500"}
           bgColor={"error"}
         />
         <MoneyBox
           color={"black"}
-          title={"available balance"}
+          title={t("billsScreen.availableBalance")}
           icon={"sendMoney"}
           amount={accBalance.toString()}
           bgColor={"secondary"}
@@ -65,7 +83,7 @@ const Bills = () => {
       </View>
       <BarChart data={[220, 120, 300, 400, 210]} screen="bills" />
       <View style={styles.heading}>
-        <Text style={styles.listTitle}>Bills list</Text>
+        <Text style={styles.listTitle}>{t("billsScreen.billsList")} </Text>
         <Image source={icons.filter} style={styles.filterIcon} />
       </View>
       <ScrollView style={styles.dataListContainer}>
@@ -99,14 +117,39 @@ const createStyles = (colors: any) =>
       justifyContent: "space-between",
     },
     title: {
-      justifyContent: "center",
+      flexDirection: "row",
       alignItems: "center",
-      marginBottom: 40,
+      marginBottom: 20,
+      paddingTop: 5,
+      paddingLeft: 15,
+      paddingRight: 15,
+      justifyContent: "space-between",
     },
     titleLabel: {
       fontSize: 28,
-      fontWeight: 500,
+      fontWeight: "500",
       color: colors.textPrimary,
+      textAlign: "center",
+    },
+    monthPicker: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-evenly",
+      backgroundColor: colors.backgroundModal,
+      width: 120,
+      padding: 10,
+      borderRadius: 15,
+    },
+    dropdownIcon: {
+      width: 20,
+      height: 20,
+      tintColor: colors.textPrimary,
+    },
+    selectedMonthText: {
+      fontSize: 20,
+      fontWeight: "500",
+      color: colors.textPrimary,
+      marginRight: 5,
     },
     text: {
       color: colors.text,

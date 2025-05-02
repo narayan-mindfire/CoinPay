@@ -1,6 +1,6 @@
 import React from "react";
 
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Share } from "react-native";
 
 import QRCode from "react-native-qrcode-svg";
 import Button from "@/src/components/Button";
@@ -9,6 +9,8 @@ import icons from "@/src/Assets/icons";
 import { useAppSelector } from "@/src/redux/store";
 import { useTheme } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
+
+// shows the user's qr code others can scan it to send money
 
 const ReceiveQR = ({ navigation }) => {
   const { colors, dark } = useTheme();
@@ -19,10 +21,11 @@ const ReceiveQR = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.qrBox}>
+        {/* qr code shows user's uid  */}
         <QRCode
           value={user.uid}
           size={200}
-          color={!dark ? colors.primary : "#fff"}
+          color={!dark ? colors.primary : colors.white}
           backgroundColor="transparent"
           logoSize={40}
         />
@@ -39,8 +42,16 @@ const ReceiveQR = ({ navigation }) => {
           buttonText={t("receiveQR.shareToReceiveMoney")}
           icon={icons.share}
           outlined
-          handleButton={() => console.log("Share to Receive Money")}
           buttonStyles={{ marginTop: 10 }}
+          handleButton={async () => {
+            try {
+              await Share.share({
+                message: t("receiveQR.share"),
+              });
+            } catch {
+              console.log("failed to share");
+            }
+          }}
         />
       </View>
     </View>

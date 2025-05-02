@@ -4,6 +4,7 @@ import { View, Text, Image, StyleSheet } from "react-native";
 import icons from "../Assets/icons";
 
 import { useTheme } from "@react-navigation/native";
+import images from "../Assets/images";
 
 type SpendingItemProps = {
   logo: string;
@@ -14,6 +15,7 @@ type SpendingItemProps = {
   giveTint: boolean;
 };
 
+// this component is to displayed in spending, savings, income and bills screens
 const TransactionItem = ({
   logo,
   name,
@@ -28,7 +30,7 @@ const TransactionItem = ({
   return (
     <View style={styles.itemContainer}>
       <View style={styles.leftSection}>
-        <Image source={icons[logo]} style={styles.logo} />
+        <Image source={icons[logo] || images[logo]} style={styles.logo} />
         <View>
           <Text style={styles.name}>{name}</Text>
           <Text style={styles.time}>{time}</Text>
@@ -64,7 +66,6 @@ const createStyles = (colors: any, direction: boolean, giveTint: boolean) =>
     logo: {
       width: 40,
       height: 40,
-      borderRadius: 20,
       tintColor: giveTint ? colors.textPrimary : null,
     },
     name: {

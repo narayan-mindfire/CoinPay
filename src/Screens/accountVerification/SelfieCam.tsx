@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "@react-navigation/native";
 import CamClickButton from "@/src/components/CamClickButton";
 
+// document scanning before page
 export default function ScanDoc({ navigation }) {
   const { t } = useTranslation();
   const { colors } = useTheme();
@@ -28,6 +29,7 @@ export default function ScanDoc({ navigation }) {
     return <View />;
   }
 
+  // asking for permission if not granted
   if (!permission.granted) {
     return (
       <View style={styles.permissionContainer}>

@@ -1,43 +1,41 @@
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { EventArg, useTheme } from "@react-navigation/native";
-import { Image, ImageSourcePropType, View, Pressable } from "react-native";
+
+import {
+  Image,
+  ImageSourcePropType,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
+
 import HomeScreen from "../Screens/BottomTab/HomeScreen";
-import ScanScreen from "../Screens/BottomTab/ScanScreen";
 import ProfileScreen from "../Screens/BottomTab/ProfileScreen";
 import SupportScreen from "../Screens/BottomTab/SupportScreen";
 import icons from "../Assets/icons";
 import StatisticsTab from "./StatisticsTab";
-import PrimaryStack from "./PrimaryStack";
 
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { EventArg, useTheme } from "@react-navigation/native";
+
+// bottom tab navigator for app home
 const Tab = createBottomTabNavigator();
 
 export default function BottomTab() {
-  const { colors, dark } = useTheme();
+  const { colors } = useTheme();
+  const styles = createStyles(colors);
+
   return (
     <Tab.Navigator
       id={undefined}
       initialRouteName="Home"
       screenOptions={({ route }) => ({
         tabBarButton: (props) => (
-          <Pressable {...props} android_ripple={{ color: "transparent" }} />
+          <TouchableOpacity {...props} activeOpacity={1} />
         ),
         headerShown: false,
         tabBarShowLabel: false,
         animation: "shift",
-        headerpressopacity: "0",
-        tabBarStyle: {
-          backgroundColor: colors.backgroundModal,
-          height: 70,
-          width: "90%",
-          marginBottom: 20,
-          borderTopWidth: 0,
-          position: "absolute",
-          borderRadius: 10,
-          marginLeft: "5%",
-          marginRight: "5%",
-          paddingTop: 16,
-        },
+        tabBarStyle: styles.tabBarStyle,
         tabBarIcon: ({ focused }) => {
           let iconSource: ImageSourcePropType;
           switch (route.name) {
@@ -58,43 +56,31 @@ export default function BottomTab() {
               break;
           }
 
+          const isScan = route.name === "Scan";
+
           return (
             <View
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                height: 50,
-                width: 50,
-                backgroundColor:
-                  route.name === "Scan" ? colors.primary : "transparent",
-                padding: route.name === "Scan" ? 30 : 15,
-                paddingTop: route.name === "Scan" ? 40 : 20,
-                paddingHorizontal: route.name === "Scan" ? 40 : 30,
-                borderRadius: 15,
-              }}
+              style={[styles.iconContainer, isScan && styles.scanIconContainer]}
             >
               <Image
                 source={iconSource}
                 resizeMode="contain"
-                style={{
-                  width: 26,
-                  height: 26,
-                  tintColor:
-                    route.name === "Scan"
-                      ? "#fff"
+                style={[
+                  styles.iconImage,
+                  {
+                    tintColor: isScan
+                      ? colors.white
                       : focused
                       ? colors.primary
                       : colors.textPrimary,
-                }}
+                  },
+                ]}
               />
               <View
-                style={{
-                  height: 8,
-                  width: 8,
-                  backgroundColor: focused ? colors.primary : "transparent",
-                  borderRadius: 4,
-                  marginTop: 4,
-                }}
+                style={[
+                  styles.iconIndicator,
+                  { backgroundColor: focused ? colors.primary : "transparent" },
+                ]}
               />
             </View>
           );
@@ -103,11 +89,9 @@ export default function BottomTab() {
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="StatisticsTab" component={StatisticsTab} />
-
       <Tab.Screen
         name="Scan"
-        component={View} //placeholder component
-        //will be navigated to QR code scanner
+        component={View}
         listeners={({ navigation }) => ({
           tabPress: (e: EventArg<"tabPress", true, undefined>) => {
             e.preventDefault();
@@ -120,4 +104,47 @@ export default function BottomTab() {
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
+}
+
+function createStyles(colors: any) {
+  return StyleSheet.create({
+    tabBarStyle: {
+      backgroundColor: colors.backgroundModal,
+      height: 70,
+      width: "90%",
+      marginBottom: 20,
+      borderTopWidth: 0,
+      position: "absolute",
+      borderRadius: 10,
+      marginLeft: "5%",
+      marginRight: "5%",
+      paddingTop: 16,
+    },
+    iconContainer: {
+      alignItems: "center",
+      justifyContent: "center",
+      height: 50,
+      width: 50,
+      padding: 15,
+      paddingTop: 20,
+      paddingHorizontal: 30,
+      borderRadius: 15,
+    },
+    scanIconContainer: {
+      backgroundColor: colors.primary,
+      padding: 30,
+      paddingTop: 40,
+      paddingHorizontal: 40,
+    },
+    iconImage: {
+      width: 26,
+      height: 26,
+    },
+    iconIndicator: {
+      height: 8,
+      width: 8,
+      borderRadius: 4,
+      marginTop: 4,
+    },
+  });
 }

@@ -9,6 +9,7 @@ interface BarChartProps {
   screen: "spending" | "income" | "bills" | "savings";
 }
 
+// mapping colors of the bar cart according to different screens
 const screenColorMap = (
   screen: "spending" | "income" | "bills" | "savings"
 ) => {
@@ -28,12 +29,16 @@ const screenColorMap = (
 
 const BarChart: React.FC<BarChartProps> = ({ data, screen }) => {
   // Find the maximum data value to normalize the bar heights
-  const maxDataValue = Math.max(...data);
   const { colors } = useTheme();
+
   const styles = createStyles(colors);
+  const maxDataValue = Math.max(...data);
+
   const maxBarHeight = 130;
   const barWidth = 35;
+
   const labels = ["2-8", "9-15", "16-22", "23-29", "30-1"];
+
   return (
     <View style={styles.container}>
       {data.map((value, index) => {
@@ -79,6 +84,7 @@ const createStyles = (colors: any) =>
       borderRadius: 20,
       borderBottomColor: colors.primary,
       borderBottomWidth: 2,
+      height: 200,
     },
     barContainer: {
       alignItems: "center",
@@ -96,7 +102,7 @@ const createStyles = (colors: any) =>
     valueLabel: {
       fontSize: 10,
       color: colors.textSecondary,
-      marginBottom: 5,
+      marginBottom: 10,
       transform: [{ rotate: "-90deg" }],
     },
   });

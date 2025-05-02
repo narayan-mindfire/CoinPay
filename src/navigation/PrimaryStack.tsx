@@ -21,18 +21,19 @@ import ScanSend from "../Screens/send/ScanSend";
 
 const Stack = createNativeStackNavigator<PrimaryStackParamList>();
 
+//primary stack contains all the screens for users who are authenticated
 const PrimaryStack: React.FC = () => {
+  //checking if the user already has cards in their accounts if yes adding card wont be the first screen post logout
   const cardsPresent = useAppSelector((state) => state.card.cards);
-  console.log(cardsPresent);
   const hasCards = cardsPresent.length > 0;
-  console.log("cards present:\n", hasCards);
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
-      <HeaderPrimary />
       <Stack.Navigator
         initialRouteName={hasCards ? "BottomTab" : "AddCard"}
         id={undefined}
-        screenOptions={{ headerShown: false }}
+        screenOptions={{
+          header: () => <HeaderPrimary />,
+        }}
       >
         <Stack.Screen name="AddCard" component={AddCard} />
         <Stack.Screen name="CardForm" component={CardForm} />

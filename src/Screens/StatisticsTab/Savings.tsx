@@ -1,6 +1,13 @@
 import React from "react";
 
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import MoneyBox from "@/src/components/MoneyBox";
 import BarChart from "@/src/components/BarChart";
@@ -9,8 +16,11 @@ import icons from "@/src/Assets/icons";
 
 import { useTheme } from "@react-navigation/native";
 import { useAppSelector } from "@/src/redux/store";
+import { getCurrentMonth } from "@/src/utils/getCurrentMonth";
+import ScreenHeader from "@/src/components/ScreenHeader";
+import { useTranslation } from "react-i18next";
 
-const spendingData = [
+const savingData = [
   {
     logo: "creditCardPlus",
     title: "anonymous savings",
@@ -37,27 +47,36 @@ const spendingData = [
   },
 ];
 
+// savings shows user savings, this is static currently
 const Savings = () => {
   const { colors } = useTheme();
+  const { t } = useTranslation();
+
   const styles = createStyles(colors);
   const accBalance = useAppSelector((state) => state.auth.user.accBalance);
 
   return (
     <View style={styles.container}>
+      <ScreenHeader title={t("savingsScreen.savings")} />
       <View style={styles.title}>
-        <Text style={styles.titleLabel}>Savings</Text>
+        <View style={{ flex: 1, alignItems: "flex-start" }}>
+          <TouchableOpacity style={styles.monthPicker}>
+            <Text style={styles.selectedMonthText}>{getCurrentMonth()}</Text>
+            <Image source={icons.angleDown} style={styles.dropdownIcon} />
+          </TouchableOpacity>
+        </View>
       </View>
       <View style={styles.data}>
         <MoneyBox
           color={"white"}
-          title={"total savings"}
+          title={t("savingsScreen.totalSavings")}
           icon={"sack"}
           amount={"500"}
           bgColor={"warning"}
         />
         <MoneyBox
           color={"black"}
-          title={"available balance"}
+          title={t("savingsScreen.availableBalance")}
           icon={"sendMoney"}
           amount={accBalance.toString()}
           bgColor={"secondary"}
@@ -65,11 +84,11 @@ const Savings = () => {
       </View>
       <BarChart data={[20, 20, 30, 40, 20]} screen="savings" />
       <View style={styles.heading}>
-        <Text style={styles.listTitle}>Savings list</Text>
+        <Text style={styles.listTitle}>{t("savingsScreen.savingsList")}</Text>
         <Image source={icons.filter} style={styles.filterIcon} />
       </View>
       <ScrollView style={styles.dataListContainer}>
-        {spendingData.map((item, index) => (
+        {savingData.map((item, index) => (
           <TransactionItem
             key={index}
             logo={item.logo}
@@ -99,14 +118,39 @@ const createStyles = (colors: any) =>
       justifyContent: "space-between",
     },
     title: {
-      justifyContent: "center",
+      flexDirection: "row",
       alignItems: "center",
-      marginBottom: 40,
+      marginBottom: 20,
+      paddingTop: 5,
+      paddingLeft: 15,
+      paddingRight: 15,
+      justifyContent: "space-between",
     },
     titleLabel: {
       fontSize: 28,
-      fontWeight: 500,
+      fontWeight: "500",
       color: colors.textPrimary,
+      textAlign: "center",
+    },
+    monthPicker: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-evenly",
+      backgroundColor: colors.backgroundModal,
+      width: 120,
+      padding: 10,
+      borderRadius: 15,
+    },
+    dropdownIcon: {
+      width: 20,
+      height: 20,
+      tintColor: colors.textPrimary,
+    },
+    selectedMonthText: {
+      fontSize: 20,
+      fontWeight: "500",
+      color: colors.textPrimary,
+      marginRight: 5,
     },
     text: {
       color: colors.text,
