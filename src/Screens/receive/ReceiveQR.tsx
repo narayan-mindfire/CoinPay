@@ -1,6 +1,6 @@
 import React from "react";
 
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Share } from "react-native";
 
 import QRCode from "react-native-qrcode-svg";
 import Button from "@/src/components/Button";
@@ -42,8 +42,16 @@ const ReceiveQR = ({ navigation }) => {
           buttonText={t("receiveQR.shareToReceiveMoney")}
           icon={icons.share}
           outlined
-          handleButton={() => console.log("Share to Receive Money")}
           buttonStyles={{ marginTop: 10 }}
+          handleButton={async () => {
+            try {
+              await Share.share({
+                message: t("receiveQR.share"),
+              });
+            } catch {
+              console.log("failed to share");
+            }
+          }}
         />
       </View>
     </View>

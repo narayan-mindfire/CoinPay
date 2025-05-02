@@ -227,6 +227,7 @@ const en = {
     holdToScan: "Hold the code inside the frame, it will be scanned automatically",
     requestForPayment: "Request for Payment",
     shareToReceiveMoney: "Share to Receive Money",
+    share: "Send money to me using Coinpay"
   },
   support: {
     title: "Coinpay Support",

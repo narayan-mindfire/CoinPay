@@ -75,7 +75,7 @@ const ChooseAccount = ({ user, amount, onContinue }) => {
 
       {/* Pay Button */}
       <Button
-        buttonText={`${t("chooseAccount.pay")} $${amount}`}
+        buttonText={`${t("chooseAccount.pay")} ₹${amount}`}
         handleButton={() => {
           const selectedCard = cards.find((c) => c.id === selectedCardId);
           dispatch(setSelectedCard(selectedCard));
