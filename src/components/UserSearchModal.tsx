@@ -19,6 +19,7 @@ const UserSearchModal = ({
       <FlatList
         data={filteredResults}
         keyExtractor={(item) => item.uid}
+        removeClippedSubviews={false}
         renderItem={({ item }) => (
           <UserTransaction
             name={item.name}
