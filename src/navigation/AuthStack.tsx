@@ -17,7 +17,7 @@ import SetupPin from "../Screens/pinSetup/SetupPin";
 import Welcome from "../Screens/welcome/Welcome";
 import Login from "../Screens/login/Login";
 import { Progress } from "../components/Progress";
-import OnboardingScreen from "../Screens/OnBoarding/onBoarding";
+import OnboardingScreen from "../Screens/start/OnBoarding";
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
 
